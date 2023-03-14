@@ -1,7 +1,9 @@
 name: Android Build using Github Actions by Muralitharan ## name of the workflow
 
-on: [push] ## push event is capture here
-
+on: 
+  push:
+    branches:
+      - 'master'
 jobs:
   android-build:
     name: Android Build
