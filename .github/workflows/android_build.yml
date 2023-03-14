@@ -47,7 +47,7 @@ jobs:
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
 
-      - name: Generate App APK
+      - name: Build Android App Bundle
         run: |
           cd android && ./gradlew assembleRelease --no-daemon
       ## sign generated apk
@@ -60,6 +60,13 @@ jobs:
           alias: ${{ secrets.ANDROID_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      ## upload artifact to action
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Gakko App Bundle
+        path: ${{steps.sign_app.outputs.signedReleaseFile}}
 
       # ## Distribute app to Firebase App Distribution for testing / use google play internal track if you have a google play account
       - name: upload artifact to Firebase App Distribution
