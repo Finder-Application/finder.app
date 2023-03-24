@@ -79,7 +79,7 @@ export const Post = () => {
         </View>
         <View>
           {renderInformationDetail('Gender', 'Female')}
-          {renderInformationDetail('Name', '20/05/2005')}
+          {renderInformationDetail('Dob', '20/05/2005')}
         </View>
       </View>
       <Image
@@ -136,7 +136,7 @@ export const Post = () => {
       </View>
       <View flexDirection="row" flex={1}>
         <ActiveProfileIcon />
-        <View marginLeft="s">
+        <View marginLeft="s" flex={1}>
           <View flexDirection="row" alignItems="center">
             <Text fontSize={13} color="black1" fontWeight="700" marginRight="s">
               Trung Jamin
@@ -145,13 +145,13 @@ export const Post = () => {
               1 minute ago
             </Text>
           </View>
-          <View flex={1}>
+          <View flex={1} flexShrink={3}>
             <Text
               fontSize={13}
               color="black1"
               numberOfLines={2}
               ellipsizeMode="tail">
-              Se ha actualizado el manifiesto de e ha actualizado el manifiesto
+              Se ha actualizado el manifiesto de e ha manifiesto de e ha
             </Text>
           </View>
         </View>
