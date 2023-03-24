@@ -15,7 +15,7 @@ type BaseThemeType = typeof BaseTheme & {
 
 const createTheme = <T extends BaseThemeType>(themeObject: T): T => themeObject;
 
-const BaseTheme = {
+export const BaseTheme = {
   colors: {
     text: '#202124',
     background: '#F4F1F1',
@@ -26,14 +26,24 @@ const BaseTheme = {
     // from figma file
 
     black: '#151522',
+    black1: '#14171A',
     grey1: '#333333',
     grey2: '#666666',
     grey3: '#C3C3C3',
     grey4: '#E4E4E4',
+    grey5: '#676767',
+    grey6: 'rgba(139, 138, 148, 1)',
+    grey6Opacity5: 'rgba(139, 138, 148, 0.05)',
+    grey6Opacity60: 'rgba(139, 138, 148, 60)',
+    grey7: '#657786',
+
     white: 'white',
     red: '#EB5757',
+    blue: '#7CDFFF',
+    green: '#92FE9E',
   },
   spacing: {
+    xs: 4,
     s: 8,
     m: 16,
     l: 24,
@@ -74,53 +84,58 @@ export const theme = createTheme({
     },
   },
   textVariants: {
-    defaults: {},
+    defaults: {
+      fontFamily: 'Roboto',
+      fontSize: 14,
+      color: 'black',
+      fontWeight: '400',
+    },
     header: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontWeight: 'bold',
       fontSize: 22,
       lineHeight: 42.5,
       color: 'black',
     },
     title: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontSize: 17,
       fontWeight: '500',
       color: 'black',
     },
     subheader: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontWeight: '600',
       fontSize: 28,
       lineHeight: 36,
       color: 'grey1',
     },
     body: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontSize: 15,
       lineHeight: 24,
       color: 'grey2',
     },
     button_primary: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontSize: 16,
       lineHeight: 22,
       color: 'white',
     },
     button_secondary: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontSize: 16,
       lineHeight: 22,
       color: 'white',
     },
     button_outline: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontSize: 16,
       lineHeight: 22,
       color: 'text',
     },
     label: {
-      fontFamily: 'Inter',
+      fontFamily: 'Roboto',
       fontSize: 13,
       lineHeight: 18,
       color: 'grey2',

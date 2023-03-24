@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   Control,
   FieldValues,
@@ -9,7 +9,7 @@ import {
 import {StyleSheet, TextInput, TextInputProps} from 'react-native';
 
 import {Text} from './Text';
-import {useTheme} from './theme';
+import {BaseTheme, useTheme} from './theme';
 import {View} from './View';
 
 // types
@@ -30,47 +30,65 @@ interface Props<T extends FieldValues>
     InputControllerType<T> {
   disabled?: boolean;
   label?: string;
+  prefix?: React.ReactNode;
 }
 
 export function Input<T extends FieldValues>(props: Props<T>) {
-  const {label, name, control, rules, ...inputProps} = props;
+  const {
+    label,
+    name,
+    control,
+    rules,
+    prefix: PrefixIcon,
+    ...inputProps
+  } = props;
   const {colors} = useTheme();
   const {field, fieldState} = useController({control, name, rules});
   const [isFocussed, setIsFocussed] = React.useState(false);
   const onBlur = () => setIsFocussed(false);
   const onFocus = () => setIsFocussed(true);
 
-  const borderColor = fieldState.invalid
-    ? colors.red
-    : isFocussed
-    ? colors.secondary
-    : colors.grey2;
+  let borderColor;
+  if (fieldState.invalid) {
+    borderColor = colors.red;
+  } else if (isFocussed) {
+    borderColor = colors.secondary;
+  } else {
+    colors.grey2;
+  }
+
+  let labelColor: keyof (typeof BaseTheme)['colors'] = 'black';
+  if (fieldState.invalid) {
+    labelColor = 'red';
+  } else if (isFocussed) {
+    labelColor = 'secondary';
+  }
+
   return (
-    <View key={`input-${name}`} marginBottom="m">
+    <View key={`input-${name}`}>
       {label && (
-        <Text
-          variant="label"
-          color={
-            fieldState.invalid ? 'red' : isFocussed ? 'secondary' : 'grey1'
-          }>
+        <Text variant="label" color={labelColor}>
           {label}
         </Text>
       )}
-      <TextInput
-        placeholderTextColor={colors.grey2}
-        style={[
-          styles.input,
-          {
-            borderColor,
-          },
-        ]}
-        autoCapitalize="none"
-        onChangeText={field.onChange}
-        value={field.value as string}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        {...inputProps}
-      />
+      <View flexDirection="row" alignItems="center" justifyContent="center">
+        {PrefixIcon && <View marginRight="s">{PrefixIcon}</View>}
+        <TextInput
+          placeholderTextColor={colors.grey2}
+          style={[
+            styles.input,
+            {
+              borderColor,
+            },
+          ]}
+          autoCapitalize="none"
+          onChangeText={field.onChange}
+          value={field.value as string}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          {...inputProps}
+        />
+      </View>
       {fieldState.error && (
         <Text fontSize={12} color="red">
           {fieldState.error.message}

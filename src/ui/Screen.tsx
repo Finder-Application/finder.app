@@ -6,13 +6,18 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const Screen = ({children}: Props) => (
+export const Screen = ({
+  children,
+  ...props
+}: Props & React.ComponentProps<typeof View>) => (
   <View
     justifyContent="center"
     flexDirection="column"
+    alignItems="center"
     paddingHorizontal="m"
     flex={1}
-    bg="background">
+    bg="background"
+    {...props}>
     {children}
   </View>
 );

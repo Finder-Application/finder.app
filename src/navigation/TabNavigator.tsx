@@ -55,7 +55,7 @@ const BlurView = () => {
   return (
     <RNBlurView
       blurType="light"
-      blurAmount={32}
+      blurAmount={20}
       reducedTransparencyFallbackColor="white"
       style={styles.tabBarBackground}
     />
@@ -75,9 +75,9 @@ export const TabNavigator = () => {
         tabBarBackground: renderTabBarBackground,
         tabBarStyle: {
           minHeight: TAB_HEIGHT,
-
           position: 'absolute',
         },
+        tabBarHideOnKeyboard: true,
       })}>
       <Tab.Screen name={NavigatorKey.Home} component={HomeNavigator} />
       <Tab.Screen name={NavigatorKey.Search} component={SearchNavigator} />
