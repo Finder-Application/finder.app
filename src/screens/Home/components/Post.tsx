@@ -1,34 +1,30 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
+import {useNavigation} from '@react-navigation/native';
+import {HomeStackNavigationProps} from 'navigation/HomeNavigator';
+import {AppScreens} from 'screens/constants';
 import {
   ActiveHeartIcon,
   ActiveProfileIcon,
   CommentIcon,
   HeartIcon,
   Image,
+  InformationDetail,
   LinearGradientView,
   LinkShareIcon,
   SearchInput,
   Text,
   ThreeDotsIcon,
   Touchable,
+  UserComment,
   View,
 } from 'ui';
 
 export const Post = () => {
+  const navigation = useNavigation<HomeStackNavigationProps>();
+
   const [isLiked, setIsLiked] = useState(false);
   const {control} = useForm();
-
-  const renderInformationDetail = (label: string, value: string) => {
-    return (
-      <View flexDirection="row">
-        <Text fontSize={13} fontWeight="700">
-          {`\u2022  ${label}: `}
-        </Text>
-        <Text>{value}</Text>
-      </View>
-    );
-  };
 
   return (
     <View
@@ -45,7 +41,9 @@ export const Post = () => {
           </Text>
         </View>
         <View flexDirection="row" alignItems="center">
-          <Touchable marginRight="s">
+          <Touchable
+            marginRight="s"
+            onPress={() => navigation.navigate(AppScreens.PostDetail)}>
             <LinearGradientView
               paddingVertical="xs"
               paddingHorizontal="m"
@@ -73,13 +71,13 @@ export const Post = () => {
         alignItems="flex-end"
         marginVertical="s">
         <View>
-          {renderInformationDetail('Nickname', 'Soc')}
-          {renderInformationDetail('Name', 'Mai Linh')}
-          {renderInformationDetail('Hometown', 'Quang Binh')}
+          <InformationDetail label="Nickname" value="Soc" />
+          <InformationDetail label="Name" value="Mai Linh" />
+          <InformationDetail label="Hometown" value="Quang Binh" />
         </View>
         <View>
-          {renderInformationDetail('Gender', 'Female')}
-          {renderInformationDetail('Dob', '20/05/2005')}
+          <InformationDetail label="Gender" value="Female" />
+          <InformationDetail label="Dob" value="20/05/2005" />
         </View>
       </View>
       <Image
@@ -134,28 +132,7 @@ export const Post = () => {
           }}
         />
       </View>
-      <View flexDirection="row" flex={1}>
-        <ActiveProfileIcon />
-        <View marginLeft="s" flex={1}>
-          <View flexDirection="row" alignItems="center">
-            <Text fontSize={13} color="black1" fontWeight="700" marginRight="s">
-              Trung Jamin
-            </Text>
-            <Text color="grey7" fontSize={11}>
-              1 minute ago
-            </Text>
-          </View>
-          <View flex={1} flexShrink={3}>
-            <Text
-              fontSize={13}
-              color="black1"
-              numberOfLines={2}
-              ellipsizeMode="tail">
-              Se ha actualizado el manifiesto de e ha manifiesto de e ha
-            </Text>
-          </View>
-        </View>
-      </View>
+      <UserComment />
     </View>
   );
 };

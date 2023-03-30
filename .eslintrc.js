@@ -8,6 +8,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'react-hooks/rules-of-hooks': 'error', // For checking rules of hooks
     'react-hooks/exhaustive-deps': 'off',
+    'react/no-unstable-nested-components': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     'no-nested-ternary': 'off',

@@ -3,6 +3,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {
   StackNavigationOptions,
   StackNavigationProp,
+  TransitionPresets,
 } from '@react-navigation/stack';
 import {HeaderBackButton, theme, View} from 'ui';
 
@@ -41,6 +42,7 @@ export function buildNavigationOptions(
     },
     headerTitleAlign: 'center',
     headerShadowVisible: false,
+    ...TransitionPresets.SlideFromRightIOS,
     headerLeft: () => {
       return (
         <HeaderBackButton onPress={onGoBack} title={previousScreenTitle} />
