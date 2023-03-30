@@ -26,6 +26,7 @@ export const BaseTheme = {
     // from figma file
 
     black: '#151522',
+    blackOpacity46: 'rgba(0, 0, 0, 0.46)',
     black1: '#14171A',
     grey1: '#333333',
     grey2: '#666666',
@@ -36,7 +37,8 @@ export const BaseTheme = {
     grey6Opacity5: 'rgba(139, 138, 148, 0.05)',
     grey6Opacity60: 'rgba(139, 138, 148, 60)',
     grey7: '#657786',
-
+    grey8: '#D9D9D9',
+    grey9: '#444444',
     white: 'white',
     red: '#EB5757',
     blue: '#7CDFFF',

@@ -4,4 +4,5 @@ export enum AppScreens {
   AddPost = 'AddPost',
   YourPost = 'YourPost',
   Profile = 'Profile',
+  PostDetail = 'PostDetail',
 }

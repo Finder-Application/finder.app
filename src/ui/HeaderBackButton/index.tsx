@@ -11,7 +11,7 @@ type HeaderBackButtonProps = {
 export const HeaderBackButton = ({onPress, title}: HeaderBackButtonProps) => {
   return (
     <Touchable
-      marginLeft="xl"
+      marginLeft="l"
       onPress={onPress}
       flexDirection="row"
       alignItems="center">
