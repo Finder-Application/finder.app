@@ -119,6 +119,7 @@ export const Post = () => {
       <View flexDirection="row" alignItems="center" marginBottom="m">
         <ActiveProfileIcon />
         <SearchInput
+          flex={1}
           marginLeft="s"
           backgroundColor="grey6Opacity5"
           borderWidth={0}

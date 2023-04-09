@@ -35,9 +35,10 @@ const restyleFunctions = composeRestyleFunctions([
 type Props = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &
   BorderProps<Theme> &
-  BackgroundColorProps<Theme> & {
+  BackgroundColorProps<Theme> &
+  LayoutProps<Theme> & {
     onPress: () => void;
-    label?: string;
+    label?: string | React.ReactNode;
     outline?: boolean;
     loading?: boolean;
   };
@@ -64,10 +65,12 @@ export const Button = ({
         {...props}>
         {loading ? (
           <ActivityIndicator size="small" />
-        ) : (
+        ) : typeof label === 'string' ? (
           <Text variant={textVariant as Partial<keyof Theme['textVariants']>}>
             {label}
           </Text>
+        ) : (
+          <View>{label}</View>
         )}
       </ButtonContainer>
     </TouchableOpacity>
