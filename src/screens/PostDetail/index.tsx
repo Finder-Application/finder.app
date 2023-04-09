@@ -242,6 +242,7 @@ export const PostDetail = () => {
           marginTop="l">
           <ActiveProfileIcon />
           <SearchInput
+            flex={1}
             marginLeft="s"
             backgroundColor="grey6Opacity5"
             borderWidth={0}

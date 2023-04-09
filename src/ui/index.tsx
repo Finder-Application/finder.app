@@ -1,6 +1,7 @@
 export * from './Button';
 export * from './CollapsibleSection';
 export * from './constants';
+export * from './DropDownPicker';
 export * from './ErrorHandler';
 export * from './HeaderBackButton';
 export * from './icons';

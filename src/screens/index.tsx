@@ -1,3 +1,4 @@
+export * from './AddPost';
 export * from './constants';
 export * from './Home';
 export * from './Login';

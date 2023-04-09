@@ -23,7 +23,6 @@ export function SearchInput<T extends FieldValues>(
       flexDirection="row"
       alignItems="center"
       padding="xs"
-      flex={1}
       {...props}>
       <Input
         disabled={disabled}

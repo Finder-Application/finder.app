@@ -1,6 +1,14 @@
-import type {AuthStackParamList} from './AuthNavigator';
+import {StackNavigationProp} from '@react-navigation/stack';
 
-export type RootStackParamList = AuthStackParamList;
+import {AddPostStackParamList} from './AddPostNavigator';
+import type {AuthStackParamList} from './AuthNavigator';
+import {HomeStackParamList} from './HomeNavigator';
+
+export type RootStackParamList = AuthStackParamList &
+  AddPostStackParamList &
+  HomeStackParamList;
+
+export type RootStackNavigationProps = StackNavigationProp<RootStackParamList>;
 
 // export type RootStackParamList = AuthStackParamList & XXXStackParamList  &  YYYStackParamList  ;
 
