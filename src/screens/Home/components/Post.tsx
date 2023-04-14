@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
+import {Post as PostType} from 'api/posts/types';
+import moment from 'moment';
 import {HomeStackNavigationProps} from 'navigation/HomeNavigator';
 import {AppScreens} from 'screens/constants';
 import {
   ActiveHeartIcon,
-  ActiveProfileIcon,
   CommentIcon,
   HeartIcon,
   Image,
@@ -19,13 +20,27 @@ import {
   UserComment,
   View,
 } from 'ui';
+import {formatUserName} from 'utils';
+type PostProps = {
+  post: PostType;
+};
+export const Post = (props: PostProps) => {
+  const {post} = props;
 
-export const Post = () => {
   const navigation = useNavigation<HomeStackNavigationProps>();
 
   const [isLiked, setIsLiked] = useState(false);
   const {control} = useForm();
 
+  const ownerName = formatUserName({
+    user: {
+      firstName: post.owner.firstName,
+      middleName: post.owner.middleName,
+      lastName: post.owner.lastName,
+    },
+  });
+
+  const photo = post.photos[0];
   return (
     <View
       backgroundColor="white"
@@ -35,15 +50,26 @@ export const Post = () => {
       marginBottom="m">
       <View flexDirection="row" justifyContent="space-between" marginBottom="m">
         <View flexDirection="row" alignItems="center">
-          <ActiveProfileIcon />
+          <Image
+            height={35}
+            width={35}
+            borderRadius={50}
+            source={{
+              uri: 'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
+            }}
+          />
           <Text fontWeight="700" marginLeft="s">
-            Mai Nguyen
+            {ownerName}
           </Text>
         </View>
         <View flexDirection="row" alignItems="center">
           <Touchable
             marginRight="s"
-            onPress={() => navigation.navigate(AppScreens.PostDetail)}>
+            onPress={() =>
+              navigation.navigate(AppScreens.PostDetail, {
+                postData: post,
+              })
+            }>
             <LinearGradientView
               paddingVertical="xs"
               paddingHorizontal="m"
@@ -59,25 +85,28 @@ export const Post = () => {
         </View>
       </View>
       <Text fontWeight="700" fontSize={15}>
-        Lorem ipsum dolor sit amet
+        {post.title}
       </Text>
-      <Text fontSize={13}>
-        Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua.
-      </Text>
+      <Text fontSize={13}>{post.description}</Text>
       <View
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="flex-end"
+        alignItems="flex-start"
         marginVertical="s">
-        <View>
-          <InformationDetail label="Nickname" value="Soc" />
-          <InformationDetail label="Name" value="Mai Linh" />
-          <InformationDetail label="Hometown" value="Quang Binh" />
+        <View flex={1}>
+          <InformationDetail label="Name" value={post.fullName} />
+          <InformationDetail label="Nickname" value={post.nickname} />
+          <InformationDetail label="Hometown" value={post.hometown.region} />
         </View>
         <View>
-          <InformationDetail label="Gender" value="Female" />
-          <InformationDetail label="Dob" value="20/05/2005" />
+          <InformationDetail
+            label="Gender"
+            value={post.gender ? 'Female' : 'Male'}
+          />
+          <InformationDetail
+            label="Dob"
+            value={moment(post.dateOfBirth).format('DD/MM/YYYY')}
+          />
         </View>
       </View>
       <Image
@@ -86,7 +115,7 @@ export const Post = () => {
         borderTopLeftRadius={10}
         borderTopRightRadius={10}
         source={{
-          uri: 'https://www.adobe.com/content/dam/cc/us/en/creativecloud/photography/discover/portrait-photography/CODERED_B1_portrait_photography-P4a_438x447.jpg.img.jpg',
+          uri: photo,
         }}
       />
       <View
@@ -117,7 +146,14 @@ export const Post = () => {
         </Touchable>
       </View>
       <View flexDirection="row" alignItems="center" marginBottom="m">
-        <ActiveProfileIcon />
+        <Image
+          height={35}
+          width={35}
+          borderRadius={50}
+          source={{
+            uri: 'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
+          }}
+        />
         <SearchInput
           flex={1}
           marginLeft="s"

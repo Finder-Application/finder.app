@@ -3,6 +3,7 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
+import {Post} from 'api/posts/types';
 import {AppScreens, Home} from 'screens';
 import {PostDetail} from 'screens/PostDetail';
 import {BellIcon, FinderIcon, MagnifierIcon, Touchable} from 'ui';
@@ -13,7 +14,9 @@ const Stack = createStackNavigator();
 
 export type HomeStackParamList = {
   Home: undefined;
-  PostDetail: undefined;
+  PostDetail: {
+    postData: Post;
+  };
 };
 
 export type HomeStackNavigationProps = StackNavigationProp<HomeStackParamList>;
@@ -33,9 +36,9 @@ export const HomeNavigator = () => {
         options={({navigation}) => ({
           ...buildNavigationOptions(navigation, ''),
           headerShown: true,
-          // eslint-disable-next-line react/no-unstable-nested-components
+
           headerTitle: () => <FinderIcon />,
-          // eslint-disable-next-line react/no-unstable-nested-components
+
           headerLeft: () => {
             return (
               <Touchable marginLeft="s">
@@ -43,7 +46,7 @@ export const HomeNavigator = () => {
               </Touchable>
             );
           },
-          // eslint-disable-next-line react/no-unstable-nested-components
+
           headerRight: () => {
             return (
               <Touchable marginRight="s">
