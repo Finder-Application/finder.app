@@ -129,7 +129,10 @@ export const ImagePickerSection = () => {
             </View>
           ))}
       </View>
-      <Touchable alignSelf="flex-end" marginTop="l">
+      <Touchable
+        alignSelf="flex-end"
+        marginTop="l"
+        onPress={() => console.log('Pressed!')}>
         <LinearGradientView
           paddingHorizontal="l"
           paddingVertical="s"
