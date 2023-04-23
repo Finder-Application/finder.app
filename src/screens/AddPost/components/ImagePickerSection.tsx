@@ -5,11 +5,12 @@ import {
   ImagePickerResponse,
   launchImageLibrary,
 } from 'react-native-image-picker';
+import {useCreateNetworkImageUrl} from 'api/networkImages';
+import {useAppStore} from 'core/App';
 import uniqBy from 'lodash/uniqBy';
 import {
   CloseIcon,
   Image,
-  LinearGradientView,
   PlusIcon,
   Text,
   theme,
@@ -18,22 +19,38 @@ import {
   useTheme,
   View,
 } from 'ui';
+
 export const ImagePickerSection = () => {
   const {colors} = useTheme();
 
   const [imageResponse, setImageResponse] = useState<ImagePickerResponse>();
+
+  const networkUrlMutation = useCreateNetworkImageUrl();
+  const setShowLoadingModal = useAppStore(state => state.setShowLoadingModal);
+
   const onPickImages = useCallback(async () => {
-    const result = await launchImageLibrary({
-      mediaType: 'photo',
-      selectionLimit: 0,
-    });
-    setImageResponse(prev => ({
-      ...prev,
-      assets: uniqBy(
-        [...(prev?.assets ?? []), ...(result.assets ?? [])],
-        item => item.fileName,
-      ),
-    }));
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        selectionLimit: 0,
+      });
+      console.log('result: ', result);
+      setShowLoadingModal(true);
+      const images = await networkUrlMutation.mutateAsync(result);
+      console.log('images: ', images);
+
+      setImageResponse(prev => ({
+        ...prev,
+        assets: uniqBy(
+          [...(prev?.assets ?? []), ...(result.assets ?? [])],
+          item => item.fileName,
+        ),
+      }));
+      setShowLoadingModal(false);
+    } catch (error) {
+      console.log('onPickImages error: ', error);
+      setShowLoadingModal(false);
+    }
   }, []);
 
   const onRemoveImage = useCallback((removedIndex: number) => {
@@ -129,22 +146,6 @@ export const ImagePickerSection = () => {
             </View>
           ))}
       </View>
-      <Touchable
-        alignSelf="flex-end"
-        marginTop="l"
-        onPress={() => console.log('Pressed!')}>
-        <LinearGradientView
-          paddingHorizontal="l"
-          paddingVertical="s"
-          borderRadius={10}
-          colors={[colors.green2, colors.green3, colors.green4]}
-          locations={[0, 0.64, 0.99]}
-          angle={90}>
-          <Text fontWeight="600" fontSize={16}>
-            Create Post
-          </Text>
-        </LinearGradientView>
-      </Touchable>
     </View>
   );
 };
