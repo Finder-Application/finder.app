@@ -9,6 +9,7 @@ export * from './Image';
 export * from './InformationDetail';
 export * from './Input';
 export * from './LinearGradientView';
+export * from './LoadingModal';
 export * from './Pressable';
 export * from './Screen';
 export * from './SearchInput';

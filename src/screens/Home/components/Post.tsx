@@ -94,17 +94,17 @@ export const Post = (props: PostProps) => {
         alignItems="flex-start"
         marginVertical="s">
         <View flex={1}>
-          <InformationDetail label="Name" value={post.fullName} />
-          <InformationDetail label="Nickname" value={post.nickname} />
-          <InformationDetail label="Hometown" value={post.hometown.region} />
+          <InformationDetail label="Họ Tên" value={post.fullName} />
+          <InformationDetail label="Tên ở nhà" value={post.nickname} />
+          <InformationDetail label="Quê Quán" value={post.hometown.region} />
         </View>
         <View>
           <InformationDetail
-            label="Gender"
+            label="Giới tính"
             value={post.gender ? 'Female' : 'Male'}
           />
           <InformationDetail
-            label="Dob"
+            label="Ngày sinh"
             value={moment(post.dateOfBirth).format('DD/MM/YYYY')}
           />
         </View>

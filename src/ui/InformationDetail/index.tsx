@@ -20,7 +20,11 @@ export const InformationDetail = ({
       <Text fontSize={13} fontWeight="700" {...labelProps}>
         {showBullet ? '\u2022' : ''} {`${label}: `}
       </Text>
-      <Text {...valueProps}>{value}</Text>
+      <View flexShrink={1}>
+        <Text numberOfLines={1} ellipsizeMode="tail" {...valueProps}>
+          {value}
+        </Text>
+      </View>
     </View>
   );
 };

@@ -121,23 +121,26 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
           alignItems="flex-start"
           marginVertical="s">
           <View flex={1}>
-            <InformationDetail label="Name" value={ownerName} />
             <InformationDetail
-              label="Nickname"
+              label="Họ Tên"
+              value={postData?.fullName ?? ''}
+            />
+            <InformationDetail
+              label="Tên ở nhà"
               value={postData?.nickname ?? ''}
             />
             <InformationDetail
-              label="Hometown"
+              label="Quê Quán"
               value={postData?.hometown.region ?? ''}
             />
           </View>
           <View>
             <InformationDetail
-              label="Gender"
+              label="Giới tính"
               value={postData?.gender ? 'Female' : 'Male'}
             />
             <InformationDetail
-              label="Dob"
+              label="Ngày sinh"
               value={moment(postData?.dateOfBirth).format('DD/MM/YYYY')}
             />
           </View>

@@ -28,6 +28,8 @@ export const BaseTheme = {
     black: '#151522',
     blackOpacity10: 'rgba(0, 0, 0, 0.1)',
     blackOpacity46: 'rgba(0, 0, 0, 0.46)',
+    blackOpacity50: 'rgba(0, 0, 0, 0.5)',
+
     black1: '#14171A',
     grey1: '#333333',
     grey2: '#666666',

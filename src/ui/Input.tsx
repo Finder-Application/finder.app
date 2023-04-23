@@ -31,6 +31,8 @@ interface Props<T extends FieldValues>
   disabled?: boolean;
   label?: string;
   prefix?: React.ReactNode;
+  labelColor?: keyof (typeof BaseTheme)['colors'];
+  borderColor?: keyof (typeof BaseTheme)['colors'];
 }
 
 export function Input<T extends FieldValues>(props: Props<T>) {
@@ -40,29 +42,12 @@ export function Input<T extends FieldValues>(props: Props<T>) {
     control,
     rules,
     prefix: PrefixIcon,
+    labelColor,
+    borderColor,
     ...inputProps
   } = props;
   const {colors} = useTheme();
-  const {field, fieldState} = useController({control, name, rules});
-  const [isFocussed, setIsFocussed] = React.useState(false);
-  const onBlur = () => setIsFocussed(false);
-  const onFocus = () => setIsFocussed(true);
-
-  let borderColor;
-  if (fieldState.invalid) {
-    borderColor = colors.red;
-  } else if (isFocussed) {
-    borderColor = colors.secondary;
-  } else {
-    colors.grey2;
-  }
-
-  let labelColor: keyof (typeof BaseTheme)['colors'] = 'black';
-  if (fieldState.invalid) {
-    labelColor = 'red';
-  } else if (isFocussed) {
-    labelColor = 'secondary';
-  }
+  const {field} = useController({control, name, rules});
 
   return (
     <View key={`input-${name}`}>
@@ -78,22 +63,15 @@ export function Input<T extends FieldValues>(props: Props<T>) {
           style={[
             styles.input,
             {
-              borderColor,
+              borderColor: BaseTheme.colors[borderColor ?? 'secondary'],
             },
           ]}
           autoCapitalize="none"
           onChangeText={field.onChange}
           value={field.value as string}
-          onBlur={onBlur}
-          onFocus={onFocus}
           {...inputProps}
         />
       </View>
-      {fieldState.error && (
-        <Text fontSize={12} color="red">
-          {fieldState.error.message}
-        </Text>
-      )}
     </View>
   );
 }

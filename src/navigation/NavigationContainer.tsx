@@ -3,7 +3,7 @@ import {StatusBar} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {NavigationContainer as RNNavigationContainer} from '@react-navigation/native';
 import {useTheme} from '@shopify/restyle';
-import {Theme} from 'ui';
+import {LoadingModal, Theme} from 'ui';
 
 export const NavigationContainer = ({
   children,
@@ -20,6 +20,7 @@ export const NavigationContainer = ({
       <RNNavigationContainer theme={navigation}>
         {children}
       </RNNavigationContainer>
+      <LoadingModal />
     </SafeAreaProvider>
   );
 };
