@@ -3,8 +3,15 @@ import {Controller, useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {ItemType, ValueType} from 'react-native-dropdown-picker';
+import {showMessage} from 'react-native-flash-message';
 import {ScrollView} from 'react-native-gesture-handler';
+import {Asset} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
+import {useCreateNetworkImageUrl} from 'api/networkImages';
+import {CreatePostBody, useCreatePost} from 'api/posts';
+import {Descriptor} from 'api/types.common';
+import {AxiosError} from 'axios';
+import {useAppStore} from 'core/App';
 import moment from 'moment';
 import {RootStackNavigationProps} from 'navigation/types';
 import {buildNavigationOptions} from 'navigation/utils';
@@ -26,7 +33,6 @@ import {
 import {GeoUtils} from 'utils';
 
 import {ImagePickerSection} from './components/ImagePickerSection';
-
 const DOB_FORMAT = 'MM/DD/YYYY';
 const MISSING_TIME_FORMAT = 'MM/DD/YYYY';
 
@@ -88,18 +94,25 @@ export const AddPost = memo(() => {
 
   const {colors} = useTheme();
   const {
-    register,
-    setValue,
     handleSubmit,
     control,
     reset,
     getFieldState,
+    getValues,
     formState: {errors},
   } = useForm<FormData>();
+  const createPostMutation = useCreatePost();
+  const networkUrlMutation = useCreateNetworkImageUrl();
+  const setShowLoadingModal = useAppStore(state => state.setShowLoadingModal);
 
-  const onSubmit = data => {
-    console.log(data);
-  };
+  const [postImageResource, setPostImageResource] = useState<{
+    files: Asset[];
+    descriptors: Descriptor[];
+  }>({
+    files: [],
+    descriptors: [],
+  });
+
   const [isGenderDropdownOpen, setIsGenderDropDownOpen] = useState(false);
   const [selectedGender, setSelectedGender] = useState(null);
   const [genderItems, setGenderItems] = useState([
@@ -224,6 +237,133 @@ export const AddPost = memo(() => {
       ),
     });
   }, []);
+
+  const getImageUrls = async () => {
+    if (postImageResource.files.length > 0) {
+      const {files} = postImageResource;
+      if (files && files.length > 0) {
+        return networkUrlMutation.mutateAsync(files).then(value => {
+          return value.images;
+        });
+      }
+    }
+
+    return [];
+  };
+
+  const getPayloadDescriptors = (networkImageUrls: string[]) => {
+    return postImageResource?.descriptors?.reduce(
+      (prev: {id: string; descriptor: Descriptor}[], descriptor, index) => {
+        const url: string = networkImageUrls[index];
+        if (url) {
+          const id = url?.split('img-')[1];
+          const newLocal = {
+            id: id,
+            descriptor: descriptor,
+          };
+          return [...prev, newLocal];
+        }
+        return prev;
+      },
+      [],
+    );
+  };
+
+  const getRequestPayloadInfo = () => {
+    return {
+      title: getValues('title'),
+      fullName: getValues('fullName'),
+      nickname: getValues('nickName'),
+      dateOfBirth: new Date(getValues('dateOfBirth')),
+      gender: getValues('gender') !== 'male',
+      hometown: {
+        region: GeoUtils.getProvince(getValues('homeTownRegion')),
+        state: GeoUtils.getDistrict(getValues('homeTownState')),
+        commune: GeoUtils.getCommune(getValues('homeTownCommune')),
+        hamlet: getValues('homeTownHamlet'),
+      },
+      missingAddress: {
+        region: GeoUtils.getProvince(getValues('missingAddressRegion')),
+        state: GeoUtils.getDistrict(getValues('missingAddressState')),
+        commune: GeoUtils.getCommune(getValues('missingAddressCommune')),
+        hamlet: getValues('missingAddressHamlet'),
+      },
+      description: getValues('description'),
+      missingTime: new Date(getValues('missingTime')),
+    };
+  };
+
+  const hasFormValid = () => {
+    if (
+      postImageResource.files.length === 0 ||
+      postImageResource.descriptors.length === 0
+    ) {
+      showMessage({
+        message: 'Must have at least 1 image of this person to post!',
+        type: 'danger',
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleCreatePost = async (body: CreatePostBody) => {
+    await createPostMutation.mutateAsync({
+      ...body,
+    });
+  };
+
+  const onResetForm = () => {
+    reset();
+    setDateOfBirth(undefined);
+    setMissingTime(undefined);
+    setHomeTownForm({
+      region: null,
+      state: null,
+      commune: null,
+      hamlet: null,
+    });
+    setMissingAddressForm({
+      region: null,
+      state: null,
+      commune: null,
+      hamlet: null,
+    });
+    setPostImageResource({files: [], descriptors: []});
+  };
+
+  const onSubmit = async (_: FormData) => {
+    const isFormValid = hasFormValid();
+
+    if (isFormValid) {
+      setShowLoadingModal(true);
+      try {
+        const networkImageUrls = await getImageUrls();
+        const descriptors = getPayloadDescriptors(networkImageUrls);
+        const body = {
+          ...getRequestPayloadInfo(),
+          photos: [...networkImageUrls],
+          descriptors: descriptors ?? [],
+        };
+
+        const payload = {
+          ...body,
+        };
+        await handleCreatePost(payload)
+          .then(() => {
+            showMessage({message: 'Create post successfully', type: 'success'});
+            onResetForm();
+          })
+          .catch((error: AxiosError) => {
+            const message = (error.response?.data as any).message;
+            showMessage({message: message, type: 'danger'});
+          });
+      } catch (error) {
+        console.log('Create Post Error: ', error);
+      }
+      setShowLoadingModal(false);
+    }
+  };
 
   return (
     <Screen
@@ -904,15 +1044,21 @@ export const AddPost = memo(() => {
           {/* End of Description  */}
 
           {/* Missing Person's face images  */}
-          <ImagePickerSection />
+          <ImagePickerSection
+            postImageSource={postImageResource}
+            onSelectPostImageResource={(files, descriptors) => {
+              setPostImageResource(_ => ({
+                files: files,
+                descriptors: descriptors,
+              }));
+            }}
+          />
           {/* End of Missing Person's face images  */}
           <Touchable
             alignSelf="flex-end"
             marginTop="l"
             marginRight="m"
-            onPress={handleSubmit(onSubmit, e => {
-              console.log('Form error: ', e);
-            })}>
+            onPress={handleSubmit(onSubmit, e => console.log(e, errors))}>
             <LinearGradientView
               paddingHorizontal="l"
               paddingVertical="s"

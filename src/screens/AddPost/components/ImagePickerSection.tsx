@@ -1,11 +1,10 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  Asset,
-  ImagePickerResponse,
-  launchImageLibrary,
-} from 'react-native-image-picker';
-import {useCreateNetworkImageUrl} from 'api/networkImages';
+import {showMessage} from 'react-native-flash-message';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import {useFaceApi} from 'api/faceDetect';
+import {Descriptor} from 'api/types.common';
+import {AxiosError} from 'axios';
 import {useAppStore} from 'core/App';
 import uniqBy from 'lodash/uniqBy';
 import {
@@ -20,47 +19,81 @@ import {
   View,
 } from 'ui';
 
-export const ImagePickerSection = () => {
+type ImagePickerSectionProps = {
+  postImageSource: {
+    files: Asset[];
+    descriptors: Descriptor[];
+  };
+  onSelectPostImageResource: (
+    files: Asset[],
+    descriptors: Descriptor[],
+  ) => void;
+};
+
+export const ImagePickerSection = (props: ImagePickerSectionProps) => {
+  const {postImageSource, onSelectPostImageResource} = props;
+
   const {colors} = useTheme();
 
-  const [imageResponse, setImageResponse] = useState<ImagePickerResponse>();
-
-  const networkUrlMutation = useCreateNetworkImageUrl();
   const setShowLoadingModal = useAppStore(state => state.setShowLoadingModal);
+  const faceDetect = useFaceApi();
 
   const onPickImages = useCallback(async () => {
     try {
       const result = await launchImageLibrary({
         mediaType: 'photo',
         selectionLimit: 0,
+        includeBase64: true,
       });
-      console.log('result: ', result);
-      setShowLoadingModal(true);
-      const images = await networkUrlMutation.mutateAsync(result);
-      console.log('images: ', images);
 
-      setImageResponse(prev => ({
-        ...prev,
-        assets: uniqBy(
-          [...(prev?.assets ?? []), ...(result.assets ?? [])],
-          item => item.fileName,
-        ),
-      }));
-      setShowLoadingModal(false);
+      const currentLength = postImageSource?.files?.length ?? 0;
+      const newLength = result.assets?.length ?? 0;
+
+      const assets = uniqBy(result.assets, asset => asset.base64);
+
+      if (currentLength + newLength > 5 || newLength > 5) {
+        showMessage({
+          message: 'Maximum number of files is 5',
+          type: 'danger',
+        });
+      } else {
+        setShowLoadingModal(true);
+
+        await faceDetect
+          .mutateAsync(assets)
+          .then(value => {
+            const descriptors = value.data;
+            onSelectPostImageResource(
+              [...postImageSource.files, ...assets],
+              [...postImageSource.descriptors, ...descriptors],
+            );
+          })
+          .catch((error: AxiosError) => {
+            const message = (error.response?.data as any).message;
+            showMessage({message: message, type: 'danger'});
+          })
+          .finally(() => {
+            setShowLoadingModal(false);
+          });
+      }
     } catch (error) {
       console.log('onPickImages error: ', error);
       setShowLoadingModal(false);
     }
-  }, []);
+  }, [postImageSource]);
 
-  const onRemoveImage = useCallback((removedIndex: number) => {
-    setImageResponse(prev => {
-      return {
-        ...prev,
-        assets: prev?.assets?.filter((_, index) => index !== removedIndex),
-      };
-    });
-  }, []);
+  const onRemoveImage = useCallback(
+    (removedIndex: number) => {
+      const files = postImageSource.files?.filter(
+        (_, index) => index !== removedIndex,
+      );
+      const descriptors = postImageSource.descriptors?.filter(
+        (_, index) => index !== removedIndex,
+      );
+      onSelectPostImageResource(files, descriptors);
+    },
+    [postImageSource],
+  );
 
   return (
     <View padding="m" alignItems="flex-start">
@@ -117,15 +150,15 @@ export const ImagePickerSection = () => {
         <View flex={1}>
           <Text fontStyle="italic">Maximum uploaded image is 5</Text>
         </View>
-        {imageResponse?.assets && (
+        {postImageSource?.files && (
           <Text fontStyle="italic">
-            Current: {imageResponse?.assets.length}
+            Current: {postImageSource?.files.length}
           </Text>
         )}
       </View>
       <View flexDirection="row" flexWrap="wrap">
-        {imageResponse?.assets &&
-          imageResponse?.assets?.map((asset: Asset, index) => (
+        {postImageSource?.files &&
+          postImageSource?.files?.map((asset: Asset, index) => (
             <View key={asset.uri} style={styles.imageContainer}>
               <Image
                 resizeMode="cover"
