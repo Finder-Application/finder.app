@@ -1,12 +1,13 @@
 import {Asset} from 'react-native-image-picker';
 import {useMutation} from 'react-query';
 import {client} from 'api/client';
+import {Descriptor} from 'api/types.common';
 
-export interface NetWorkImageServiceResponse {
-  images: string[];
+interface FaceDetectionResponse {
+  data: Descriptor[];
 }
 
-const getNetworkImageUrls = async (assets: Asset[]) => {
+const detectImages = async (assets: Asset[]) => {
   const requestData = new FormData();
 
   assets?.forEach(asset => {
@@ -17,8 +18,8 @@ const getNetworkImageUrls = async (assets: Asset[]) => {
     });
   });
 
-  const {data}: {data: NetWorkImageServiceResponse} = await client.post(
-    '/api/public/util/upload-multiple',
+  const {data}: {data: FaceDetectionResponse} = await client.post(
+    '/face-api/detect',
     requestData,
     {
       headers: {
@@ -31,9 +32,7 @@ const getNetworkImageUrls = async (assets: Asset[]) => {
   return data;
 };
 
-export const useCreateNetworkImageUrl = () => {
-  const mutation = useMutation((assets: Asset[]) =>
-    getNetworkImageUrls(assets),
-  );
+export const useFaceApi = () => {
+  const mutation = useMutation((assets: Asset[]) => detectImages(assets));
   return mutation;
 };

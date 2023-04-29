@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {useFetchingPosts} from 'api/posts';
 import {
   FinderIcon,
@@ -23,10 +24,18 @@ export const Home = () => {
     fetchNextPage,
     isFetchingNextPage,
     isError,
+    refetch,
+    isRefetching,
   } = useFetchingPosts({
     take: NUMBER_OF_POSTS_PER_LOADING,
     order: {field: 'createdAt', direction: 'DESC'},
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, []),
+  );
 
   const renderFooter = () => {
     return (
@@ -54,6 +63,10 @@ export const Home = () => {
           contentContainerStyle={styles.contentContainer}
           style={styles.listStyle}
           keyExtractor={item => item.id.toString()}
+          refreshing={isRefetching}
+          onRefresh={() => {
+            refetch();
+          }}
           ListHeaderComponent={
             <Touchable
               flexDirection="row"
