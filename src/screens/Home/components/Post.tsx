@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {useForm} from 'react-hook-form';
 import {useNavigation} from '@react-navigation/native';
 import {Post as PostType} from 'api/posts/types';
 import moment from 'moment';
@@ -13,7 +12,6 @@ import {
   InformationDetail,
   LinearGradientView,
   LinkShareIcon,
-  SearchInput,
   Text,
   ThreeDotsIcon,
   Touchable,
@@ -30,7 +28,8 @@ export const Post = (props: PostProps) => {
   const navigation = useNavigation<HomeStackNavigationProps>();
 
   const [isLiked, setIsLiked] = useState(false);
-  const {control} = useForm();
+
+  const [totalComment, setTotalComment] = useState(0);
 
   const ownerName = formatUserName({
     user: {
@@ -138,38 +137,18 @@ export const Post = (props: PostProps) => {
             <Touchable>
               <CommentIcon />
             </Touchable>
-            <Text marginLeft="xs">78</Text>
+            <Text marginLeft="xs">{totalComment}</Text>
           </View>
         </View>
         <Touchable>
           <LinkShareIcon />
         </Touchable>
       </View>
-      <View flexDirection="row" alignItems="center" marginBottom="m">
-        <Image
-          height={35}
-          width={35}
-          borderRadius={50}
-          source={{
-            uri: 'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
-          }}
-        />
-        <SearchInput
-          flex={1}
-          marginLeft="s"
-          backgroundColor="grey6Opacity5"
-          borderWidth={0}
-          inputProps={{
-            name: 'search',
-            control,
-            placeholder: 'Write a comment...',
-            style: {
-              fontSize: 12,
-            },
-          }}
-        />
-      </View>
-      <UserComment />
+
+      <UserComment
+        postId={post.id.toString()}
+        setTotalComment={setTotalComment}
+      />
     </View>
   );
 };

@@ -190,3 +190,11 @@ export interface Descriptor {
   126: number;
   127: number;
 }
+
+export interface ResponseDeleteSuccess {
+  message: string;
+  record: {
+    id: string | number;
+    postId?: string | number;
+  };
+}
