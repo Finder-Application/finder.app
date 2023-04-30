@@ -32,7 +32,7 @@ export const UserComment = ({postId, setTotalComment}: Props) => {
         direction: 'DESC',
       },
       optionKey: {
-        id: postId.toString(),
+        id: postId?.toString(),
       },
     },
     // eslint-disable-next-line @typescript-eslint/no-shadow

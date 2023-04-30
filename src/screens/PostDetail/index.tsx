@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {useForm} from 'react-hook-form';
 import {ActivityIndicator, ScrollView, StyleSheet} from 'react-native';
 import {ImageSource} from 'react-native-image-viewing/dist/@types';
 import ImageViewing from 'react-native-image-viewing/dist/ImageViewing';
@@ -20,7 +19,6 @@ import {
   InformationDetail,
   LinkShareIcon,
   Screen,
-  SearchInput,
   Text,
   ThreeDotsIcon,
   Touchable,
@@ -37,7 +35,6 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
   const {postData} = route?.params ?? {};
   const navigation = useNavigation<HomeStackNavigationProps>();
   const [isLiked, setIsLiked] = useState(false);
-  const {control} = useForm();
 
   const [currentImageIndex, setImageIndex] = useState(0);
   const [images, setImages] = useState(architecture);
@@ -52,6 +49,8 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
   });
   const {data: postDetailData, isLoading: postDetailDataLoading} =
     useGetPostDetail(Number(postData?.id));
+
+  const [totalComment, setTotalComment] = useState(0);
 
   const missingPhotos = useMemo(() => {
     return postData?.photos?.map(photo => ({
@@ -271,43 +270,18 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
               <Touchable>
                 <CommentIcon />
               </Touchable>
-              <Text marginLeft="xs">78</Text>
+              <Text marginLeft="xs">{totalComment}</Text>
             </View>
           </View>
           <Touchable>
             <LinkShareIcon />
           </Touchable>
         </View>
-        <View
-          flexDirection="row"
-          alignItems="center"
-          marginBottom="m"
-          marginTop="l">
-          <Image
-            height={35}
-            width={35}
-            borderRadius={50}
-            source={{
-              uri: 'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
-            }}
-          />
-          <SearchInput
-            flex={1}
-            marginLeft="s"
-            backgroundColor="grey6Opacity5"
-            borderWidth={0}
-            inputProps={{
-              name: 'search',
-              control,
-              placeholder: 'Write a comment...',
-              style: {
-                fontSize: 12,
-              },
-              multiline: true,
-            }}
-          />
-        </View>
-        <UserComment />
+
+        <UserComment
+          postId={postData?.id?.toString() || ''}
+          setTotalComment={setTotalComment}
+        />
       </ScrollView>
     </Screen>
   );
