@@ -5,4 +5,5 @@ export enum AppScreens {
   YourPost = 'YourPost',
   Profile = 'Profile',
   PostDetail = 'PostDetail',
+  Auth = 'Auth',
 }

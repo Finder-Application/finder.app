@@ -8,12 +8,13 @@ interface SearchInputProps<T extends FieldValues> {
   disabled?: boolean;
   label?: string;
   prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
 }
 
 export function SearchInput<T extends FieldValues>(
   props: React.ComponentProps<typeof View> & SearchInputProps<T>,
 ) {
-  const {disabled, label, prefix, inputProps} = props;
+  const {disabled, label, prefix, suffix, inputProps} = props;
 
   const {name, control, rules, ...rest} = inputProps;
 
@@ -29,7 +30,8 @@ export function SearchInput<T extends FieldValues>(
   } else if (isFocussed) {
     borderColor = 'black';
   } else {
-    borderColor = 'white2';
+    borderColor =
+      (props.borderColor as keyof (typeof BaseTheme)['colors']) ?? 'white2';
   }
 
   let labelColor: keyof (typeof BaseTheme)['colors'] = 'black';
@@ -47,7 +49,6 @@ export function SearchInput<T extends FieldValues>(
       <View
         borderWidth={1}
         borderRadius={10}
-        flex={1}
         justifyContent="flex-start"
         flexDirection="row"
         alignItems="center"
@@ -64,6 +65,7 @@ export function SearchInput<T extends FieldValues>(
           disabled={disabled}
           label={label}
           prefix={prefix}
+          suffix={suffix}
           {...rest}
           style={[styles.input, inputProps.style]}
           onBlur={onBlur}

@@ -23,7 +23,7 @@ import {SearchNavigator} from './SearchNavigator';
 import {YourPostNavigator} from './YourPostNavigator';
 const Tab = createBottomTabNavigator();
 
-const TAB_HEIGHT = 60;
+export const TAB_HEIGHT = 60;
 const getRouteIcon = (routeName: string, isActive: boolean): JSX.Element => {
   let Icon = HomeIcon;
   switch (routeName) {

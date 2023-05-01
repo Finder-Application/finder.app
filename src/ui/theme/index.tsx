@@ -31,6 +31,7 @@ export const BaseTheme = {
     blackOpacity50: 'rgba(0, 0, 0, 0.5)',
 
     black1: '#14171A',
+    black2: '#1E232C',
     grey1: '#333333',
     grey2: '#666666',
     grey3: '#C3C3C3',
@@ -49,6 +50,10 @@ export const BaseTheme = {
     grey14: '#525252',
     grey15: '#F0F0F0',
     grey16: '#777777',
+    grey17: '#E8ECF4',
+    grey18: '#F7F8F9',
+    grey19: '#8391A1',
+    grey20: '#6A707C',
     white: 'white',
     white2: '#E3E5E5',
     red: '#EB5757',
@@ -59,6 +64,7 @@ export const BaseTheme = {
     green2: '#83E8E2',
     green3: '#88EFCB',
     green4: '#92FE9D',
+    green5: '#35C2C1',
   },
   spacing: {
     xs: 4,

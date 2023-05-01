@@ -8,11 +8,13 @@
     "setup:ios": "cd ios && pod install --repo-update && cd ..",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",
     "@react-native-community/blur": "^4.3.0",
+    "@react-native-google-signin/google-signin": "^9.0.2",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
@@ -24,6 +26,7 @@
     "i18n-js": "^4.2.3",
     "lodash.memoize": "^4.1.2",
     "moment": "^2.29.4",
+    "patch-package": "^7.0.0",
     "react": "18.2.0",
     "react-error-boundary": "^3.1.4",
     "react-hook-form": "^7.43.5",

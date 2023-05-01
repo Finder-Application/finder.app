@@ -371,6 +371,7 @@ export const AddPost = memo(() => {
       alignItems="flex-start"
       paddingHorizontal={undefined}>
       <ScrollView
+        style={styles.container}
         contentContainerStyle={styles.contentContainer}
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}>
@@ -397,10 +398,10 @@ export const AddPost = memo(() => {
           backgroundColor="white"
           paddingVertical="m"
           borderRadius={10}
+          marginHorizontal="m"
           shadowOffset={{width: 2, height: 10}}
           shadowRadius={7}
           elevation={7}
-          marginHorizontal="m"
           shadowColor="blackOpacity10">
           <Controller
             control={control}
@@ -1078,8 +1079,13 @@ export const AddPost = memo(() => {
 });
 
 const styles = StyleSheet.create({
-  contentContainer: {flexGrow: 1, paddingBottom: 100},
-
+  container: {
+    width: '100%',
+  },
+  contentContainer: {
+    flexGrow: 1,
+    paddingBottom: 100,
+  },
   arrowIcon: {
     width: 15,
     height: 15,

@@ -1,3 +1,4 @@
+export * from './Apple';
 export * from './Bell';
 export * from './Calendar';
 export * from './ChevronUp';
@@ -5,7 +6,11 @@ export * from './Close';
 export * from './Comments';
 export * from './Contact';
 export * from './Document';
+export * from './EyeClose';
+export * from './EyeOpen';
+export * from './Facebook';
 export * from './Finder';
+export * from './Google';
 export * from './Heart';
 export * from './Home';
 export * from './LinkShare';
