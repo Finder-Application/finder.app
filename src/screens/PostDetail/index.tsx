@@ -277,7 +277,6 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             <LinkShareIcon />
           </Touchable>
         </View>
-
         <UserComment
           postId={postData?.id?.toString() || ''}
           setTotalComment={setTotalComment}

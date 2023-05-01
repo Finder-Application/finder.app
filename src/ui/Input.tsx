@@ -31,6 +31,7 @@ interface Props<T extends FieldValues>
   disabled?: boolean;
   label?: string;
   prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
   labelColor?: keyof (typeof BaseTheme)['colors'];
   borderColor?: keyof (typeof BaseTheme)['colors'];
 }
@@ -42,6 +43,7 @@ export function Input<T extends FieldValues>(props: Props<T>) {
     control,
     rules,
     prefix: PrefixIcon,
+    suffix: SuffixIcon,
     labelColor,
     borderColor,
     ...inputProps
@@ -50,7 +52,7 @@ export function Input<T extends FieldValues>(props: Props<T>) {
   const {field} = useController({control, name, rules});
 
   return (
-    <View key={`input-${name}`}>
+    <View key={`input-${name}`} flex={1}>
       {label && (
         <Text variant="label" color={labelColor}>
           {label}
@@ -71,17 +73,16 @@ export function Input<T extends FieldValues>(props: Props<T>) {
           value={field.value as string}
           {...inputProps}
         />
+        {SuffixIcon && <View alignSelf="center">{SuffixIcon}</View>}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    backgroundColor: '#F3F3F3',
-  },
   input: {
     borderBottomWidth: 1,
+    flex: 1,
     marginBottom: 4,
     padding: 2,
     fontSize: 16,

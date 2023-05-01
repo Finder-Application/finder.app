@@ -40,7 +40,9 @@ export const useFetchingPosts = (params: IParamsDefault<PostEntity>) => {
     },
     {
       getNextPageParam: lastPage => {
-        return lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined;
+        return lastPage?.meta?.hasNextPage
+          ? lastPage?.meta?.page + 1
+          : undefined;
       },
     },
   );

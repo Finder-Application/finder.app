@@ -5,4 +5,5 @@ export enum NavigatorKey {
   AddPost = 'AddPostNavigator',
   YourPost = 'YourPostNavigator',
   Profile = 'ProfileNavigator',
+  Auth = 'AuthNavigator',
 }

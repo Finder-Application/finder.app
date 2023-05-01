@@ -1,17 +1,29 @@
 import * as React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {Login} from 'screens';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
+import {AppScreens, Auth} from 'screens';
 
 export type AuthStackParamList = {
-  Login: undefined;
+  AuthNavigator: undefined;
+  Auth: undefined;
 };
 
 const Stack = createStackNavigator();
 
+export type AuthStackNavigationProps = StackNavigationProp<AuthStackParamList>;
+
 export const AuthNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
+    <Stack.Navigator
+      screenOptions={{
+        cardOverlayEnabled: false,
+        headerShown: false,
+        gestureEnabled: false,
+        animationTypeForReplace: 'pop',
+      }}>
+      <Stack.Screen name={AppScreens.Auth} component={Auth} />
     </Stack.Navigator>
   );
 };
