@@ -6,7 +6,12 @@ import {
 import {AppScreens, Auth} from 'screens';
 
 export type AuthStackParamList = {
-  AuthNavigator: undefined;
+  AuthNavigator: {
+    screen: AppScreens.Auth;
+    params: {
+      authType: 'login' | 'register';
+    };
+  };
   Auth: undefined;
 };
 

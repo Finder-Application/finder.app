@@ -1,7 +1,9 @@
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useAppStore} from 'core/App';
 import {useAuth} from 'core/Auth';
 import {AuthStackNavigationProps} from 'navigation/AuthNavigator';
+import {AppScreens} from 'screens/constants';
 import {
   FinderIcon,
   LinearGradientView,
@@ -18,6 +20,8 @@ export const InitAuth = () => {
     state.isLoggedIn,
     state.signOut,
   ]);
+  const setShowLoadingModal = useAppStore(state => state.setShowLoadingModal);
+
   return (
     <Screen
       justifyContent="space-between"
@@ -33,7 +37,11 @@ export const InitAuth = () => {
       <View width="100%">
         {isLoggedIn ? (
           <>
-            <Touchable onPress={singOut}>
+            <Touchable
+              onPress={async () => {
+                setShowLoadingModal(true);
+                await singOut().finally(() => setShowLoadingModal(false));
+              }}>
               <LinearGradientView
                 alignItems="center"
                 paddingVertical="m"
@@ -44,7 +52,13 @@ export const InitAuth = () => {
           </>
         ) : (
           <>
-            <Touchable onPress={() => navigation.navigate('AuthNavigator')}>
+            <Touchable
+              onPress={() =>
+                navigation.navigate('AuthNavigator', {
+                  screen: AppScreens.Auth,
+                  params: {authType: 'login'},
+                })
+              }>
               <LinearGradientView
                 alignItems="center"
                 paddingVertical="m"
@@ -52,7 +66,14 @@ export const InitAuth = () => {
                 <Text fontWeight="700">Login</Text>
               </LinearGradientView>
             </Touchable>
-            <Touchable marginVertical="m">
+            <Touchable
+              marginVertical="m"
+              onPress={() =>
+                navigation.navigate('AuthNavigator', {
+                  screen: AppScreens.Auth,
+                  params: {authType: 'register'},
+                })
+              }>
               <View
                 alignItems="center"
                 paddingVertical="m"

@@ -1,5 +1,6 @@
 /// Auth.tsx
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {Me} from 'api/auth/types';
 import {StorageName} from 'core/constants';
 import {zustandStorage} from 'core/ZustandStorage';
 import {create} from 'zustand';
@@ -9,7 +10,8 @@ import {getToken, removeToken, setToken, TokenType} from './utils';
 
 GoogleSignin.configure({
   webClientId:
-    '217050693116-4dsbatck3kaq1eat7sf3i7uvu4gcl6tm.apps.googleusercontent.com',
+    '217050693116-3ka33u4v0p21ajau3a11mgee86obbvbq.apps.googleusercontent.com',
+  offlineAccess: true,
 });
 
 interface UserInform {
@@ -26,6 +28,8 @@ interface AuthState {
   status: 'idle' | 'signOut' | 'signIn';
   isLoggedIn: boolean;
   isLoggedInGoogle: boolean;
+  user?: Me;
+  setUser: (value: Me) => void;
   setIsLoggedInGoogle: (value: boolean) => void;
   signIn: (data: TokenType) => void;
   signInGoogle: () => Promise<{
@@ -43,6 +47,10 @@ export const useAuth = create<AuthState>()(
       token: null,
       isLoggedInGoogle: false,
       isLoggedIn: false,
+      user: undefined,
+      setUser: value => {
+        set({user: value});
+      },
       setIsLoggedInGoogle: value => {
         set({isLoggedInGoogle: value});
       },
@@ -53,18 +61,30 @@ export const useAuth = create<AuthState>()(
         return {idToken, user};
       },
       signIn: token => {
-        setToken(token);
-        set({status: 'signIn', token, isLoggedIn: true});
+        try {
+          setToken(token);
+          set({status: 'signIn', token, isLoggedIn: true});
+        } catch (error) {
+          console.log('error: ', JSON.stringify(error));
+        }
       },
       signOut: async () => {
-        console.log('get().isLoggedInGoogle: ', get().isLoggedInGoogle);
-        if (get().isLoggedInGoogle) {
-          await GoogleSignin.revokeAccess();
-          await GoogleSignin.signOut();
-          set({isLoggedInGoogle: false, isLoggedIn: false});
+        try {
+          if (get().isLoggedInGoogle) {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            set({isLoggedInGoogle: false});
+          }
+          removeToken();
+          set({
+            status: 'signOut',
+            token: null,
+            user: undefined,
+            isLoggedIn: false,
+          });
+        } catch (error) {
+          console.log('signOut error: ', JSON.stringify(error));
         }
-        removeToken();
-        set({status: 'signOut', token: null});
       },
       hydrate: () => {
         try {

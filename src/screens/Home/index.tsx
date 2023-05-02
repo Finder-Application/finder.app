@@ -62,7 +62,7 @@ export const Home = () => {
         <FlatList
           contentContainerStyle={styles.contentContainer}
           style={styles.listStyle}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item?.id.toString()}
           refreshing={isRefetching}
           onRefresh={() => {
             refetch();
