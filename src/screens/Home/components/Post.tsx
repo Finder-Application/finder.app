@@ -33,13 +33,13 @@ export const Post = (props: PostProps) => {
 
   const ownerName = formatUserName({
     user: {
-      firstName: post.owner.firstName,
-      middleName: post.owner.middleName,
-      lastName: post.owner.lastName,
+      firstName: post?.owner?.firstName,
+      middleName: post?.owner?.middleName,
+      lastName: post?.owner?.lastName,
     },
   });
 
-  const photo = post.photos[0];
+  const photo = post?.photos?.[0];
   return (
     <View
       backgroundColor="white"
@@ -84,27 +84,27 @@ export const Post = (props: PostProps) => {
         </View>
       </View>
       <Text fontWeight="700" fontSize={15}>
-        {post.title}
+        {post?.title}
       </Text>
-      <Text fontSize={13}>{post.description}</Text>
+      <Text fontSize={13}>{post?.description}</Text>
       <View
         flexDirection="row"
         justifyContent="space-between"
         alignItems="flex-start"
         marginVertical="s">
         <View flex={1}>
-          <InformationDetail label="Họ Tên" value={post.fullName} />
-          <InformationDetail label="Tên ở nhà" value={post.nickname} />
-          <InformationDetail label="Quê Quán" value={post.hometown.region} />
+          <InformationDetail label="Họ Tên" value={post?.fullName} />
+          <InformationDetail label="Tên ở nhà" value={post?.nickname} />
+          <InformationDetail label="Quê Quán" value={post?.hometown.region} />
         </View>
         <View>
           <InformationDetail
             label="Giới tính"
-            value={post.gender ? 'Female' : 'Male'}
+            value={post?.gender ? 'Female' : 'Male'}
           />
           <InformationDetail
             label="Ngày sinh"
-            value={moment(post.dateOfBirth).format('DD/MM/YYYY')}
+            value={moment(post?.dateOfBirth).format('DD/MM/YYYY')}
           />
         </View>
       </View>
@@ -146,7 +146,7 @@ export const Post = (props: PostProps) => {
       </View>
 
       <UserComment
-        postId={post.id.toString()}
+        postId={post?.id.toString()}
         setTotalComment={setTotalComment}
       />
     </View>

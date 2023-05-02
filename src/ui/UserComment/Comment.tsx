@@ -65,8 +65,8 @@ export const Comment = ({setReplyFor, item}: Props) => {
         </View>
       </View>
 
-      {item.child &&
-        item.child.map((child: any) => (
+      {item?.child &&
+        item?.child?.map((child: any) => (
           <View
             key={child?.id}
             flexDirection="row"
