@@ -12,6 +12,7 @@ import {CreatePostBody, useCreatePost} from 'api/posts';
 import {Descriptor} from 'api/types.common';
 import {AxiosError} from 'axios';
 import {useAppStore} from 'core/App';
+import {useAuth} from 'core/Auth';
 import moment from 'moment';
 import {RootStackNavigationProps} from 'navigation/types';
 import {buildNavigationOptions} from 'navigation/utils';
@@ -101,10 +102,12 @@ export const AddPost = memo(() => {
     getValues,
     formState: {errors},
   } = useForm<FormData>();
+
   const createPostMutation = useCreatePost();
   const networkUrlMutation = useCreateNetworkImageUrl();
-  const setShowLoadingModal = useAppStore(state => state.setShowLoadingModal);
 
+  const setShowLoadingModal = useAppStore(state => state.setShowLoadingModal);
+  const isLoggedIn = useAuth(state => state.isLoggedIn);
   const [postImageResource, setPostImageResource] = useState<{
     files: Asset[];
     descriptors: Descriptor[];

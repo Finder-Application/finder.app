@@ -5,6 +5,7 @@ import {showMessage} from 'react-native-flash-message';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
 import {useLogin, useLoginGoogle, useRegister} from 'api/auth';
+import {AuthErrorResponse} from 'api/auth/types';
 import {AxiosError} from 'axios';
 import {useAppStore} from 'core/App';
 import {signInGoogle} from 'core/Auth';
@@ -106,11 +107,16 @@ export const Auth = ({
           .mutateAsync({
             idToken: idToken,
           })
-          .catch((error: AxiosError) => {
-            showMessage({message: error.message, type: 'danger'});
+          .then(() => {
+            navigation.goBack();
+          })
+          .catch((error: AxiosError<AuthErrorResponse>) => {
+            showMessage({
+              message: error.response?.data?.message ?? '',
+              type: 'danger',
+            });
           });
       }
-      navigation.goBack();
     } catch (error) {
       console.log('Login Google Error: ', JSON.stringify(error));
     }
@@ -124,11 +130,16 @@ export const Auth = ({
           email: getLoginValues('email'),
           password: getLoginValues('password'),
         })
-        .catch((error: AxiosError) => {
-          showMessage({message: error.message, type: 'danger'});
+        .then(() => {
+          navigation.goBack();
+        })
+        .catch((error: AxiosError<AuthErrorResponse>) => {
+          showMessage({
+            message: error.response?.data?.message ?? '',
+            type: 'danger',
+          });
         })
         .finally(() => setShowLoadingModal(false));
-      navigation.goBack();
     } catch (error) {
       console.log('Login Error: ', JSON.stringify(error));
     }
@@ -145,12 +156,16 @@ export const Auth = ({
           firstName: getRegisterValues('username'),
           lastName: ' ',
         })
-        .catch((error: AxiosError) => {
-          showMessage({message: error.message, type: 'danger'});
+        .then(() => {
+          navigation.goBack();
+        })
+        .catch((error: AxiosError<AuthErrorResponse>) => {
+          showMessage({
+            message: error.response?.data?.message ?? '',
+            type: 'danger',
+          });
         })
         .finally(() => setShowLoadingModal(false));
-
-      navigation.goBack();
     } catch (error) {
       console.log('Register Error: ', JSON.stringify(error));
     }

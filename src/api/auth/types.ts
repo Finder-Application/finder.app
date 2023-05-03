@@ -35,3 +35,9 @@ export interface AuthResponse {
   user: Me;
   token: Token;
 }
+
+export interface AuthErrorResponse {
+  error: string;
+  message: string;
+  statusCode: number;
+}
