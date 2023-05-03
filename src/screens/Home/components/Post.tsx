@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {MenuView} from '@react-native-menu/menu';
 import {useNavigation} from '@react-navigation/native';
 import {Post as PostType} from 'api/posts/types';
 import moment from 'moment';
@@ -19,9 +20,11 @@ import {
   View,
 } from 'ui';
 import {formatUserName} from 'utils';
+
 type PostProps = {
   post: PostType;
 };
+
 export const Post = (props: PostProps) => {
   const {post} = props;
 
@@ -40,6 +43,7 @@ export const Post = (props: PostProps) => {
   });
 
   const photo = post?.photos?.[0];
+
   return (
     <View
       backgroundColor="white"

@@ -16,6 +16,7 @@ import {useAuth} from 'core/Auth';
 import moment from 'moment';
 import {RootStackNavigationProps} from 'navigation/types';
 import {buildNavigationOptions} from 'navigation/utils';
+import {InitAuth} from 'screens/Auth/InitScreen';
 import {
   Button,
   CalendarIcon,
@@ -369,715 +370,733 @@ export const AddPost = memo(() => {
   };
 
   return (
-    <Screen
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      paddingHorizontal={undefined}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        nestedScrollEnabled={true}
-        showsVerticalScrollIndicator={false}>
-        <View flexDirection="row" marginVertical="s" marginHorizontal="m">
-          <Button
-            backgroundColor="grey4"
-            borderRadius={5}
-            onPress={() => {
-              navigation.goBack();
-            }}
-            paddingVertical="s"
-            paddingHorizontal="l"
-            label={
-              <View flexDirection="row" alignItems="center">
-                <CloseIcon color={colors.grey10} />
-                <Text marginLeft="s" color="grey10" fontWeight="500">
-                  Cancel
-                </Text>
-              </View>
-            }
-          />
-        </View>
-        <View
-          backgroundColor="white"
-          paddingVertical="m"
-          borderRadius={10}
-          marginHorizontal="m"
-          shadowOffset={{width: 2, height: 10}}
-          shadowRadius={7}
-          elevation={7}
-          shadowColor="blackOpacity10">
-          <Controller
-            control={control}
-            render={({field: {onChange, onBlur, value}}) => (
-              <SearchInput
-                marginHorizontal="m"
-                backgroundColor="white"
-                borderWidth={1}
-                inputProps={{
-                  name: FORM_NAMES.TITLE,
-                  control,
-                  placeholder: 'Title here',
-                  placeholderTextColor: colors.grey11,
-                  value: value,
-                  onBlur,
-                  onChangeText: onChange,
+    <>
+      {!isLoggedIn ? (
+        <InitAuth />
+      ) : (
+        <Screen
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          paddingHorizontal={undefined}>
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+            nestedScrollEnabled={true}
+            showsVerticalScrollIndicator={false}>
+            <View flexDirection="row" marginVertical="s" marginHorizontal="m">
+              <Button
+                backgroundColor="grey4"
+                borderRadius={5}
+                onPress={() => {
+                  navigation.goBack();
                 }}
+                paddingVertical="s"
+                paddingHorizontal="l"
+                label={
+                  <View flexDirection="row" alignItems="center">
+                    <CloseIcon color={colors.grey10} />
+                    <Text marginLeft="s" color="grey10" fontWeight="500">
+                      Cancel
+                    </Text>
+                  </View>
+                }
               />
-            )}
-            name={FORM_NAMES.TITLE}
-            rules={{required: 'Title is required'}}
-          />
-
-          {/* Missing Person Information */}
-          <View
-            paddingHorizontal="m"
-            backgroundColor="blue2"
-            marginTop="m"
-            paddingVertical="m"
-            borderBottomWidth={1}
-            borderBottomColor="grey4">
-            <Text fontWeight="700" fontSize={16} marginBottom="m">
-              Missing Person Information
-            </Text>
-            <Text fontWeight="700" marginBottom="s">
-              Information
-            </Text>
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <SearchInput
-                  backgroundColor="white"
-                  borderWidth={1}
-                  inputProps={{
-                    name: FORM_NAMES.FULL_NAME,
-                    control,
-                    placeholder: 'Full Name *',
-                    placeholderTextColor: colors.grey11,
-                    inputMode: 'text',
-                    value: value,
-                    onBlur,
-                    onChangeText: onChange,
-                  }}
-                />
-              )}
-              name={FORM_NAMES.FULL_NAME}
-              rules={{required: 'FullName is required'}}
-            />
-
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur, value}}) => (
-                <SearchInput
-                  backgroundColor="white"
-                  borderWidth={1}
-                  marginVertical="m"
-                  inputProps={{
-                    name: FORM_NAMES.NICK_NAME,
-                    control,
-                    placeholder: 'Nickname',
-                    placeholderTextColor: colors.grey11,
-                    value: value,
-                    onBlur,
-                    onChangeText: onChange,
-                  }}
-                />
-              )}
-              name={FORM_NAMES.NICK_NAME}
-            />
-
+            </View>
             <View
-              position="relative"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between">
+              backgroundColor="white"
+              paddingVertical="m"
+              borderRadius={10}
+              marginHorizontal="m"
+              shadowOffset={{width: 2, height: 10}}
+              shadowRadius={7}
+              elevation={7}
+              shadowColor="blackOpacity10">
               <Controller
                 control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1}>
-                    <DropDownPicker
-                      placeholder="Gender"
-                      open={isGenderDropdownOpen}
-                      value={selectedGender}
-                      items={genderItems}
-                      onChangeValue={onChange}
-                      setOpen={setIsGenderDropDownOpen}
-                      setValue={setSelectedGender}
-                      setItems={setGenderItems}
-                      arrowIconStyle={styles.arrowIcon}
-                      dropDownContainerStyle={styles.pickerContainer}
-                      textStyle={styles.dropDownText}
-                      style={styles.selectContainer}
-                      width="100%"
-                      containerStyle={[styles.dropDownContainer]}
-                      tickIconStyle={styles.tickIcon}
-                      listMode="SCROLLVIEW"
-                      flatListProps={{
-                        nestedScrollEnabled: true,
+                render={({field: {onChange, onBlur, value}}) => (
+                  <SearchInput
+                    marginHorizontal="m"
+                    backgroundColor="white"
+                    borderWidth={1}
+                    inputProps={{
+                      name: FORM_NAMES.TITLE,
+                      control,
+                      placeholder: 'Title here',
+                      placeholderTextColor: colors.grey11,
+                      value: value,
+                      onBlur,
+                      onChangeText: onChange,
+                    }}
+                  />
+                )}
+                name={FORM_NAMES.TITLE}
+                rules={{required: 'Title is required'}}
+              />
+
+              {/* Missing Person Information */}
+              <View
+                paddingHorizontal="m"
+                backgroundColor="blue2"
+                marginTop="m"
+                paddingVertical="m"
+                borderBottomWidth={1}
+                borderBottomColor="grey4">
+                <Text fontWeight="700" fontSize={16} marginBottom="m">
+                  Missing Person Information
+                </Text>
+                <Text fontWeight="700" marginBottom="s">
+                  Information
+                </Text>
+                <Controller
+                  control={control}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <SearchInput
+                      backgroundColor="white"
+                      borderWidth={1}
+                      inputProps={{
+                        name: FORM_NAMES.FULL_NAME,
+                        control,
+                        placeholder: 'Full Name *',
+                        placeholderTextColor: colors.grey11,
+                        inputMode: 'text',
+                        value: value,
+                        onBlur,
+                        onChangeText: onChange,
                       }}
-                      borderColor={
-                        getFieldState('gender').error ? 'red' : undefined
-                      }
                     />
-                    {getFieldState('gender').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {getFieldState('gender').error?.message}
-                        </Text>
+                  )}
+                  name={FORM_NAMES.FULL_NAME}
+                  rules={{required: 'FullName is required'}}
+                />
+
+                <Controller
+                  control={control}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <SearchInput
+                      backgroundColor="white"
+                      borderWidth={1}
+                      marginVertical="m"
+                      inputProps={{
+                        name: FORM_NAMES.NICK_NAME,
+                        control,
+                        placeholder: 'Nickname',
+                        placeholderTextColor: colors.grey11,
+                        value: value,
+                        onBlur,
+                        onChangeText: onChange,
+                      }}
+                    />
+                  )}
+                  name={FORM_NAMES.NICK_NAME}
+                />
+
+                <View
+                  position="relative"
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-between">
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1}>
+                        <DropDownPicker
+                          placeholder="Gender"
+                          open={isGenderDropdownOpen}
+                          value={selectedGender}
+                          items={genderItems}
+                          onChangeValue={onChange}
+                          setOpen={setIsGenderDropDownOpen}
+                          setValue={setSelectedGender}
+                          setItems={setGenderItems}
+                          arrowIconStyle={styles.arrowIcon}
+                          dropDownContainerStyle={styles.pickerContainer}
+                          textStyle={styles.dropDownText}
+                          style={styles.selectContainer}
+                          width="100%"
+                          containerStyle={[styles.dropDownContainer]}
+                          tickIconStyle={styles.tickIcon}
+                          listMode="SCROLLVIEW"
+                          flatListProps={{
+                            nestedScrollEnabled: true,
+                          }}
+                          borderColor={
+                            getFieldState('gender').error ? 'red' : undefined
+                          }
+                        />
+                        {getFieldState('gender').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {getFieldState('gender').error?.message}
+                            </Text>
+                          </View>
+                        )}
                       </View>
                     )}
-                  </View>
-                )}
-                name={FORM_NAMES.GENDER}
-                rules={{required: 'Gender is required'}}
-              />
+                    name={FORM_NAMES.GENDER}
+                    rules={{required: 'Gender is required'}}
+                  />
 
-              <Controller
-                control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1} marginLeft="m">
-                    <Touchable
-                      flexDirection="row"
-                      backgroundColor="grey4"
-                      borderRadius={5}
-                      paddingVertical="s"
-                      paddingHorizontal="m"
-                      onPress={() => setOpenDobPicker(true)}>
-                      <CalendarIcon />
-                      <Text color="grey12" marginLeft="s" fontWeight="500">
-                        {dateOfBirth
-                          ? moment(dateOfBirth).format(DOB_FORMAT)
-                          : DOB_FORMAT}
-                      </Text>
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1} marginLeft="m">
+                        <Touchable
+                          flexDirection="row"
+                          backgroundColor="grey4"
+                          borderRadius={5}
+                          paddingVertical="s"
+                          paddingHorizontal="m"
+                          onPress={() => setOpenDobPicker(true)}>
+                          <CalendarIcon />
+                          <Text color="grey12" marginLeft="s" fontWeight="500">
+                            {dateOfBirth
+                              ? moment(dateOfBirth).format(DOB_FORMAT)
+                              : DOB_FORMAT}
+                          </Text>
+                          <DatePicker
+                            modal
+                            mode="date"
+                            open={openDobPicker}
+                            date={dateOfBirth ?? new Date()}
+                            onDateChange={value => {
+                              console.log('value: ', value);
+                              onChange(value);
+                            }}
+                            onConfirm={value => {
+                              setOpenDobPicker(false);
+                              setDateOfBirth(value);
+                              onChange(value);
+                            }}
+                            onCancel={() => {
+                              setOpenDobPicker(false);
+                            }}
+                          />
+                        </Touchable>
+                        {getFieldState('dateOfBirth').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {getFieldState('dateOfBirth').error?.message}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                    name={FORM_NAMES.DATE_OF_BIRTH}
+                    rules={{required: 'Date of birth is required'}}
+                  />
+                </View>
+              </View>
+              {/* End of Missing Person Information */}
+
+              {/* Home Town */}
+              <View padding="m" backgroundColor="blue2" zIndex={-1}>
+                <Text fontWeight="700" marginBottom="s">
+                  Home town
+                </Text>
+                <View flexDirection="row" alignItems="center">
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1}>
+                        <DropDownPicker
+                          searchable={true}
+                          placeholder="Region"
+                          open={isHomeTownRegionDropdownOpen}
+                          value={homeTownForm?.region}
+                          items={homeTownRegionItems}
+                          setOpen={setIsHomeTownRegionDropDownOpen}
+                          onSelectItem={(item: ItemType<ValueType>) => {
+                            setHomeTownForm(prevState => ({
+                              ...prevState,
+                              region: item.value as string,
+                            }));
+                          }}
+                          onChangeValue={onChange}
+                          setValue={() => {}}
+                          setItems={setHomeTownRegionItems}
+                          arrowIconStyle={styles.arrowIcon}
+                          dropDownContainerStyle={styles.dropDownContainer}
+                          textStyle={styles.dropDownText}
+                          style={styles.selectContainer}
+                          width="100%"
+                          containerStyle={styles.pickerContainer}
+                          tickIconStyle={styles.tickIcon}
+                          listMode="SCROLLVIEW"
+                          flatListProps={{
+                            nestedScrollEnabled: true,
+                          }}
+                          searchWithRegionalAccents={true}
+                        />
+                        {getFieldState('homeTownRegion').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {getFieldState('homeTownRegion').error?.message}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                    name={FORM_NAMES.HOME_TOWN_REGION}
+                    rules={{required: 'HomeTown Region is required'}}
+                  />
+                </View>
+                <View
+                  flexDirection="row"
+                  alignItems="center"
+                  marginVertical="m">
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1}>
+                        <DropDownPicker
+                          searchable={true}
+                          placeholder="State"
+                          disabled={!homeTownForm.region}
+                          disabledStyle={{opacity: 0.6}}
+                          open={isHomeTownStateDropdownOpen}
+                          value={homeTownForm.state}
+                          items={homeTownStateItems}
+                          setOpen={setIsHomeTownStateDropDownOpen}
+                          onSelectItem={(item: ItemType<ValueType>) => {
+                            setHomeTownForm(prevState => ({
+                              ...prevState,
+                              state: item.value as string,
+                            }));
+                          }}
+                          onChangeValue={onChange}
+                          setValue={() => {}}
+                          setItems={setHomeTownStateItems}
+                          arrowIconStyle={styles.arrowIcon}
+                          dropDownContainerStyle={styles.dropDownContainer}
+                          textStyle={styles.dropDownText}
+                          style={styles.selectContainer}
+                          width="100%"
+                          containerStyle={styles.pickerContainer}
+                          tickIconStyle={styles.tickIcon}
+                          listMode="SCROLLVIEW"
+                          flatListProps={{
+                            nestedScrollEnabled: true,
+                          }}
+                          searchWithRegionalAccents={true}
+                        />
+                        {getFieldState('homeTownState').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {getFieldState('homeTownState').error?.message}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                    name={FORM_NAMES.HOME_TOWN_STATE}
+                    rules={{required: 'HomeTown State is required'}}
+                  />
+                </View>
+                <View flexDirection="row" alignItems="center">
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1}>
+                        <DropDownPicker
+                          searchable={true}
+                          placeholder="Commune"
+                          disabled={!homeTownForm.state}
+                          disabledStyle={{opacity: 0.6}}
+                          open={isHomeTownCommuneDropdownOpen}
+                          value={homeTownForm.commune}
+                          items={homeTownCommuneItems}
+                          setOpen={setIsHomeTownCommuneDropDownOpen}
+                          onSelectItem={(item: ItemType<ValueType>) => {
+                            setHomeTownForm(prevState => ({
+                              ...prevState,
+                              commune: item.value as string,
+                            }));
+                          }}
+                          onChangeValue={onChange}
+                          setValue={() => {}}
+                          setItems={setHomeTownCommuneItems}
+                          arrowIconStyle={styles.arrowIcon}
+                          dropDownContainerStyle={styles.dropDownContainer}
+                          textStyle={styles.dropDownText}
+                          style={styles.selectContainer}
+                          width="100%"
+                          containerStyle={styles.pickerContainer}
+                          tickIconStyle={styles.tickIcon}
+                          listMode="SCROLLVIEW"
+                          flatListProps={{
+                            nestedScrollEnabled: true,
+                          }}
+                          searchWithRegionalAccents={true}
+                        />
+                        {getFieldState('homeTownCommune').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {getFieldState('homeTownCommune').error?.message}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                    name={FORM_NAMES.HOME_TOWN_COMMUNE}
+                    rules={{required: 'HomeTown Commune is required'}}
+                  />
+                </View>
+                <Controller
+                  control={control}
+                  render={({field: {onChange, onBlur}}) => (
+                    <SearchInput
+                      backgroundColor="white"
+                      borderWidth={1}
+                      marginTop="m"
+                      inputProps={{
+                        name: FORM_NAMES.HOME_TOWN_HAMLET,
+                        control,
+                        placeholder: 'Hamlet',
+                        placeholderTextColor: colors.grey11,
+                        onBlur: onBlur,
+                        onChange: event => {
+                          const value = event.nativeEvent.text;
+                          setHomeTownForm(prevState => ({
+                            ...prevState,
+                            hamlet: value,
+                          }));
+                          onChange(value);
+                        },
+                      }}
+                    />
+                  )}
+                  name={FORM_NAMES.HOME_TOWN_HAMLET}
+                />
+              </View>
+              {/* End of Home Town */}
+
+              {/* Missing Address */}
+              <View
+                padding="m"
+                marginVertical="s"
+                backgroundColor="blue2"
+                zIndex={-1}>
+                <Text fontWeight="700" marginBottom="s">
+                  Missing Address
+                </Text>
+                <View flexDirection="row" alignItems="center">
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1}>
+                        <DropDownPicker
+                          searchable={true}
+                          placeholder="Region"
+                          onChangeValue={onChange}
+                          open={isMissingAddressRegionDropdownOpen}
+                          value={missingAddressForm?.region}
+                          items={missingAddressRegionItems}
+                          setOpen={setIsMissingAddressRegionDropDownOpen}
+                          onSelectItem={(item: ItemType<ValueType>) => {
+                            setMissingAddressForm(prevState => ({
+                              ...prevState,
+                              region: item.value as string,
+                            }));
+                          }}
+                          setValue={() => {}}
+                          setItems={setMissingAddressRegionItems}
+                          arrowIconStyle={styles.arrowIcon}
+                          dropDownContainerStyle={styles.dropDownContainer}
+                          textStyle={styles.dropDownText}
+                          style={styles.selectContainer}
+                          width="100%"
+                          containerStyle={styles.pickerContainer}
+                          tickIconStyle={styles.tickIcon}
+                          listMode="SCROLLVIEW"
+                          flatListProps={{
+                            nestedScrollEnabled: true,
+                          }}
+                          searchWithRegionalAccents={true}
+                        />
+                        {getFieldState('missingAddressRegion').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {
+                                getFieldState('missingAddressRegion').error
+                                  ?.message
+                              }
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                    name={FORM_NAMES.MISSING_ADDRESS_REGION}
+                    rules={{required: 'Missing Region Address is required'}}
+                  />
+                </View>
+                <View
+                  flexDirection="row"
+                  alignItems="center"
+                  marginVertical="m">
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1}>
+                        <DropDownPicker
+                          searchable={true}
+                          placeholder="State"
+                          onChangeValue={onChange}
+                          disabled={!missingAddressForm.region}
+                          disabledStyle={{opacity: 0.6}}
+                          open={isMissingAddressStateDropdownOpen}
+                          value={missingAddressForm.state}
+                          items={missingAddressStateItems}
+                          setOpen={setIsMissingAddressStateDropDownOpen}
+                          onSelectItem={(item: ItemType<ValueType>) => {
+                            setMissingAddressForm(prevState => ({
+                              ...prevState,
+                              state: item.value as string,
+                            }));
+                          }}
+                          setValue={() => {}}
+                          setItems={setMissingAddressStateItems}
+                          arrowIconStyle={styles.arrowIcon}
+                          dropDownContainerStyle={styles.dropDownContainer}
+                          textStyle={styles.dropDownText}
+                          style={styles.selectContainer}
+                          width="100%"
+                          containerStyle={styles.pickerContainer}
+                          tickIconStyle={styles.tickIcon}
+                          listMode="SCROLLVIEW"
+                          flatListProps={{
+                            nestedScrollEnabled: true,
+                          }}
+                          searchWithRegionalAccents={true}
+                        />
+                        {getFieldState('missingAddressState').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {
+                                getFieldState('missingAddressState').error
+                                  ?.message
+                              }
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                    name={FORM_NAMES.MISSING_ADDRESS_STATE}
+                    rules={{required: 'Missing State Address is required'}}
+                  />
+                </View>
+                <View flexDirection="row" alignItems="center">
+                  <Controller
+                    control={control}
+                    render={({field: {onChange}}) => (
+                      <View flex={1}>
+                        <DropDownPicker
+                          searchable={true}
+                          placeholder="Commune"
+                          onChangeValue={onChange}
+                          disabled={!missingAddressForm.state}
+                          disabledStyle={{opacity: 0.6}}
+                          open={isMissingAddressCommuneDropdownOpen}
+                          value={missingAddressForm.commune}
+                          items={missingAddressCommuneItems}
+                          setOpen={setIsMissingAddressCommuneDropDownOpen}
+                          onSelectItem={(item: ItemType<ValueType>) => {
+                            setMissingAddressForm(prevState => ({
+                              ...prevState,
+                              commune: item.value as string,
+                            }));
+                          }}
+                          setValue={() => {}}
+                          setItems={setMissingAddressCommuneItems}
+                          arrowIconStyle={styles.arrowIcon}
+                          dropDownContainerStyle={styles.dropDownContainer}
+                          textStyle={styles.dropDownText}
+                          style={styles.selectContainer}
+                          width="100%"
+                          containerStyle={styles.pickerContainer}
+                          tickIconStyle={styles.tickIcon}
+                          listMode="SCROLLVIEW"
+                          flatListProps={{
+                            nestedScrollEnabled: true,
+                          }}
+                          searchWithRegionalAccents={true}
+                        />
+                        {getFieldState('missingAddressCommune').error && (
+                          <View zIndex={-1}>
+                            <Text fontSize={12} color="red">
+                              {
+                                getFieldState('missingAddressCommune').error
+                                  ?.message
+                              }
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    )}
+                    name={FORM_NAMES.MISSING_ADDRESS_COMMUNE}
+                    rules={{required: 'Missing Commune Address is required'}}
+                  />
+                </View>
+                <Controller
+                  control={control}
+                  render={({field: {onChange, onBlur}}) => (
+                    <SearchInput
+                      backgroundColor="white"
+                      borderWidth={1}
+                      marginTop="m"
+                      inputProps={{
+                        name: FORM_NAMES.MISSING_ADDRESS_HAMLET,
+                        control,
+                        placeholder: 'Hamlet',
+                        placeholderTextColor: colors.grey11,
+                        onBlur: onBlur,
+                        onChange: event => {
+                          const value = event.nativeEvent.text;
+                          setMissingAddressForm(prevState => ({
+                            ...prevState,
+                            hamlet: value,
+                          }));
+                          onChange(value);
+                        },
+                      }}
+                    />
+                  )}
+                  name={FORM_NAMES.MISSING_ADDRESS_HAMLET}
+                />
+              </View>
+              <View />
+              {/* End of Missing Address */}
+
+              {/* Missing Time */}
+              <View
+                padding="m"
+                marginVertical="s"
+                backgroundColor="blue2"
+                zIndex={-1}>
+                <Text fontWeight="700" marginBottom="s">
+                  Missing Time
+                </Text>
+                <Controller
+                  control={control}
+                  render={({field: {onChange}}) => (
+                    <View flex={1} marginLeft="m">
+                      <Touchable
+                        flex={1}
+                        flexDirection="row"
+                        backgroundColor="grey4"
+                        borderRadius={5}
+                        paddingVertical="s"
+                        paddingHorizontal="m"
+                        justifyContent="space-between"
+                        onPress={() => setOpenMissingTimePicker(true)}>
+                        <View />
+                        <Text color="grey12" marginLeft="s" fontWeight="500">
+                          {missingTime
+                            ? moment(missingTime).format(MISSING_TIME_FORMAT)
+                            : MISSING_TIME_FORMAT}
+                        </Text>
+                        <CalendarIcon />
+                      </Touchable>
                       <DatePicker
                         modal
                         mode="date"
-                        open={openDobPicker}
-                        date={dateOfBirth ?? new Date()}
-                        onDateChange={value => {
-                          console.log('value: ', value);
-                          onChange(value);
-                        }}
+                        open={openMissingTimePicker}
+                        date={missingTime ?? new Date()}
                         onConfirm={value => {
-                          setOpenDobPicker(false);
-                          setDateOfBirth(value);
+                          setOpenMissingTimePicker(false);
+                          setMissingTime(value);
                           onChange(value);
                         }}
                         onCancel={() => {
-                          setOpenDobPicker(false);
+                          setOpenMissingTimePicker(false);
                         }}
                       />
-                    </Touchable>
-                    {getFieldState('dateOfBirth').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {getFieldState('dateOfBirth').error?.message}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-                name={FORM_NAMES.DATE_OF_BIRTH}
-                rules={{required: 'Date of birth is required'}}
-              />
-            </View>
-          </View>
-          {/* End of Missing Person Information */}
-
-          {/* Home Town */}
-          <View padding="m" backgroundColor="blue2" zIndex={-1}>
-            <Text fontWeight="700" marginBottom="s">
-              Home town
-            </Text>
-            <View flexDirection="row" alignItems="center">
-              <Controller
-                control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1}>
-                    <DropDownPicker
-                      searchable={true}
-                      placeholder="Region"
-                      open={isHomeTownRegionDropdownOpen}
-                      value={homeTownForm?.region}
-                      items={homeTownRegionItems}
-                      setOpen={setIsHomeTownRegionDropDownOpen}
-                      onSelectItem={(item: ItemType<ValueType>) => {
-                        setHomeTownForm(prevState => ({
-                          ...prevState,
-                          region: item.value as string,
-                        }));
-                      }}
-                      onChangeValue={onChange}
-                      setValue={() => {}}
-                      setItems={setHomeTownRegionItems}
-                      arrowIconStyle={styles.arrowIcon}
-                      dropDownContainerStyle={styles.dropDownContainer}
-                      textStyle={styles.dropDownText}
-                      style={styles.selectContainer}
-                      width="100%"
-                      containerStyle={styles.pickerContainer}
-                      tickIconStyle={styles.tickIcon}
-                      listMode="SCROLLVIEW"
-                      flatListProps={{
-                        nestedScrollEnabled: true,
-                      }}
-                      searchWithRegionalAccents={true}
-                    />
-                    {getFieldState('homeTownRegion').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {getFieldState('homeTownRegion').error?.message}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-                name={FORM_NAMES.HOME_TOWN_REGION}
-                rules={{required: 'HomeTown Region is required'}}
-              />
-            </View>
-            <View flexDirection="row" alignItems="center" marginVertical="m">
-              <Controller
-                control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1}>
-                    <DropDownPicker
-                      searchable={true}
-                      placeholder="State"
-                      disabled={!homeTownForm.region}
-                      disabledStyle={{opacity: 0.6}}
-                      open={isHomeTownStateDropdownOpen}
-                      value={homeTownForm.state}
-                      items={homeTownStateItems}
-                      setOpen={setIsHomeTownStateDropDownOpen}
-                      onSelectItem={(item: ItemType<ValueType>) => {
-                        setHomeTownForm(prevState => ({
-                          ...prevState,
-                          state: item.value as string,
-                        }));
-                      }}
-                      onChangeValue={onChange}
-                      setValue={() => {}}
-                      setItems={setHomeTownStateItems}
-                      arrowIconStyle={styles.arrowIcon}
-                      dropDownContainerStyle={styles.dropDownContainer}
-                      textStyle={styles.dropDownText}
-                      style={styles.selectContainer}
-                      width="100%"
-                      containerStyle={styles.pickerContainer}
-                      tickIconStyle={styles.tickIcon}
-                      listMode="SCROLLVIEW"
-                      flatListProps={{
-                        nestedScrollEnabled: true,
-                      }}
-                      searchWithRegionalAccents={true}
-                    />
-                    {getFieldState('homeTownState').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {getFieldState('homeTownState').error?.message}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-                name={FORM_NAMES.HOME_TOWN_STATE}
-                rules={{required: 'HomeTown State is required'}}
-              />
-            </View>
-            <View flexDirection="row" alignItems="center">
-              <Controller
-                control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1}>
-                    <DropDownPicker
-                      searchable={true}
-                      placeholder="Commune"
-                      disabled={!homeTownForm.state}
-                      disabledStyle={{opacity: 0.6}}
-                      open={isHomeTownCommuneDropdownOpen}
-                      value={homeTownForm.commune}
-                      items={homeTownCommuneItems}
-                      setOpen={setIsHomeTownCommuneDropDownOpen}
-                      onSelectItem={(item: ItemType<ValueType>) => {
-                        setHomeTownForm(prevState => ({
-                          ...prevState,
-                          commune: item.value as string,
-                        }));
-                      }}
-                      onChangeValue={onChange}
-                      setValue={() => {}}
-                      setItems={setHomeTownCommuneItems}
-                      arrowIconStyle={styles.arrowIcon}
-                      dropDownContainerStyle={styles.dropDownContainer}
-                      textStyle={styles.dropDownText}
-                      style={styles.selectContainer}
-                      width="100%"
-                      containerStyle={styles.pickerContainer}
-                      tickIconStyle={styles.tickIcon}
-                      listMode="SCROLLVIEW"
-                      flatListProps={{
-                        nestedScrollEnabled: true,
-                      }}
-                      searchWithRegionalAccents={true}
-                    />
-                    {getFieldState('homeTownCommune').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {getFieldState('homeTownCommune').error?.message}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-                name={FORM_NAMES.HOME_TOWN_COMMUNE}
-                rules={{required: 'HomeTown Commune is required'}}
-              />
-            </View>
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur}}) => (
-                <SearchInput
-                  backgroundColor="white"
-                  borderWidth={1}
-                  marginTop="m"
-                  inputProps={{
-                    name: FORM_NAMES.HOME_TOWN_HAMLET,
-                    control,
-                    placeholder: 'Hamlet',
-                    placeholderTextColor: colors.grey11,
-                    onBlur: onBlur,
-                    onChange: event => {
-                      const value = event.nativeEvent.text;
-                      setHomeTownForm(prevState => ({
-                        ...prevState,
-                        hamlet: value,
-                      }));
-                      onChange(value);
-                    },
-                  }}
-                />
-              )}
-              name={FORM_NAMES.HOME_TOWN_HAMLET}
-            />
-          </View>
-          {/* End of Home Town */}
-
-          {/* Missing Address */}
-          <View
-            padding="m"
-            marginVertical="s"
-            backgroundColor="blue2"
-            zIndex={-1}>
-            <Text fontWeight="700" marginBottom="s">
-              Missing Address
-            </Text>
-            <View flexDirection="row" alignItems="center">
-              <Controller
-                control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1}>
-                    <DropDownPicker
-                      searchable={true}
-                      placeholder="Region"
-                      onChangeValue={onChange}
-                      open={isMissingAddressRegionDropdownOpen}
-                      value={missingAddressForm?.region}
-                      items={missingAddressRegionItems}
-                      setOpen={setIsMissingAddressRegionDropDownOpen}
-                      onSelectItem={(item: ItemType<ValueType>) => {
-                        setMissingAddressForm(prevState => ({
-                          ...prevState,
-                          region: item.value as string,
-                        }));
-                      }}
-                      setValue={() => {}}
-                      setItems={setMissingAddressRegionItems}
-                      arrowIconStyle={styles.arrowIcon}
-                      dropDownContainerStyle={styles.dropDownContainer}
-                      textStyle={styles.dropDownText}
-                      style={styles.selectContainer}
-                      width="100%"
-                      containerStyle={styles.pickerContainer}
-                      tickIconStyle={styles.tickIcon}
-                      listMode="SCROLLVIEW"
-                      flatListProps={{
-                        nestedScrollEnabled: true,
-                      }}
-                      searchWithRegionalAccents={true}
-                    />
-                    {getFieldState('missingAddressRegion').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {getFieldState('missingAddressRegion').error?.message}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-                name={FORM_NAMES.MISSING_ADDRESS_REGION}
-                rules={{required: 'Missing Region Address is required'}}
-              />
-            </View>
-            <View flexDirection="row" alignItems="center" marginVertical="m">
-              <Controller
-                control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1}>
-                    <DropDownPicker
-                      searchable={true}
-                      placeholder="State"
-                      onChangeValue={onChange}
-                      disabled={!missingAddressForm.region}
-                      disabledStyle={{opacity: 0.6}}
-                      open={isMissingAddressStateDropdownOpen}
-                      value={missingAddressForm.state}
-                      items={missingAddressStateItems}
-                      setOpen={setIsMissingAddressStateDropDownOpen}
-                      onSelectItem={(item: ItemType<ValueType>) => {
-                        setMissingAddressForm(prevState => ({
-                          ...prevState,
-                          state: item.value as string,
-                        }));
-                      }}
-                      setValue={() => {}}
-                      setItems={setMissingAddressStateItems}
-                      arrowIconStyle={styles.arrowIcon}
-                      dropDownContainerStyle={styles.dropDownContainer}
-                      textStyle={styles.dropDownText}
-                      style={styles.selectContainer}
-                      width="100%"
-                      containerStyle={styles.pickerContainer}
-                      tickIconStyle={styles.tickIcon}
-                      listMode="SCROLLVIEW"
-                      flatListProps={{
-                        nestedScrollEnabled: true,
-                      }}
-                      searchWithRegionalAccents={true}
-                    />
-                    {getFieldState('missingAddressState').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {getFieldState('missingAddressState').error?.message}
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-                name={FORM_NAMES.MISSING_ADDRESS_STATE}
-                rules={{required: 'Missing State Address is required'}}
-              />
-            </View>
-            <View flexDirection="row" alignItems="center">
-              <Controller
-                control={control}
-                render={({field: {onChange}}) => (
-                  <View flex={1}>
-                    <DropDownPicker
-                      searchable={true}
-                      placeholder="Commune"
-                      onChangeValue={onChange}
-                      disabled={!missingAddressForm.state}
-                      disabledStyle={{opacity: 0.6}}
-                      open={isMissingAddressCommuneDropdownOpen}
-                      value={missingAddressForm.commune}
-                      items={missingAddressCommuneItems}
-                      setOpen={setIsMissingAddressCommuneDropDownOpen}
-                      onSelectItem={(item: ItemType<ValueType>) => {
-                        setMissingAddressForm(prevState => ({
-                          ...prevState,
-                          commune: item.value as string,
-                        }));
-                      }}
-                      setValue={() => {}}
-                      setItems={setMissingAddressCommuneItems}
-                      arrowIconStyle={styles.arrowIcon}
-                      dropDownContainerStyle={styles.dropDownContainer}
-                      textStyle={styles.dropDownText}
-                      style={styles.selectContainer}
-                      width="100%"
-                      containerStyle={styles.pickerContainer}
-                      tickIconStyle={styles.tickIcon}
-                      listMode="SCROLLVIEW"
-                      flatListProps={{
-                        nestedScrollEnabled: true,
-                      }}
-                      searchWithRegionalAccents={true}
-                    />
-                    {getFieldState('missingAddressCommune').error && (
-                      <View zIndex={-1}>
-                        <Text fontSize={12} color="red">
-                          {
-                            getFieldState('missingAddressCommune').error
-                              ?.message
-                          }
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-                name={FORM_NAMES.MISSING_ADDRESS_COMMUNE}
-                rules={{required: 'Missing Commune Address is required'}}
-              />
-            </View>
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur}}) => (
-                <SearchInput
-                  backgroundColor="white"
-                  borderWidth={1}
-                  marginTop="m"
-                  inputProps={{
-                    name: FORM_NAMES.MISSING_ADDRESS_HAMLET,
-                    control,
-                    placeholder: 'Hamlet',
-                    placeholderTextColor: colors.grey11,
-                    onBlur: onBlur,
-                    onChange: event => {
-                      const value = event.nativeEvent.text;
-                      setMissingAddressForm(prevState => ({
-                        ...prevState,
-                        hamlet: value,
-                      }));
-                      onChange(value);
-                    },
-                  }}
-                />
-              )}
-              name={FORM_NAMES.MISSING_ADDRESS_HAMLET}
-            />
-          </View>
-          <View />
-          {/* End of Missing Address */}
-
-          {/* Missing Time */}
-          <View
-            padding="m"
-            marginVertical="s"
-            backgroundColor="blue2"
-            zIndex={-1}>
-            <Text fontWeight="700" marginBottom="s">
-              Missing Time
-            </Text>
-            <Controller
-              control={control}
-              render={({field: {onChange}}) => (
-                <View flex={1} marginLeft="m">
-                  <Touchable
-                    flex={1}
-                    flexDirection="row"
-                    backgroundColor="grey4"
-                    borderRadius={5}
-                    paddingVertical="s"
-                    paddingHorizontal="m"
-                    justifyContent="space-between"
-                    onPress={() => setOpenMissingTimePicker(true)}>
-                    <View />
-                    <Text color="grey12" marginLeft="s" fontWeight="500">
-                      {missingTime
-                        ? moment(missingTime).format(MISSING_TIME_FORMAT)
-                        : MISSING_TIME_FORMAT}
-                    </Text>
-                    <CalendarIcon />
-                  </Touchable>
-                  <DatePicker
-                    modal
-                    mode="date"
-                    open={openMissingTimePicker}
-                    date={missingTime ?? new Date()}
-                    onConfirm={value => {
-                      setOpenMissingTimePicker(false);
-                      setMissingTime(value);
-                      onChange(value);
-                    }}
-                    onCancel={() => {
-                      setOpenMissingTimePicker(false);
-                    }}
-                  />
-                  {getFieldState('missingTime').error && (
-                    <View zIndex={-1}>
-                      <Text fontSize={12} color="red">
-                        {getFieldState('missingTime').error?.message}
-                      </Text>
+                      {getFieldState('missingTime').error && (
+                        <View zIndex={-1}>
+                          <Text fontSize={12} color="red">
+                            {getFieldState('missingTime').error?.message}
+                          </Text>
+                        </View>
+                      )}
                     </View>
                   )}
-                </View>
-              )}
-              name={FORM_NAMES.MISSING_TIME}
-              rules={{required: 'Missing time is required'}}
-            />
-          </View>
-          {/* End of Missing Time */}
-
-          {/* Description  */}
-          <View
-            padding="m"
-            marginVertical="s"
-            backgroundColor="blue2"
-            zIndex={-1}>
-            <Text fontWeight="700" marginBottom="s">
-              Description
-            </Text>
-            <Text color="grey13" fontStyle="italic">
-              * Please provide the specific information of the person you are
-              looking for or found by you. The more specific, the more accurate
-              and better matching
-            </Text>
-            <Controller
-              control={control}
-              render={({field: {onChange, onBlur}}) => (
-                <SearchInput
-                  backgroundColor="white"
-                  borderWidth={1}
-                  marginTop="m"
-                  inputProps={{
-                    name: FORM_NAMES.DESCRIPTION,
-                    control,
-                    onChange: onChange,
-                    onBlur: onBlur,
-                    textAlignVertical: 'top',
-                    style: {
-                      height: HEIGHT / 6,
-                    },
-                  }}
+                  name={FORM_NAMES.MISSING_TIME}
+                  rules={{required: 'Missing time is required'}}
                 />
-              )}
-              name={FORM_NAMES.DESCRIPTION}
-              rules={{required: 'Description is required'}}
-            />
-          </View>
-          {/* End of Description  */}
+              </View>
+              {/* End of Missing Time */}
 
-          {/* Missing Person's face images  */}
-          <ImagePickerSection
-            postImageSource={postImageResource}
-            onSelectPostImageResource={(files, descriptors) => {
-              setPostImageResource(_ => ({
-                files: files,
-                descriptors: descriptors,
-              }));
-            }}
-          />
-          {/* End of Missing Person's face images  */}
-          <Touchable
-            alignSelf="flex-end"
-            marginTop="l"
-            marginRight="m"
-            onPress={handleSubmit(onSubmit, e => console.log(e, errors))}>
-            <LinearGradientView
-              paddingHorizontal="l"
-              paddingVertical="s"
-              borderRadius={10}
-              colors={[colors.green2, colors.green3, colors.green4]}
-              locations={[0, 0.64, 0.99]}
-              angle={90}>
-              <Text fontWeight="600" fontSize={16}>
-                Create Post
-              </Text>
-            </LinearGradientView>
-          </Touchable>
-        </View>
-      </ScrollView>
-    </Screen>
+              {/* Description  */}
+              <View
+                padding="m"
+                marginVertical="s"
+                backgroundColor="blue2"
+                zIndex={-1}>
+                <Text fontWeight="700" marginBottom="s">
+                  Description
+                </Text>
+                <Text color="grey13" fontStyle="italic">
+                  * Please provide the specific information of the person you
+                  are looking for or found by you. The more specific, the more
+                  accurate and better matching
+                </Text>
+                <Controller
+                  control={control}
+                  render={({field: {onChange, onBlur}}) => (
+                    <SearchInput
+                      backgroundColor="white"
+                      borderWidth={1}
+                      marginTop="m"
+                      inputProps={{
+                        name: FORM_NAMES.DESCRIPTION,
+                        control,
+                        onChange: onChange,
+                        onBlur: onBlur,
+                        textAlignVertical: 'top',
+                        style: {
+                          height: HEIGHT / 6,
+                        },
+                      }}
+                    />
+                  )}
+                  name={FORM_NAMES.DESCRIPTION}
+                  rules={{required: 'Description is required'}}
+                />
+              </View>
+              {/* End of Description  */}
+
+              {/* Missing Person's face images  */}
+              <ImagePickerSection
+                postImageSource={postImageResource}
+                onSelectPostImageResource={(files, descriptors) => {
+                  setPostImageResource(_ => ({
+                    files: files,
+                    descriptors: descriptors,
+                  }));
+                }}
+              />
+              {/* End of Missing Person's face images  */}
+              <Touchable
+                alignSelf="flex-end"
+                marginTop="l"
+                marginRight="m"
+                onPress={handleSubmit(onSubmit, e => console.log(e, errors))}>
+                <LinearGradientView
+                  paddingHorizontal="l"
+                  paddingVertical="s"
+                  borderRadius={10}
+                  colors={[colors.green2, colors.green3, colors.green4]}
+                  locations={[0, 0.64, 0.99]}
+                  angle={90}>
+                  <Text fontWeight="600" fontSize={16}>
+                    Create Post
+                  </Text>
+                </LinearGradientView>
+              </Touchable>
+            </View>
+          </ScrollView>
+        </Screen>
+      )}
+    </>
   );
 });
 

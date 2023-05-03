@@ -10,6 +10,7 @@ import {AxiosError} from 'axios';
 import {useAppStore} from 'core/App';
 import {signInGoogle} from 'core/Auth';
 import {AuthStackNavigationProps} from 'navigation/AuthNavigator';
+import {COMMON_ERROR_MESSAGE} from 'screens/constants';
 import {
   AppleIcon,
   EyeCloseIcon,
@@ -112,7 +113,7 @@ export const Auth = ({
           })
           .catch((error: AxiosError<AuthErrorResponse>) => {
             showMessage({
-              message: error.response?.data?.message ?? '',
+              message: error?.response?.data?.message ?? COMMON_ERROR_MESSAGE,
               type: 'danger',
             });
           });
@@ -135,7 +136,7 @@ export const Auth = ({
         })
         .catch((error: AxiosError<AuthErrorResponse>) => {
           showMessage({
-            message: error.response?.data?.message ?? '',
+            message: error.response?.data?.message ?? COMMON_ERROR_MESSAGE,
             type: 'danger',
           });
         })
@@ -154,14 +155,14 @@ export const Auth = ({
           email: getRegisterValues('email'),
           password: getRegisterValues('password'),
           firstName: getRegisterValues('username'),
-          lastName: ' ',
+          lastName: '.',
         })
         .then(() => {
           navigation.goBack();
         })
         .catch((error: AxiosError<AuthErrorResponse>) => {
           showMessage({
-            message: error.response?.data?.message ?? '',
+            message: error.response?.data?.message ?? COMMON_ERROR_MESSAGE,
             type: 'danger',
           });
         })
