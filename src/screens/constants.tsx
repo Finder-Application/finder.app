@@ -6,6 +6,7 @@ export enum AppScreens {
   Profile = 'Profile',
   PostDetail = 'PostDetail',
   Auth = 'Auth',
+  Notification = 'Notification',
 }
 
 export const COMMON_ERROR_MESSAGE = 'Opps, something went wrong!';

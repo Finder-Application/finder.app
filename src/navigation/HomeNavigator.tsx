@@ -3,10 +3,12 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
+import {useGetTotalNoti} from 'api/notifications';
 import {Post} from 'api/posts/types';
 import {AppScreens, Home} from 'screens';
+import {Notifications} from 'screens/Notifications';
 import {PostDetail} from 'screens/PostDetail';
-import {BellIcon, FinderIcon, MagnifierIcon, Touchable} from 'ui';
+import {BellIcon, FinderIcon, MagnifierIcon, Text, Touchable, View} from 'ui';
 
 import {buildNavigationOptions} from './utils';
 
@@ -22,6 +24,8 @@ export type HomeStackParamList = {
 export type HomeStackNavigationProps = StackNavigationProp<HomeStackParamList>;
 
 export const HomeNavigator = () => {
+  const {data} = useGetTotalNoti();
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -49,8 +53,16 @@ export const HomeNavigator = () => {
 
           headerRight: () => {
             return (
-              <Touchable marginRight="s">
+              <Touchable
+                marginRight="s"
+                position={'relative'}
+                onPress={() => navigation.navigate(AppScreens.Notification)}>
                 <BellIcon />
+                <View position={'absolute'} top={-10} right={-3}>
+                  <Text color={'red1'} fontSize={11} fontWeight={'700'}>
+                    {data}
+                  </Text>
+                </View>
               </Touchable>
             );
           },
@@ -65,6 +77,7 @@ export const HomeNavigator = () => {
           title: '',
         })}
       />
+      <Stack.Screen name={AppScreens.Notification} component={Notifications} />
     </Stack.Navigator>
   );
 };
