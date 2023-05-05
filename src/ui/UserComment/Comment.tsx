@@ -1,6 +1,7 @@
 import React from 'react';
 import {Comment as IComment} from 'api/comments/types';
 import moment from 'moment';
+import {FEMALE_AVATAR_PLACE_HOLDER, MALE_AVATAR_PLACE_HOLDER} from 'screens';
 import {CommentIcon, Image, Text, Touchable, View} from 'ui';
 
 interface Props {
@@ -18,8 +19,9 @@ export const Comment = ({setReplyFor, item}: Props) => {
           borderRadius={50}
           source={{
             uri:
-              item?.user?.avatar ||
-              'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
+              item?.user?.gender === false
+                ? MALE_AVATAR_PLACE_HOLDER
+                : FEMALE_AVATAR_PLACE_HOLDER,
           }}
         />
 
@@ -80,8 +82,9 @@ export const Comment = ({setReplyFor, item}: Props) => {
               borderRadius={50}
               source={{
                 uri:
-                  child?.user?.avatar ||
-                  'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
+                  child?.user?.gender === false
+                    ? MALE_AVATAR_PLACE_HOLDER
+                    : FEMALE_AVATAR_PLACE_HOLDER,
               }}
             />
 

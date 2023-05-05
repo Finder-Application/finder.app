@@ -50,7 +50,6 @@ export const ImagePickerSection = (props: ImagePickerSectionProps) => {
       const newLength = result.assets?.length ?? 0;
 
       const assets = uniqBy(result.assets, asset => asset.base64);
-
       if (currentLength + newLength > 5 || newLength > 5) {
         showMessage({
           message: 'Maximum number of files is 5',

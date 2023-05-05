@@ -22,7 +22,7 @@ export interface IParamsDefault<Field> {
   page?: number;
   take?: number;
   order?: {
-    field: string;
+    field: keyof Field;
     direction: 'ASC' | 'DESC';
   };
   filter?: Filter<Field>[];

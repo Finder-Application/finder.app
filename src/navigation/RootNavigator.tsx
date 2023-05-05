@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import RNBootSplash from 'react-native-bootsplash';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useAuth} from 'core';
+import {AddPost, AppScreens} from 'screens';
 
 import {AuthNavigator} from './AuthNavigator';
 import {NavigatorKey} from './constants';
@@ -27,6 +28,7 @@ export const Root = () => {
       }}>
       <Stack.Screen name={NavigatorKey.App} component={TabNavigator} />
       <Stack.Screen name={NavigatorKey.Auth} component={AuthNavigator} />
+      <Stack.Screen name={AppScreens.AddPost} component={AddPost} />
     </Stack.Navigator>
   );
 };

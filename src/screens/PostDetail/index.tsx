@@ -10,6 +10,10 @@ import memoize from 'lodash/memoize';
 import moment from 'moment';
 import {HomeStackNavigationProps} from 'navigation/HomeNavigator';
 import {
+  FEMALE_AVATAR_PLACE_HOLDER,
+  MALE_AVATAR_PLACE_HOLDER,
+} from 'screens/constants';
+import {
   ActiveHeartIcon,
   CommentIcon,
   ContactIcon,
@@ -99,7 +103,10 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             width={35}
             borderRadius={50}
             source={{
-              uri: 'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
+              uri:
+                postData?.owner.gender === false
+                  ? MALE_AVATAR_PLACE_HOLDER
+                  : FEMALE_AVATAR_PLACE_HOLDER,
             }}
           />
           <View marginLeft="s">
@@ -254,6 +261,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
           flexDirection="row"
           alignItems="center"
           marginTop="l"
+          marginBottom="m"
           justifyContent="space-between">
           <View flexDirection="row" alignItems="center">
             <View flexDirection="row" alignItems="center" marginRight="m">
