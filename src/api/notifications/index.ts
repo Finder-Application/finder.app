@@ -1,4 +1,4 @@
-import {useInfiniteQuery, useQuery} from 'react-query';
+import {useInfiniteQuery, useMutation, useQuery} from 'react-query';
 import {client} from 'api/client';
 import {FEATURE, QUERY_KEY} from 'api/constants';
 import {IParamsDefault, TResponseList} from 'api/types.common';
@@ -75,4 +75,27 @@ export const useGetTotalNoti = () => {
 
     return count?.data?.count;
   });
+};
+
+const installFcm = async (body: {token: string}) => {
+  const baseUrl = '/api/private/notification/install-fcm';
+  return client.post(
+    baseUrl,
+    {
+      ...body,
+    },
+    {headers: {Authorization: `Bearer ${getToken()?.access}`}},
+  );
+};
+
+export const useCreateInstallation = () => {
+  const mutation = useMutation((body: {token: string}) => installFcm(body), {
+    onSuccess: () => {
+      console.log('💩: useCreateInstallation -> onSuccess');
+    },
+    onError: e => {
+      console.log('💩: useCreateInstallation -> onError', e);
+    },
+  });
+  return mutation;
 };
