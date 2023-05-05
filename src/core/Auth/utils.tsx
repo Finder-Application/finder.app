@@ -23,3 +23,5 @@ export async function removeItem(key: string) {
 export const getToken = () => getItem<TokenType>(TOKEN);
 export const removeToken = () => removeItem(TOKEN);
 export const setToken = (value: TokenType) => setItem<TokenType>(TOKEN, value);
+export const setFcm = (value: string) => storage.set('fcm', value);
+export const getFcm = () => storage.getString('fcm');

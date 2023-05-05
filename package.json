@@ -14,6 +14,8 @@
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",
     "@react-native-community/blur": "^4.3.0",
+    "@react-native-firebase/app": "^17.4.3",
+    "@react-native-firebase/messaging": "^17.4.3",
     "@react-native-google-signin/google-signin": "^9.0.2",
     "@react-native-menu/menu": "^0.7.3",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -35,6 +37,7 @@
     "react-native-asset": "^2.1.0",
     "react-native-bootsplash": "^4.5.2",
     "react-native-date-picker": "^4.2.10",
+    "react-native-device-info": "^10.6.0",
     "react-native-dotenv": "^3.4.8",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-exception-handler": "^2.10.10",
@@ -50,6 +53,7 @@
     "react-native-screens": "^3.20.0",
     "react-native-svg": "^13.8.0",
     "react-query": "^3.39.3",
+    "socket.io-client": "^4.6.1",
     "yup": "^1.0.2",
     "zustand": "^4.3.6"
   },

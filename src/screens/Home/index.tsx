@@ -1,7 +1,13 @@
-import React, {useCallback} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  PermissionsAndroid,
+  StyleSheet,
+} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useFetchingPosts} from 'api/posts';
+import useFirebase from 'core/notifications/useFirebase';
 import {
   FinderIcon,
   LinearGradientView,
@@ -51,6 +57,24 @@ export const Home = () => {
   };
 
   const posts = data?.pages.map(page => page.data).flat() ?? [];
+
+  const {isEnabled, getToken} = useFirebase();
+
+  useEffect(() => {
+    PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
+      response => {
+        if (!response) {
+          PermissionsAndroid.request(
+            'android.permission.POST_NOTIFICATIONS',
+          ).then(responseAsk => {
+            if (responseAsk === 'granted') {
+              getToken();
+            }
+          });
+        }
+      },
+    );
+  }, [isEnabled]);
 
   return (
     <Screen justifyContent="flex-start" paddingVertical="m">

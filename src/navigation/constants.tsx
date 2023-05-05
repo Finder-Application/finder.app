@@ -6,4 +6,5 @@ export enum NavigatorKey {
   YourPost = 'YourPostNavigator',
   Profile = 'ProfileNavigator',
   Auth = 'AuthNavigator',
+  Notification = 'NotificationNavigator',
 }
