@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
+import {Platform} from 'react-native';
 import {MenuView} from '@react-native-menu/menu';
 import {useNavigation} from '@react-navigation/native';
 import {Post as PostType} from 'api/posts/types';
+import {useAuth} from 'core/Auth';
 import moment from 'moment';
-import {HomeStackNavigationProps} from 'navigation/HomeNavigator';
-import {AppScreens} from 'screens/constants';
+import {RootStackNavigationProps} from 'navigation/types';
+import {
+  AppScreens,
+  FEMALE_AVATAR_PLACE_HOLDER,
+  MALE_AVATAR_PLACE_HOLDER,
+} from 'screens/constants';
 import {
   ActiveHeartIcon,
   CommentIcon,
@@ -20,7 +26,7 @@ import {
   View,
 } from 'ui';
 import {formatUserName} from 'utils';
-
+import {shallow} from 'zustand/shallow';
 type PostProps = {
   post: PostType;
 };
@@ -28,8 +34,12 @@ type PostProps = {
 export const Post = (props: PostProps) => {
   const {post} = props;
 
-  const navigation = useNavigation<HomeStackNavigationProps>();
+  const navigation = useNavigation<RootStackNavigationProps>();
 
+  const [isLoggedIn, currentUser] = useAuth(
+    state => [state.isLoggedIn, state.user],
+    shallow,
+  );
   const [isLiked, setIsLiked] = useState(false);
 
   const [totalComment, setTotalComment] = useState(0);
@@ -58,7 +68,10 @@ export const Post = (props: PostProps) => {
             width={35}
             borderRadius={50}
             source={{
-              uri: 'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
+              uri:
+                post?.owner?.gender === false
+                  ? MALE_AVATAR_PLACE_HOLDER
+                  : FEMALE_AVATAR_PLACE_HOLDER,
             }}
           />
           <Text fontWeight="700" marginLeft="s">
@@ -82,9 +95,44 @@ export const Post = (props: PostProps) => {
               </Text>
             </LinearGradientView>
           </Touchable>
-          <Touchable>
-            <ThreeDotsIcon />
-          </Touchable>
+          {isLoggedIn && currentUser?.userId === post?.owner?.userId && (
+            <MenuView
+              title="Menu Title"
+              onPressAction={({nativeEvent}) => {
+                if (nativeEvent.event === 'edit') {
+                  navigation.navigate(AppScreens.AddPost, {post: post});
+                }
+              }}
+              actions={[
+                {
+                  id: 'edit',
+                  title: 'Edit Post',
+                  titleColor: '#46F289',
+                  image: Platform.select({
+                    ios: 'square.and.arrow.up',
+                    android: 'ic_menu_edit',
+                  }),
+                  imageColor: '#46F289',
+                  state: 'on',
+                },
+                {
+                  id: 'destructive',
+                  title: 'Delete Post',
+                  attributes: {
+                    destructive: true,
+                  },
+                  image: Platform.select({
+                    ios: 'trash',
+                    android: 'ic_menu_delete',
+                  }),
+                },
+              ]}
+              shouldOpenOnLongPress={false}>
+              <Touchable>
+                <ThreeDotsIcon />
+              </Touchable>
+            </MenuView>
+          )}
         </View>
       </View>
       <Text fontWeight="700" fontSize={15}>
@@ -99,7 +147,7 @@ export const Post = (props: PostProps) => {
         <View flex={1}>
           <InformationDetail label="Họ Tên" value={post?.fullName} />
           <InformationDetail label="Tên ở nhà" value={post?.nickname} />
-          <InformationDetail label="Quê Quán" value={post?.hometown.region} />
+          <InformationDetail label="Quê Quán" value={post?.hometown?.region} />
         </View>
         <View>
           <InformationDetail

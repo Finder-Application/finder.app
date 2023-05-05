@@ -3,12 +3,15 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
+import {Post} from 'api/posts/types';
 import {AddPost, AppScreens} from 'screens';
 
 const Stack = createStackNavigator();
 
 export type AddPostStackParamList = {
-  AddPost: undefined;
+  AddPost: {
+    post?: Post;
+  };
 };
 
 export type AddPostStackNavigationProps =

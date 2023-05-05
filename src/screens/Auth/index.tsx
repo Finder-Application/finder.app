@@ -101,6 +101,7 @@ export const Auth = ({
 
   const onSignInGoogle = async () => {
     try {
+      setShowLoadingModal(true);
       const {idToken} = await signInGoogle();
 
       if (idToken !== null) {
@@ -116,7 +117,8 @@ export const Auth = ({
               message: error?.response?.data?.message ?? COMMON_ERROR_MESSAGE,
               type: 'danger',
             });
-          });
+          })
+          .finally(() => setShowLoadingModal(false));
       }
     } catch (error) {
       console.log('Login Google Error: ', JSON.stringify(error));

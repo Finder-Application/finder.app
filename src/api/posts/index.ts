@@ -75,6 +75,11 @@ export interface CreatePostBody {
   descriptors: FaceDescriptor[];
 }
 
+export interface UpdatePostParams {
+  id: string;
+  body: CreatePostBody;
+}
+
 const createPost = async (body: CreatePostBody) => {
   const baseUrl = '/api/private/posts';
   return client.post(
@@ -88,5 +93,24 @@ const createPost = async (body: CreatePostBody) => {
 
 export const useCreatePost = () => {
   const mutation = useMutation((body: CreatePostBody) => createPost(body));
+  return mutation;
+};
+
+const updatePost = async (params: UpdatePostParams) => {
+  const {id, body} = params;
+  const baseUrl = `/api/private/posts/${id}`;
+  return client.put(
+    baseUrl,
+    {
+      ...body,
+    },
+    {headers: {Authorization: `Bearer ${getToken()?.access}`}},
+  );
+};
+
+export const useUpdatePost = () => {
+  const mutation = useMutation((params: UpdatePostParams) =>
+    updatePost(params),
+  );
   return mutation;
 };
