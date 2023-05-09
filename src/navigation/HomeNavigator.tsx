@@ -10,6 +10,7 @@ import {Notifications} from 'screens/Notifications';
 import {PostDetail} from 'screens/PostDetail';
 import {BellIcon, FinderIcon, MagnifierIcon, Text, Touchable, View} from 'ui';
 
+import {NavigatorKey} from './constants';
 import {buildNavigationOptions} from './utils';
 
 const Stack = createStackNavigator();
@@ -45,7 +46,9 @@ export const HomeNavigator = () => {
 
           headerLeft: () => {
             return (
-              <Touchable marginLeft="s">
+              <Touchable
+                marginLeft="s"
+                onPress={() => navigation.navigate(NavigatorKey.Search)}>
                 <MagnifierIcon />
               </Touchable>
             );

@@ -2,7 +2,6 @@ import {useInfiniteQuery, useMutation} from 'react-query';
 import {queryClient} from 'api/APIProvider';
 import {client} from 'api/client';
 import {FEATURE, QUERY_KEY} from 'api/constants';
-import {tempToken} from 'api/posts';
 import {
   IParamsDefault,
   ResponseDeleteSuccess,

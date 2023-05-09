@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import {Control, Controller, FieldValues, useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {ItemType, ValueType} from 'react-native-dropdown-picker';
@@ -100,7 +100,6 @@ export const AddPost = memo(
     const postParam = route?.params?.post;
     const isEdit = postParam !== undefined;
 
-    console.log('postParam: ', postParam);
     const {colors} = useTheme();
     const {
       handleSubmit,
@@ -512,7 +511,10 @@ export const AddPost = memo(
                       borderWidth={1}
                       inputProps={{
                         name: FORM_NAMES.TITLE,
-                        control,
+                        control: control as unknown as Control<
+                          FieldValues,
+                          any
+                        >,
                         placeholder: 'Title here',
                         placeholderTextColor: colors.grey11,
                         value: value,
@@ -547,7 +549,10 @@ export const AddPost = memo(
                         borderWidth={1}
                         inputProps={{
                           name: FORM_NAMES.FULL_NAME,
-                          control,
+                          control: control as unknown as Control<
+                            FieldValues,
+                            any
+                          >,
                           placeholder: 'Full Name *',
                           placeholderTextColor: colors.grey11,
                           inputMode: 'text',
@@ -570,7 +575,10 @@ export const AddPost = memo(
                         marginVertical="m"
                         inputProps={{
                           name: FORM_NAMES.NICK_NAME,
-                          control,
+                          control: control as unknown as Control<
+                            FieldValues,
+                            any
+                          >,
                           placeholder: 'Nickname',
                           placeholderTextColor: colors.grey11,
                           value: value,
@@ -847,7 +855,10 @@ export const AddPost = memo(
                         marginTop="m"
                         inputProps={{
                           name: FORM_NAMES.HOME_TOWN_HAMLET,
-                          control,
+                          control: control as unknown as Control<
+                            FieldValues,
+                            any
+                          >,
                           placeholder: 'Hamlet',
                           placeholderTextColor: colors.grey11,
                           onBlur: onBlur,
@@ -1042,7 +1053,10 @@ export const AddPost = memo(
                         marginTop="m"
                         inputProps={{
                           name: FORM_NAMES.MISSING_ADDRESS_HAMLET,
-                          control,
+                          control: control as unknown as Control<
+                            FieldValues,
+                            any
+                          >,
                           placeholder: 'Hamlet',
                           placeholderTextColor: colors.grey11,
                           onBlur: onBlur,
@@ -1145,7 +1159,10 @@ export const AddPost = memo(
                         marginTop="m"
                         inputProps={{
                           name: FORM_NAMES.DESCRIPTION,
-                          control,
+                          control: control as unknown as Control<
+                            FieldValues,
+                            any
+                          >,
                           onChange: onChange,
                           onBlur: onBlur,
                           value: value,

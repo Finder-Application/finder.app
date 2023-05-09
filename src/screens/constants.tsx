@@ -10,6 +10,7 @@ export enum AppScreens {
 }
 
 export const COMMON_ERROR_MESSAGE = 'Opps, something went wrong!';
+export const NUMBER_OF_POSTS_PER_LOADING = 5;
 
 export const MALE_AVATAR_PLACE_HOLDER =
   'https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg';

@@ -1,6 +1,6 @@
 import {FEATURE, QUERY_KEY} from './constants';
 
-enum Operator {
+export enum Operator {
   IsNull = 'ISNULL',
   ILike = 'ILIKE',
   Like = 'LIKE',

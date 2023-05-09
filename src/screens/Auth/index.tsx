@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useForm} from 'react-hook-form';
+import {Control, FieldValues, useForm} from 'react-hook-form';
 import {ScrollView, StyleSheet} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -28,12 +28,12 @@ import {
 import {ChevronLeftIcon} from 'ui/icons/ChevronLeft';
 import * as yup from 'yup';
 
-type FormData = {
+interface FormData extends FieldValues {
   email: string;
   username: string;
   password: string;
   confirmPassword: string;
-};
+}
 
 const loginSchema = yup.object().shape({
   email: yup.string().required().email(),
@@ -122,6 +122,7 @@ export const Auth = ({
       }
     } catch (error) {
       console.log('Login Google Error: ', JSON.stringify(error));
+      setShowLoadingModal(false);
     }
   };
 
@@ -145,6 +146,7 @@ export const Auth = ({
         .finally(() => setShowLoadingModal(false));
     } catch (error) {
       console.log('Login Error: ', JSON.stringify(error));
+      setShowLoadingModal(false);
     }
   };
 
@@ -171,6 +173,7 @@ export const Auth = ({
         .finally(() => setShowLoadingModal(false));
     } catch (error) {
       console.log('Register Error: ', JSON.stringify(error));
+      setShowLoadingModal(false);
     }
   };
 
@@ -184,7 +187,7 @@ export const Auth = ({
           borderColor="grey17"
           inputProps={{
             name: 'email',
-            control: loginControl,
+            control: loginControl as unknown as Control<FieldValues, any>,
             placeholder: 'Enter your email',
             placeholderTextColor: theme.colors.grey19,
             style: {
@@ -208,7 +211,7 @@ export const Auth = ({
           paddingHorizontal="l"
           inputProps={{
             name: 'password',
-            control: loginControl,
+            control: loginControl as unknown as Control<FieldValues, any>,
             placeholder: 'Enter your password',
             placeholderTextColor: theme.colors.grey19,
             style: {
@@ -237,7 +240,7 @@ export const Auth = ({
           borderColor="grey17"
           inputProps={{
             name: 'username',
-            control: registerControl,
+            control: registerControl as unknown as Control<FieldValues, any>,
             placeholder: 'Username',
             placeholderTextColor: theme.colors.grey19,
             style: {
@@ -255,7 +258,7 @@ export const Auth = ({
           borderColor="grey17"
           inputProps={{
             name: 'email',
-            control: registerControl,
+            control: registerControl as unknown as Control<FieldValues, any>,
             placeholder: 'Email',
             placeholderTextColor: theme.colors.grey19,
             style: {
@@ -274,7 +277,7 @@ export const Auth = ({
           paddingHorizontal="l"
           inputProps={{
             name: 'password',
-            control: registerControl,
+            control: registerControl as unknown as Control<FieldValues, any>,
             placeholder: 'Password',
             placeholderTextColor: theme.colors.grey19,
             style: {
@@ -293,7 +296,7 @@ export const Auth = ({
           paddingHorizontal="l"
           inputProps={{
             name: 'confirmPassword',
-            control: registerControl,
+            control: registerControl as unknown as Control<FieldValues, any>,
             placeholder: 'Confirm password',
             placeholderTextColor: theme.colors.grey19,
             style: {

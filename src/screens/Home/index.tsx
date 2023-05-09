@@ -5,9 +5,11 @@ import {
   PermissionsAndroid,
   StyleSheet,
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useFetchingPosts} from 'api/posts';
 import useFirebase from 'core/notifications/useFirebase';
+import {NavigatorKey} from 'navigation/constants';
+import {NUMBER_OF_POSTS_PER_LOADING} from 'screens/constants';
 import {
   FinderIcon,
   LinearGradientView,
@@ -21,8 +23,9 @@ import {
 
 import {Post as PostComponent} from './components';
 
-const NUMBER_OF_POSTS_PER_LOADING = 5;
 export const Home = () => {
+  const navigation = useNavigation<any>();
+
   const {
     isLoading,
     data,
@@ -99,7 +102,8 @@ export const Home = () => {
               borderRadius={16}
               marginBottom="m"
               flex={1}
-              overflow="hidden">
+              overflow="hidden"
+              onPress={() => navigation.navigate(NavigatorKey.AddPost)}>
               <View
                 flexDirection="row"
                 alignItems="center"
