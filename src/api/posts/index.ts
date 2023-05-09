@@ -30,7 +30,7 @@ const getList = async <T, P>(
 
 export const useFetchingPosts = (params: IParamsDefault<PostEntity>) => {
   return useInfiniteQuery(
-    ['FETCH_POSTS', params],
+    ['FETCH_POSTS', JSON.stringify(params)],
     async ({pageParam = 1}) => {
       const result = await getList<Post, typeof params>(
         {...params, page: pageParam},
