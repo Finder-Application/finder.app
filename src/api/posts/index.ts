@@ -114,3 +114,12 @@ export const useUpdatePost = () => {
   );
   return mutation;
 };
+
+export const useRelevantPosts = (params: {id: number}) =>
+  useQuery(['GET_RELEVANT_POSTS', params.id], async () => {
+    const {data}: {data: Post[]} = await client.get(
+      `/api/private/posts/relevant/${params.id}`,
+      {headers: {Authorization: `Bearer ${getToken()?.access}`}},
+    );
+    return data;
+  });

@@ -1,6 +1,4 @@
 import React, {useState} from 'react';
-import {Platform} from 'react-native';
-import {MenuView} from '@react-native-menu/menu';
 import {useNavigation} from '@react-navigation/native';
 import {Post as PostType} from 'api/posts/types';
 import {useAuth} from 'core/Auth';
@@ -20,13 +18,14 @@ import {
   LinearGradientView,
   LinkShareIcon,
   Text,
-  ThreeDotsIcon,
   Touchable,
   UserComment,
   View,
 } from 'ui';
 import {formatUserName} from 'utils';
 import {shallow} from 'zustand/shallow';
+
+import {PostMenuView} from './PostMenuView';
 type PostProps = {
   post: PostType;
 };
@@ -54,6 +53,31 @@ export const Post = (props: PostProps) => {
 
   const photo = post?.photos?.[0];
 
+  const SimilarPercentage = (percentageProps: {similar: number}) => {
+    const {similar} = percentageProps;
+
+    const percent = similar * 100;
+    if (percent < 50) {
+      return (
+        <Text marginHorizontal="s" fontWeight="700" color="red">
+          {percent}%
+        </Text>
+      );
+    }
+    if (percent < 90) {
+      return (
+        <Text marginHorizontal="s" fontWeight="700" color="blue">
+          {percent}%
+        </Text>
+      );
+    }
+
+    return (
+      <Text marginHorizontal="s" fontWeight="700" color="green6">
+        {percent}%
+      </Text>
+    );
+  };
   return (
     <View
       backgroundColor="white"
@@ -61,23 +85,29 @@ export const Post = (props: PostProps) => {
       borderRadius={10}
       width="100%"
       marginBottom="m">
-      <View flexDirection="row" justifyContent="space-between" marginBottom="m">
-        <View flexDirection="row" alignItems="center">
+      <View
+        flexDirection="row"
+        justifyContent="space-between"
+        marginBottom="m"
+        alignItems="center">
+        <View flexDirection="row" alignItems="center" flex={1}>
           <Image
             height={35}
             width={35}
             borderRadius={50}
             source={{
-              uri:
-                post?.owner?.gender === false
-                  ? MALE_AVATAR_PLACE_HOLDER
-                  : FEMALE_AVATAR_PLACE_HOLDER,
+              uri: post?.owner?.avatar
+                ? post?.owner?.avatar
+                : post?.owner?.gender === false
+                ? MALE_AVATAR_PLACE_HOLDER
+                : FEMALE_AVATAR_PLACE_HOLDER,
             }}
           />
           <Text fontWeight="700" marginLeft="s">
             {ownerName}
           </Text>
         </View>
+        {post?.similar && <SimilarPercentage similar={post?.similar} />}
         <View flexDirection="row" alignItems="center">
           <Touchable
             marginRight="s"
@@ -96,42 +126,7 @@ export const Post = (props: PostProps) => {
             </LinearGradientView>
           </Touchable>
           {isLoggedIn && currentUser?.userId === post?.owner?.userId && (
-            <MenuView
-              title="Menu Title"
-              onPressAction={({nativeEvent}) => {
-                if (nativeEvent.event === 'edit') {
-                  navigation.navigate(AppScreens.AddPost, {post: post});
-                }
-              }}
-              actions={[
-                {
-                  id: 'edit',
-                  title: 'Edit Post',
-                  titleColor: '#46F289',
-                  image: Platform.select({
-                    ios: 'square.and.arrow.up',
-                    android: 'ic_menu_edit',
-                  }),
-                  imageColor: '#46F289',
-                  state: 'on',
-                },
-                {
-                  id: 'destructive',
-                  title: 'Delete Post',
-                  attributes: {
-                    destructive: true,
-                  },
-                  image: Platform.select({
-                    ios: 'trash',
-                    android: 'ic_menu_delete',
-                  }),
-                },
-              ]}
-              shouldOpenOnLongPress={false}>
-              <Touchable>
-                <ThreeDotsIcon />
-              </Touchable>
-            </MenuView>
+            <PostMenuView data={post} />
           )}
         </View>
       </View>

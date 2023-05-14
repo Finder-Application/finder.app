@@ -480,6 +480,7 @@ export const AddPost = memo(
                   borderRadius={5}
                   onPress={() => {
                     navigation.goBack();
+                    onResetForm();
                   }}
                   paddingVertical="s"
                   paddingHorizontal="l"

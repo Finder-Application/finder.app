@@ -20,6 +20,9 @@ export type HomeStackParamList = {
   PostDetail: {
     postData: Post;
   };
+  RelevantPosts: {
+    postData: Post;
+  };
 };
 
 export type HomeStackNavigationProps = StackNavigationProp<HomeStackParamList>;

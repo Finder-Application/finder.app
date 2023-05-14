@@ -13,6 +13,7 @@ import {
   FEMALE_AVATAR_PLACE_HOLDER,
   MALE_AVATAR_PLACE_HOLDER,
 } from 'screens/constants';
+import {PostMenuView} from 'screens/Home/components/PostMenuView';
 import {
   ActiveHeartIcon,
   CommentIcon,
@@ -24,7 +25,6 @@ import {
   LinkShareIcon,
   Screen,
   Text,
-  ThreeDotsIcon,
   Touchable,
   UserComment,
   View,
@@ -81,19 +81,21 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <Touchable marginRight="l">
-          <ThreeDotsIcon />
-        </Touchable>
-      ),
+      headerRight: () =>
+        postData && (
+          <View marginRight="s">
+            <PostMenuView data={postData} />
+          </View>
+        ),
     });
-  }, []);
+  }, [JSON.stringify(postData)]);
 
   return (
     <Screen
       justifyContent="flex-start"
       alignItems="stretch"
-      backgroundColor="white">
+      backgroundColor="white"
+      style={styles.screenContainer}>
       <ScrollView
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
@@ -103,10 +105,11 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             width={35}
             borderRadius={50}
             source={{
-              uri:
-                postData?.owner.gender === false
-                  ? MALE_AVATAR_PLACE_HOLDER
-                  : FEMALE_AVATAR_PLACE_HOLDER,
+              uri: postData?.owner?.avatar
+                ? postData?.owner?.avatar
+                : postData?.owner?.gender === false
+                ? MALE_AVATAR_PLACE_HOLDER
+                : FEMALE_AVATAR_PLACE_HOLDER,
             }}
           />
           <View marginLeft="s">
@@ -296,6 +299,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
 
 const styles = StyleSheet.create({
   contentContainer: {flexGrow: 1, paddingBottom: 100},
+  screenContainer: {paddingBottom: 0},
 });
 
 type ImageType = {
