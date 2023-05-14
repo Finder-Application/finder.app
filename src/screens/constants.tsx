@@ -7,6 +7,7 @@ export enum AppScreens {
   PostDetail = 'PostDetail',
   Auth = 'Auth',
   Notification = 'Notification',
+  RelevantPosts = 'RelevantPosts',
 }
 
 export const COMMON_ERROR_MESSAGE = 'Opps, something went wrong!';

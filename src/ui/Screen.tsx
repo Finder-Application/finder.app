@@ -27,6 +27,6 @@ export const Screen = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: TAB_HEIGHT + 20,
+    paddingBottom: TAB_HEIGHT,
   },
 });

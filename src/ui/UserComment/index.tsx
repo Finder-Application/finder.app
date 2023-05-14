@@ -110,10 +110,11 @@ export const UserComment = ({postId, setTotalComment}: Props) => {
           width={35}
           borderRadius={50}
           source={{
-            uri:
-              currentUser?.gender === false
-                ? MALE_AVATAR_PLACE_HOLDER
-                : FEMALE_AVATAR_PLACE_HOLDER,
+            uri: currentUser?.avatar
+              ? currentUser.avatar
+              : currentUser?.gender === false
+              ? MALE_AVATAR_PLACE_HOLDER
+              : FEMALE_AVATAR_PLACE_HOLDER,
           }}
         />
 

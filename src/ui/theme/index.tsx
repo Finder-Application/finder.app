@@ -68,6 +68,7 @@ export const BaseTheme = {
     green3: '#88EFCB',
     green4: '#92FE9D',
     green5: '#35C2C1',
+    green6: '#2DDF40',
   },
   spacing: {
     xs: 4,
