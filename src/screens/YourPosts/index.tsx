@@ -6,6 +6,7 @@ import {Operator} from 'api/types.common';
 import {useAuth} from 'core';
 import {NavigatorKey} from 'navigation/constants';
 import {YourPostNavigationProps} from 'navigation/YourPostNavigator';
+import {InitAuth} from 'screens/Auth/InitScreen';
 import {
   FEMALE_AVATAR_PLACE_HOLDER,
   MALE_AVATAR_PLACE_HOLDER,
@@ -28,7 +29,10 @@ const CreateImage = require('./create.png');
 export const YourPosts = () => {
   const navigation = useNavigation<YourPostNavigationProps>();
 
-  const currentUser = useAuth(state => state.user);
+  const [currentUser, isLoggedIn] = useAuth(state => [
+    state.user,
+    state.isLoggedIn,
+  ]);
 
   const {
     isLoading,
@@ -75,78 +79,84 @@ export const YourPosts = () => {
   const posts = data?.pages.map(page => page.data).flat() ?? [];
 
   return (
-    <Screen justifyContent="flex-start" paddingVertical="m">
-      {isError ? (
-        <Text>An Error Happened</Text>
+    <>
+      {!isLoggedIn ? (
+        <InitAuth />
       ) : (
-        <FlatList
-          contentContainerStyle={styles.contentContainer}
-          style={styles.listStyle}
-          keyExtractor={item => item?.id?.toString()}
-          refreshing={isRefetching}
-          onRefresh={() => {
-            refetch();
-          }}
-          ListHeaderComponent={
-            <View alignItems="center" marginBottom="m">
-              <Image
-                height={100}
-                width={100}
-                borderRadius={50}
-                resizeMode="cover"
-                source={{
-                  uri: currentUser?.avatar
-                    ? currentUser.avatar
-                    : currentUser?.gender === false
-                    ? MALE_AVATAR_PLACE_HOLDER
-                    : FEMALE_AVATAR_PLACE_HOLDER,
-                }}
-              />
-              <View flexDirection="row" alignItems="center">
-                <Text
-                  fontWeight="700"
-                  marginLeft="s"
-                  fontSize={17}
-                  marginRight="xs">
-                  {ownerName}'s posts
-                </Text>
-                <YourPostDocsIcon />
-              </View>
-            </View>
-          }
-          data={posts}
-          renderItem={({item}) => <PostComponent post={item} />}
-          ListFooterComponent={isFetchingNextPage ? renderFooter : null}
-          ListEmptyComponent={
-            isLoading ? (
-              renderFooter()
-            ) : (
-              <View alignItems="center" flex={1} marginTop="xl">
-                <Image source={CreateImage} />
-                <Touchable
-                  onPress={() => {
-                    navigation.navigate(NavigatorKey.AddPost);
-                  }}
-                  width="100%"
-                  marginTop="m">
-                  <LinearGradientView
-                    alignItems="center"
-                    paddingVertical="m"
-                    borderRadius={8}>
-                    <Text fontWeight="700">
-                      Start searching your missing one now!
+        <Screen justifyContent="flex-start" paddingVertical="m">
+          {isError ? (
+            <Text>An Error Happened</Text>
+          ) : (
+            <FlatList
+              contentContainerStyle={styles.contentContainer}
+              style={styles.listStyle}
+              keyExtractor={item => item?.id?.toString()}
+              refreshing={isRefetching}
+              onRefresh={() => {
+                refetch();
+              }}
+              ListHeaderComponent={
+                <View alignItems="center" marginBottom="m">
+                  <Image
+                    height={100}
+                    width={100}
+                    borderRadius={50}
+                    resizeMode="cover"
+                    source={{
+                      uri: currentUser?.avatar
+                        ? currentUser.avatar
+                        : currentUser?.gender === false
+                        ? MALE_AVATAR_PLACE_HOLDER
+                        : FEMALE_AVATAR_PLACE_HOLDER,
+                    }}
+                  />
+                  <View flexDirection="row" alignItems="center">
+                    <Text
+                      fontWeight="700"
+                      marginLeft="s"
+                      fontSize={17}
+                      marginRight="xs">
+                      {ownerName}'s posts
                     </Text>
-                  </LinearGradientView>
-                </Touchable>
-              </View>
-            )
-          }
-          showsVerticalScrollIndicator={false}
-          onEndReached={onLoadMore}
-          onEndReachedThreshold={0.5}
-        />
+                    <YourPostDocsIcon />
+                  </View>
+                </View>
+              }
+              data={posts}
+              renderItem={({item}) => <PostComponent post={item} />}
+              ListFooterComponent={isFetchingNextPage ? renderFooter : null}
+              ListEmptyComponent={
+                isLoading ? (
+                  renderFooter()
+                ) : (
+                  <View alignItems="center" flex={1} marginTop="xl">
+                    <Image source={CreateImage} />
+                    <Touchable
+                      onPress={() => {
+                        navigation.navigate(NavigatorKey.AddPost);
+                      }}
+                      width="100%"
+                      marginTop="m">
+                      <LinearGradientView
+                        alignItems="center"
+                        paddingVertical="m"
+                        borderRadius={8}>
+                        <Text fontWeight="700">
+                          Start searching your missing one now!
+                        </Text>
+                      </LinearGradientView>
+                    </Touchable>
+                  </View>
+                )
+              }
+              showsVerticalScrollIndicator={false}
+              onEndReached={onLoadMore}
+              onEndReachedThreshold={0.5}
+            />
+          )}
+        </Screen>
       )}
-    </Screen>
+    </>
   );
 };
 
