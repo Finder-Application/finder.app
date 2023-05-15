@@ -6,6 +6,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import {useNavigation} from '@react-navigation/native';
 import {useGetPostDetail} from 'api/posts';
 import {Post} from 'api/posts/types';
+import {useAuth} from 'core/Auth';
 import memoize from 'lodash/memoize';
 import moment from 'moment';
 import {HomeStackNavigationProps} from 'navigation/HomeNavigator';
@@ -32,12 +33,19 @@ import {
 } from 'ui';
 import CollapsibleSection from 'ui/CollapsibleSection';
 import {formatUserName} from 'utils';
+import {shallow} from 'zustand/shallow';
 
 import ImageFooter from './components/ImageFooter';
 
 export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
   const {postData} = route?.params ?? {};
   const navigation = useNavigation<HomeStackNavigationProps>();
+
+  const [isLoggedIn, currentUser] = useAuth(
+    state => [state.isLoggedIn, state.user],
+    shallow,
+  );
+
   const [isLiked, setIsLiked] = useState(false);
 
   const [currentImageIndex, setImageIndex] = useState(0);
@@ -82,7 +90,9 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () =>
-        postData && (
+        postData &&
+        isLoggedIn &&
+        currentUser?.userId === postData?.owner?.userId && (
           <View marginRight="s">
             <PostMenuView data={postData} />
           </View>
