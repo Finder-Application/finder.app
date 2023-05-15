@@ -12,14 +12,15 @@ import {
   Touchable,
   View,
 } from 'ui';
+import {shallow} from 'zustand/shallow';
 
 export const InitAuth = () => {
   const navigation = useNavigation<AuthStackNavigationProps>();
 
-  const [isLoggedIn, singOut] = useAuth(state => [
-    state.isLoggedIn,
-    state.signOut,
-  ]);
+  const [isLoggedIn, singOut] = useAuth(
+    state => [state.isLoggedIn, state.signOut],
+    shallow,
+  );
   const setShowLoadingModal = useAppStore(state => state.setShowLoadingModal);
 
   return (

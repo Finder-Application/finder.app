@@ -71,7 +71,6 @@ export const RelevantPosts = ({
           }
           data={sortedPosts}
           renderItem={({item}) => <PostComponent post={item} />}
-          ListFooterComponent={isLoading ? renderFooter : null}
           ListEmptyComponent={
             isLoading ? (
               renderFooter()

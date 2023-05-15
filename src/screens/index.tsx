@@ -5,5 +5,6 @@ export * from './Home';
 export * from './PostDetail';
 export * from './RelevantPosts';
 export * from './Search';
+export * from './Settings';
 export * from './Style';
 export * from './YourPosts';
