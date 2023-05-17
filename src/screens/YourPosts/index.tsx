@@ -50,7 +50,7 @@ export const YourPosts = () => {
       {
         operator: Operator.Equal,
         field: 'userId',
-        value: currentUser?.userId.toString() ?? '',
+        value: currentUser?.userId?.toString() ?? '',
       },
     ],
   });

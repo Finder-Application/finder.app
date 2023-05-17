@@ -9,6 +9,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useFetchingPosts} from 'api/posts';
 import useFirebase from 'core/notifications/useFirebase';
 import {NavigatorKey} from 'navigation/constants';
+import {TAB_HEIGHT} from 'navigation/TabNavigator';
 import {NUMBER_OF_POSTS_PER_LOADING} from 'screens/constants';
 import {
   FinderIcon,
@@ -133,7 +134,7 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingBottom: 50,
+    paddingBottom: TAB_HEIGHT + 20,
   },
   listStyle: {
     width: '100%',

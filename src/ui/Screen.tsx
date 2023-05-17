@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {TAB_HEIGHT} from 'navigation/TabNavigator';
 
 import {View} from './View';
 
@@ -26,7 +25,5 @@ export const Screen = ({
 );
 
 const styles = StyleSheet.create({
-  container: {
-    paddingBottom: TAB_HEIGHT,
-  },
+  container: {},
 });

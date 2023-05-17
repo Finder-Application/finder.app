@@ -8,6 +8,9 @@ export enum AppScreens {
   Auth = 'Auth',
   Notification = 'Notification',
   RelevantPosts = 'RelevantPosts',
+  EditProfile = 'EditProfile',
+  EditContact = 'EditContact',
+  ChangePassword = 'ChangePassword',
 }
 
 export const COMMON_ERROR_MESSAGE = 'Opps, something went wrong!';

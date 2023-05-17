@@ -2,6 +2,7 @@ import {showMessage} from 'react-native-flash-message';
 import {useMutation} from 'react-query';
 import {client} from 'api/client';
 import {useAuth} from 'core/Auth';
+import {getToken} from 'core/Auth/utils';
 
 import {AuthResponse, LoginDto, LoginGGDto, RegisterDto} from './types';
 
@@ -77,4 +78,26 @@ export const useRegister = () => {
     },
   });
   return mutation;
+};
+
+export const useChangePassword = () => {
+  return useMutation(
+    (payload: {password: string; oldPassword: string}) =>
+      client.put(
+        '/api/private/users/change-pw',
+        {
+          pw: payload.password,
+          oldPw: payload.oldPassword,
+        },
+        {
+          headers: {Authorization: `Bearer ${getToken()?.access}`},
+        },
+      ) as Promise<AuthResponse>,
+
+    {
+      onError(error) {
+        console.log('useChangePassword error: ', error);
+      },
+    },
+  );
 };
