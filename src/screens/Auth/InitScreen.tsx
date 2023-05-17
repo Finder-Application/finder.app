@@ -3,6 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppStore} from 'core/App';
 import {useAuth} from 'core/Auth';
 import {AuthStackNavigationProps} from 'navigation/AuthNavigator';
+import {TAB_HEIGHT} from 'navigation/TabNavigator';
 import {AppScreens} from 'screens/constants';
 import {
   FinderIcon,
@@ -27,6 +28,7 @@ export const InitAuth = () => {
     <Screen
       justifyContent="space-between"
       backgroundColor="white"
+      style={{paddingBottom: TAB_HEIGHT + 20}}
       paddingHorizontal="l">
       <View />
       <View alignItems="center">

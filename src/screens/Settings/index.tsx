@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {Switch} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 import {useAppStore, useAuth} from 'core';
+import {ProfileNavigationProps} from 'navigation/ProfileNavigator';
 import {
+  AppScreens,
   FEMALE_AVATAR_PLACE_HOLDER,
   MALE_AVATAR_PLACE_HOLDER,
 } from 'screens/constants';
@@ -20,6 +23,8 @@ import {formatUserName} from 'utils';
 import {shallow} from 'zustand/shallow';
 
 export const Settings = () => {
+  const navigation = useNavigation<ProfileNavigationProps>();
+
   const [currentUser, singOut] = useAuth(
     state => [state.user, state.signOut],
     shallow,
@@ -124,9 +129,21 @@ export const Settings = () => {
               <Text fontSize={18} color="grey25">
                 Account Settings
               </Text>
-              <SettingItem title="Edit profile" marginVertical="m" />
-              <SettingItem title="Edit Contact" marginVertical="m" />
-              <SettingItem title="Change password" marginVertical="m" />
+              <SettingItem
+                title="Edit profile"
+                marginVertical="m"
+                onPress={() => navigation.navigate(AppScreens.EditProfile)}
+              />
+              <SettingItem
+                title="Edit Contact"
+                marginVertical="m"
+                onPress={() => navigation.navigate(AppScreens.EditContact)}
+              />
+              <SettingItem
+                title="Change password"
+                marginVertical="m"
+                onPress={() => navigation.navigate(AppScreens.ChangePassword)}
+              />
               <View
                 flexDirection="row"
                 alignItems="center"
