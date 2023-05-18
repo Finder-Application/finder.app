@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {Linking, Platform} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 import messaging from '@react-native-firebase/messaging';
 import {useCreateInstallation} from 'api/notifications';
 import {useAuth} from 'core/Auth';
@@ -101,13 +102,12 @@ const useFirebase = () => {
   // in app
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('hihihi ->cinny', remoteMessage);
-
-      // handleNavigateNotification({
-      //   remoteMessage,
-      //   isInApp: true,
-      // });
-      // alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      showMessage({
+        message: remoteMessage.notification?.title || 'Notification',
+        description: remoteMessage.notification?.body || '',
+        type: 'info',
+        duration: 3000,
+      });
     });
 
     return unsubscribe;

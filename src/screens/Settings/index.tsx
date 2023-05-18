@@ -3,11 +3,8 @@ import {ScrollView, StyleSheet} from 'react-native';
 import {Switch} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {useAppStore, useAuth} from 'core';
-<<<<<<< Updated upstream
-import {ProfileNavigationProps} from 'navigation/ProfileNavigator';
-=======
 import useFirebase from 'core/notifications/useFirebase';
->>>>>>> Stashed changes
+import {ProfileNavigationProps} from 'navigation/ProfileNavigator';
 import {
   AppScreens,
   FEMALE_AVATAR_PLACE_HOLDER,
