@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {Switch} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {useAppStore, useAuth} from 'core';
+<<<<<<< Updated upstream
 import {ProfileNavigationProps} from 'navigation/ProfileNavigator';
+=======
+import useFirebase from 'core/notifications/useFirebase';
+>>>>>>> Stashed changes
 import {
   AppScreens,
   FEMALE_AVATAR_PLACE_HOLDER,
@@ -39,8 +43,7 @@ export const Settings = () => {
     },
   });
 
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const {toggleNotificationSetting, isEnabled} = useFirebase();
 
   const SettingItem = (
     props: {title: string} & React.ComponentProps<typeof Touchable>,
@@ -150,7 +153,10 @@ export const Settings = () => {
                 justifyContent="space-between"
                 marginVertical="m">
                 <Text fontSize={18}>Push notifications</Text>
-                <Switch onValueChange={toggleSwitch} value={isEnabled} />
+                <Switch
+                  onValueChange={toggleNotificationSetting}
+                  value={!!isEnabled}
+                />
               </View>
             </View>
             <View height={0.5} width="100%" backgroundColor="grey24" />

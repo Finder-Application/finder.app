@@ -91,10 +91,10 @@ const installFcm = async (body: {token: string}) => {
 export const useCreateInstallation = () => {
   const mutation = useMutation((body: {token: string}) => installFcm(body), {
     onSuccess: () => {
-      console.log('💩: useCreateInstallation -> onSuccess');
+      console.log(':) : useCreateInstallation -> onSuccess');
     },
     onError: e => {
-      console.log('💩: useCreateInstallation -> onError', e);
+      console.log(':) : useCreateInstallation -> onError', e);
     },
   });
   return mutation;

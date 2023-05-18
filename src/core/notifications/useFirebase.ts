@@ -2,7 +2,8 @@ import {useCallback, useEffect, useState} from 'react';
 import {Linking, Platform} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {useCreateInstallation} from 'api/notifications';
-import {getFcm, getToken as getTokenAuth, setFcm} from 'core/Auth/utils';
+import {useAuth} from 'core/Auth';
+import {getFcm, setFcm} from 'core/Auth/utils';
 
 // import {handleNavigateNotification} from '../Tools';
 import {useAppState} from './useAppState';
@@ -10,10 +11,15 @@ import {useAppState} from './useAppState';
 let RETRY_COUNT = 0;
 
 const useFirebase = () => {
-  const handleNavigateNotification = () => {
-    // handle việc navigation khi user bấm vào notification
-  };
-  const token = `Bearer ${getTokenAuth()?.access}`;
+  // const handleNavigateNotification = () => {
+  // handle việc navigation khi user bấm vào notification
+  // };
+
+  const authToken = useAuth(state => state.token);
+
+  const accessToken =
+    authToken && authToken?.access ? `Bearer ${authToken.access}` : '';
+
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
   const createInstallation = useCreateInstallation();
@@ -30,7 +36,7 @@ const useFirebase = () => {
 
   const getToken = useCallback(async () => {
     let cacheFcmToken = getFcm();
-    if (token) {
+    if (accessToken) {
       try {
         const fcmToken = await messaging().getToken();
 
@@ -38,6 +44,8 @@ const useFirebase = () => {
           setFcm(fcmToken);
 
           setIsEnabled(true);
+
+          console.log('fcmToken', fcmToken);
 
           await createInstallation.mutateAsync({token: fcmToken});
         }
@@ -51,12 +59,14 @@ const useFirebase = () => {
         return;
       }
     }
-  }, [token]);
+  }, [accessToken]);
 
   const deleteToken = async () => {
+    console.log('deleteToken');
     setIsEnabled(false);
     await messaging().deleteToken();
     await messaging().unregisterDeviceForRemoteMessages();
+    setFcm('');
   };
 
   const requestUserPermission = useCallback(async () => {
@@ -91,10 +101,12 @@ const useFirebase = () => {
   // in app
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      handleNavigateNotification({
-        remoteMessage,
-        isInApp: true,
-      });
+      console.log('hihihi ->cinny', remoteMessage);
+
+      // handleNavigateNotification({
+      //   remoteMessage,
+      //   isInApp: true,
+      // });
       // alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
@@ -104,31 +116,36 @@ const useFirebase = () => {
   useEffect(() => {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
     messaging().onNotificationOpenedApp(remoteMessage => {
-      handleNavigateNotification({
-        remoteMessage,
-        isInApp: false,
-      });
+      console.log('hihihi ->3', remoteMessage);
+      // handleNavigateNotification({
+      //   remoteMessage,
+      //   isInApp: false,
+      // });
     });
 
     // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
+        console.log('hihihi -> 1', remoteMessage);
+
         if (remoteMessage) {
-          handleNavigateNotification({
-            remoteMessage,
-            isInApp: false,
-          });
+          console.log('hihihi -> 2', remoteMessage);
+
+          // handleNavigateNotification({
+          //   remoteMessage,
+          //   isInApp: false,
+          // });
         }
       });
   }, []);
 
   useEffect(() => {
-    if (token) {
+    if (accessToken) {
       registerDevice();
       checkUserPermission();
     }
-  }, [checkUserPermission, token]);
+  }, [checkUserPermission, accessToken]);
 
   const toggleNotificationSetting = () => {
     Linking.openSettings();
@@ -136,7 +153,7 @@ const useFirebase = () => {
 
   useAppState({
     appActiveHandler: () => {
-      if (token) {
+      if (accessToken) {
         registerDevice();
         checkUserPermission();
       }

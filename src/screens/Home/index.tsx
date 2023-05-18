@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  PermissionsAndroid,
+  // PermissionsAndroid,
   StyleSheet,
 } from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useFetchingPosts} from 'api/posts';
-import useFirebase from 'core/notifications/useFirebase';
+// import {useAuth} from 'core';
+// import useFirebase from 'core/notifications/useFirebase';
 import {NavigatorKey} from 'navigation/constants';
 import {TAB_HEIGHT} from 'navigation/TabNavigator';
 import {NUMBER_OF_POSTS_PER_LOADING} from 'screens/constants';
@@ -47,6 +48,8 @@ export const Home = () => {
     }, []),
   );
 
+  // const token = useAuth(state => state.token);
+
   const renderFooter = () => {
     return (
       // Footer View with Loader
@@ -62,23 +65,28 @@ export const Home = () => {
 
   const posts = data?.pages.map(page => page.data).flat() ?? [];
 
-  const {isEnabled, getToken} = useFirebase();
+  // const {isEnabled, getToken} = useFirebase();
 
-  useEffect(() => {
-    PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
-      response => {
-        if (!response) {
-          PermissionsAndroid.request(
-            'android.permission.POST_NOTIFICATIONS',
-          ).then(responseAsk => {
-            if (responseAsk === 'granted') {
-              getToken();
-            }
-          });
-        }
-      },
-    );
-  }, [isEnabled]);
+  // useEffect(() => {
+  //   console.log('token', token);
+  //   if (token) {
+  //     console.log('token 1', token);
+
+  //     PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
+  //       response => {
+  //         if (!response) {
+  //           PermissionsAndroid.request(
+  //             'android.permission.POST_NOTIFICATIONS',
+  //           ).then(responseAsk => {
+  //             if (responseAsk === 'granted') {
+  //               getToken();
+  //             }
+  //           });
+  //         }
+  //       },
+  //     );
+  //   }
+  // }, [isEnabled, token]);
 
   return (
     <Screen justifyContent="flex-start" paddingVertical="m">
