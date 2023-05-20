@@ -39,9 +39,16 @@ import {shallow} from 'zustand/shallow';
 
 import ImageFooter from './components/ImageFooter';
 
-export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
+export const PostDetail = ({
+  route,
+}: {
+  route?: {params: {postData: Partial<Post>}};
+}) => {
   const {postData} = route?.params ?? {};
   const navigation = useNavigation<HomeStackNavigationProps>();
+
+  const {data: postDetailData, isLoading: postDetailDataLoading} =
+    useGetPostDetail(Number(postData?.id));
 
   const [isLoggedIn, currentUser] = useAuth(
     state => [state.isLoggedIn, state.user],
@@ -56,22 +63,20 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
 
   const ownerName = formatUserName({
     user: {
-      firstName: postData?.owner?.firstName,
-      middleName: postData?.owner?.middleName,
-      lastName: postData?.owner?.lastName,
+      firstName: postDetailData?.owner?.firstName,
+      middleName: postDetailData?.owner?.middleName,
+      lastName: postDetailData?.owner?.lastName,
     },
   });
-  const {data: postDetailData, isLoading: postDetailDataLoading} =
-    useGetPostDetail(Number(postData?.id));
 
-  const totalComment = useCountTotalComment(Number(postData?.id));
+  const totalComment = useCountTotalComment(Number(postDetailData?.id));
 
   const missingPhotos = useMemo(() => {
-    return postData?.photos?.map(photo => ({
+    return postDetailData?.photos?.map(photo => ({
       thumbnail: photo,
       original: photo,
     }));
-  }, [postData]);
+  }, [postDetailData]);
 
   const onSelect = (photos: ImageType[], index: number) => {
     setImageIndex(index);
@@ -92,15 +97,15 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () =>
-        postData &&
+        postDetailData &&
         isLoggedIn &&
-        currentUser?.userId === postData?.owner?.userId && (
+        currentUser?.userId === postDetailData?.owner?.userId && (
           <View marginRight="s">
-            <PostMenuView data={postData} />
+            <PostMenuView data={postDetailData} />
           </View>
         ),
     });
-  }, [JSON.stringify(postData)]);
+  }, [JSON.stringify(postDetailData)]);
 
   return (
     <Screen
@@ -117,9 +122,9 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             width={35}
             borderRadius={50}
             source={{
-              uri: postData?.owner?.avatar
-                ? postData?.owner?.avatar
-                : postData?.owner?.gender === false
+              uri: postDetailData?.owner?.avatar
+                ? postDetailData?.owner?.avatar
+                : postDetailData?.owner?.gender === false
                 ? MALE_AVATAR_PLACE_HOLDER
                 : FEMALE_AVATAR_PLACE_HOLDER,
             }}
@@ -129,12 +134,12 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
               {ownerName}
             </Text>
             <Text color="blackOpacity46" fontSize={12}>
-              {moment(postData?.updatedAt).format('LLL')}
+              {moment(postDetailData?.updatedAt).format('LLL')}
             </Text>
           </View>
         </View>
         <Text fontWeight="700" fontSize={16} marginVertical="s">
-          {postData?.title}
+          {postDetailData?.title}
         </Text>
         <View
           flexDirection="row"
@@ -144,25 +149,25 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
           <View flex={1}>
             <InformationDetail
               label="Họ Tên"
-              value={postData?.fullName ?? ''}
+              value={postDetailData?.fullName ?? ''}
             />
             <InformationDetail
               label="Tên ở nhà"
-              value={postData?.nickname ?? ''}
+              value={postDetailData?.nickname ?? ''}
             />
             <InformationDetail
               label="Quê Quán"
-              value={postData?.hometown.region ?? ''}
+              value={postDetailData?.hometown.region ?? ''}
             />
           </View>
           <View>
             <InformationDetail
               label="Giới tính"
-              value={postData?.gender ? 'Female' : 'Male'}
+              value={postDetailData?.gender ? 'Female' : 'Male'}
             />
             <InformationDetail
               label="Ngày sinh"
-              value={moment(postData?.dateOfBirth).format('DD/MM/YYYY')}
+              value={moment(postDetailData?.dateOfBirth).format('DD/MM/YYYY')}
             />
           </View>
         </View>
@@ -171,7 +176,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             loop={false}
             width={WIDTH * 0.9}
             height={WIDTH / 2}
-            data={postData?.photos ?? []}
+            data={postDetailData?.photos ?? []}
             scrollAnimationDuration={1000}
             mode="parallax"
             renderItem={({index}) => (
@@ -217,7 +222,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             </View>
           }>
           <Text fontSize={15} color="grey9" marginTop="m">
-            {postData?.description}
+            {postDetailData?.description}
           </Text>
         </CollapsibleSection>
         <CollapsibleSection
@@ -300,7 +305,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             <LinkShareIcon />
           </Touchable>
         </View>
-        <UserComment postId={postData?.id?.toString() || ''} />
+        <UserComment postId={postDetailData?.id?.toString() || ''} />
       </ScrollView>
     </Screen>
   );

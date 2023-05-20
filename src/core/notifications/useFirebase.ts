@@ -2,20 +2,18 @@ import {useCallback, useEffect, useState} from 'react';
 import {Linking, Platform} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import messaging from '@react-native-firebase/messaging';
+import {useNavigation} from '@react-navigation/native';
 import {useCreateInstallation} from 'api/notifications';
 import {useAuth} from 'core/Auth';
 import {setFcm} from 'core/Auth/utils';
+import {RootStackNavigationProps} from 'navigation/types';
+import {AppScreens} from 'screens';
 
-// import {handleNavigateNotification} from '../Tools';
 import {useAppState} from './useAppState';
 
 let RETRY_COUNT = 0;
 
 const useFirebase = () => {
-  // const handleNavigateNotification = () => {
-  // handle việc navigation khi user bấm vào notification
-  // };
-
   const authToken = useAuth(state => state.token);
 
   const accessToken =
@@ -112,29 +110,30 @@ const useFirebase = () => {
     return unsubscribe;
   }, []);
 
+  const navigation = useNavigation<RootStackNavigationProps>();
+
   useEffect(() => {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
     messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log('hihihi ->3', remoteMessage);
-      // handleNavigateNotification({
-      //   remoteMessage,
-      //   isInApp: false,
-      // });
+      remoteMessage.data?.postId &&
+        navigation.navigate(AppScreens.PostDetail, {
+          postData: {
+            id: +remoteMessage.data.postId,
+          },
+        });
     });
 
     // Check whether an initial notification is available
     messaging()
       .getInitialNotification()
       .then(remoteMessage => {
-        console.log('hihihi -> 1', remoteMessage);
-
         if (remoteMessage) {
-          console.log('hihihi -> 2', remoteMessage);
-
-          // handleNavigateNotification({
-          //   remoteMessage,
-          //   isInApp: false,
-          // });
+          remoteMessage.data?.postId &&
+            navigation.navigate(AppScreens.PostDetail, {
+              postData: {
+                id: +remoteMessage.data.postId,
+              },
+            });
         }
       });
   }, []);
