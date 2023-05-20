@@ -106,7 +106,6 @@ export const EditProfile = () => {
     }
   };
 
-  console.log('currentUser: ', currentUser);
   const onSubmit = async (_: FormData) => {
     if (currentUser) {
       try {

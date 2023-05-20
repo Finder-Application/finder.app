@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {ActivityIndicator, FlatList, StyleSheet, TextInput} from 'react-native';
+import {FlatList, StyleSheet, TextInput} from 'react-native';
 import {useFetchingPosts} from 'api';
 import {PostEntity} from 'api/posts/types';
 import {Filter, Operator} from 'api/types.common';
@@ -21,6 +21,7 @@ import {
   View,
   WaveHandIcon,
 } from 'ui';
+import {LoadingIndicator} from 'ui/animations';
 import {formatUserName} from 'utils';
 import {shallow} from 'zustand/shallow';
 
@@ -147,7 +148,7 @@ export const SearchScreen = () => {
   const renderFooter = () => {
     return (
       // Footer View with Loader
-      <View style={styles.footer}>{true ? <ActivityIndicator /> : null}</View>
+      <View style={styles.footer}>{true ? <LoadingIndicator /> : null}</View>
     );
   };
 

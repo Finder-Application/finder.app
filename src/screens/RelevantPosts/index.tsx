@@ -1,9 +1,10 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {useRelevantPosts} from 'api/posts';
 import {Post} from 'api/posts/types';
 import {Post as PostComponent} from 'screens/Home/components/Post';
 import {Image, NoRelevantPostFoundIcon, Screen, Text, View} from 'ui';
+import {LoadingIndicator} from 'ui/animations';
 
 export const RelevantPosts = ({
   route,
@@ -19,7 +20,7 @@ export const RelevantPosts = ({
   const renderFooter = () => {
     return (
       // Footer View with Loader
-      <View style={styles.footer}>{true ? <ActivityIndicator /> : null}</View>
+      <View style={styles.footer}>{true ? <LoadingIndicator /> : null}</View>
     );
   };
 
