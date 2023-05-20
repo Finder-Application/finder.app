@@ -233,7 +233,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
             </View>
           }>
           {postDetailDataLoading ? (
-            <View marginTop="m">
+            <View marginTop="m" justifyContent="center" alignItems="center">
               <LoadingIndicator />
             </View>
           ) : (
