@@ -26,9 +26,8 @@ import {Comment} from './Comment';
 
 interface Props {
   postId: string;
-  setTotalComment: React.Dispatch<React.SetStateAction<number>>;
 }
-export const UserComment = ({postId, setTotalComment}: Props) => {
+export const UserComment = ({postId}: Props) => {
   const {control, getValues, resetField} = useForm();
   const navigation = useNavigation<AuthStackNavigationProps>();
 
@@ -49,11 +48,7 @@ export const UserComment = ({postId, setTotalComment}: Props) => {
       },
     },
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    data => {
-      setTotalComment(
-        data?.pages.map((page: {data: any}) => page?.data)?.flat()?.length ?? 0,
-      );
-    },
+    () => null,
   );
 
   const {mutate: createComment} = useCreateComment();

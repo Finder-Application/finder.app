@@ -1,4 +1,4 @@
-import {useInfiniteQuery, useMutation} from 'react-query';
+import {useInfiniteQuery, useMutation, useQuery} from 'react-query';
 import {queryClient} from 'api/APIProvider';
 import {client} from 'api/client';
 import {FEATURE, QUERY_KEY} from 'api/constants';
@@ -84,8 +84,10 @@ export const useCreateComment = () => {
     ['CREATE_COMMENT'],
     (body: CreateComment) => createComment(body),
     {
-      onSuccess: async () => {
+      onSuccess: async (_, variable) => {
         queryClient.invalidateQueries([QUERY_KEY.PAGINATION_COMMENTS]);
+
+        queryClient.invalidateQueries(['COUNT_COMMENT' + variable?.postId]);
       },
     },
   );
@@ -97,8 +99,10 @@ export const useCreateSubComment = () => {
     ['CREATE_SUB_COMMENT'],
     (body: CreateSubComment) => createComment(body),
     {
-      onSuccess: async () => {
+      onSuccess: async (_, variable) => {
         queryClient.invalidateQueries([QUERY_KEY.PAGINATION_COMMENTS]);
+
+        queryClient.invalidateQueries(['COUNT_COMMENT' + variable.postId]);
       },
     },
   );
@@ -109,3 +113,12 @@ export const useDeleteComment = () => {
   const mutation = useMutation((body: {id: number}) => deleteItem(body.id));
   return mutation;
 };
+
+const getTotalComment = async (postId: number) => {
+  const baseUrl = `/api/public/comments/count?id=${postId}`;
+  const {data} = await client.get(baseUrl);
+  return data?.total || 0;
+};
+
+export const useCountTotalComment = (postId: number) =>
+  useQuery('COUNT_COMMENT' + postId, () => getTotalComment(postId));

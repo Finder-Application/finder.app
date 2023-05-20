@@ -4,6 +4,7 @@ import {ImageSource} from 'react-native-image-viewing/dist/@types';
 import ImageViewing from 'react-native-image-viewing/dist/ImageViewing';
 import Carousel from 'react-native-reanimated-carousel';
 import {useNavigation} from '@react-navigation/native';
+import {useCountTotalComment} from 'api/comments';
 import {useGetPostDetail} from 'api/posts';
 import {Post} from 'api/posts/types';
 import {useAuth} from 'core/Auth';
@@ -62,7 +63,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
   const {data: postDetailData, isLoading: postDetailDataLoading} =
     useGetPostDetail(Number(postData?.id));
 
-  const [totalComment, setTotalComment] = useState(0);
+  const totalComment = useCountTotalComment(Number(postData?.id));
 
   const missingPhotos = useMemo(() => {
     return postData?.photos?.map(photo => ({
@@ -291,17 +292,14 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
               <Touchable>
                 <CommentIcon />
               </Touchable>
-              <Text marginLeft="xs">{totalComment}</Text>
+              <Text marginLeft="xs">{totalComment.data}</Text>
             </View>
           </View>
           <Touchable>
             <LinkShareIcon />
           </Touchable>
         </View>
-        <UserComment
-          postId={postData?.id?.toString() || ''}
-          setTotalComment={setTotalComment}
-        />
+        <UserComment postId={postData?.id?.toString() || ''} />
       </ScrollView>
     </Screen>
   );

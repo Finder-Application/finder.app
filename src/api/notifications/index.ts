@@ -68,13 +68,19 @@ export const useGetListNotiComment = (params: IParamsDefault<PostNotis>) => {
 };
 
 export const useGetTotalNoti = () => {
-  return useQuery([QUERY_KEY.COUNT_COMMENT], async () => {
-    const count = await client.get('/api/private/notification/count-noti', {
-      headers: {Authorization: `Bearer ${getToken()?.access}`},
-    });
+  return useQuery(
+    [QUERY_KEY.COUNT_COMMENT],
+    async () => {
+      const count = await client.get('/api/private/notification/count-noti', {
+        headers: {Authorization: `Bearer ${getToken()?.access}`},
+      });
 
-    return count?.data?.count;
-  });
+      return count?.data?.count;
+    },
+    {
+      refetchInterval: 10000,
+    },
+  );
 };
 
 const installFcm = async (body: {token: string}) => {

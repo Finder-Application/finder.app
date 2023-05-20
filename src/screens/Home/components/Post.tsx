@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useCountTotalComment} from 'api/comments';
 import {Post as PostType} from 'api/posts/types';
 import {useAuth} from 'core/Auth';
 import moment from 'moment';
@@ -41,7 +42,7 @@ export const Post = (props: PostProps) => {
   );
   const [isLiked, setIsLiked] = useState(false);
 
-  const [totalComment, setTotalComment] = useState(0);
+  const totalComment = useCountTotalComment(Number(post?.id));
 
   const ownerName = formatUserName({
     user: {
@@ -184,7 +185,7 @@ export const Post = (props: PostProps) => {
             <Touchable>
               <CommentIcon />
             </Touchable>
-            <Text marginLeft="xs">{totalComment}</Text>
+            <Text marginLeft="xs">{totalComment.data}</Text>
           </View>
         </View>
         <Touchable>
@@ -192,10 +193,14 @@ export const Post = (props: PostProps) => {
         </Touchable>
       </View>
 
+<<<<<<< Updated upstream
       <UserComment
         postId={post?.id.toString()}
         setTotalComment={setTotalComment}
       />
+=======
+      <UserComment postId={post?.id.toString()} />
+>>>>>>> Stashed changes
     </View>
   );
 };
