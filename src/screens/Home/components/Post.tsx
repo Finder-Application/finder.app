@@ -193,14 +193,7 @@ export const Post = (props: PostProps) => {
         </Touchable>
       </View>
 
-<<<<<<< Updated upstream
-      <UserComment
-        postId={post?.id.toString()}
-        setTotalComment={setTotalComment}
-      />
-=======
       <UserComment postId={post?.id.toString()} />
->>>>>>> Stashed changes
     </View>
   );
 };
