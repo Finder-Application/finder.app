@@ -11,6 +11,7 @@ export const NavigationContainer = ({
   children: React.ReactNode;
 }) => {
   const {navigation} = useTheme<Theme>();
+
   return (
     <SafeAreaProvider>
       <StatusBar

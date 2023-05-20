@@ -18,10 +18,10 @@ const Stack = createStackNavigator();
 export type HomeStackParamList = {
   Home: undefined;
   PostDetail: {
-    postData: Post;
+    postData: Partial<Post>;
   };
   RelevantPosts: {
-    postData: Post;
+    postData: Partial<Post>;
   };
 };
 
