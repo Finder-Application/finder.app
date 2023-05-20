@@ -24,7 +24,6 @@ import {
   CalendarIcon,
   CloseIcon,
   DropDownPicker,
-  HEIGHT,
   LinearGradientView,
   Screen,
   SearchInput,
@@ -36,6 +35,7 @@ import {
 } from 'ui';
 import {GeoUtils} from 'utils';
 
+import {Description} from './components/Description';
 import {ImagePickerSection} from './components/ImagePickerSection';
 const DOB_FORMAT = 'MM/DD/YYYY';
 const MISSING_TIME_FORMAT = 'MM/DD/YYYY';
@@ -45,7 +45,7 @@ const initRegionItems = GeoUtils.getAllProvinces().map(province => ({
   value: province.idProvince,
 }));
 
-const FORM_NAMES: {[key: string]: keyof FormData} = {
+export const FORM_NAMES: {[key: string]: keyof PostFormData} = {
   TITLE: 'title',
   FULL_NAME: 'fullName',
   NICK_NAME: 'nickName',
@@ -75,7 +75,7 @@ type HomeTownForm = {
 
 type MissingAddressForm = HomeTownForm;
 
-type FormData = {
+export type PostFormData = {
   title: string;
   fullName: string;
   nickName: string;
@@ -107,8 +107,9 @@ export const AddPost = memo(
       reset,
       getFieldState,
       getValues,
+      setValue,
       formState: {errors},
-    } = useForm<FormData>({
+    } = useForm<PostFormData>({
       defaultValues: {
         title: postParam?.title,
         fullName: postParam?.fullName,
@@ -429,7 +430,7 @@ export const AddPost = memo(
       setPostImageResource({files: [], descriptors: []});
     };
 
-    const onSubmit = async (_: FormData) => {
+    const onSubmit = async (_: PostFormData) => {
       const isFormValid = hasFormValid();
 
       if (isFormValid) {
@@ -1138,48 +1139,13 @@ export const AddPost = memo(
                 {/* End of Missing Time */}
 
                 {/* Description  */}
-                <View
-                  padding="m"
-                  marginVertical="s"
-                  backgroundColor="blue2"
-                  zIndex={-1}>
-                  <Text fontWeight="700" marginBottom="s">
-                    Description
-                  </Text>
-                  <Text color="grey13" fontStyle="italic">
-                    * Please provide the specific information of the person you
-                    are looking for or found by you. The more specific, the more
-                    accurate and better matching
-                  </Text>
-                  <Controller
-                    control={control}
-                    render={({field: {onChange, onBlur, value}}) => (
-                      <SearchInput
-                        backgroundColor="white"
-                        borderWidth={1}
-                        marginTop="m"
-                        inputProps={{
-                          name: FORM_NAMES.DESCRIPTION,
-                          control: control as unknown as Control<
-                            FieldValues,
-                            any
-                          >,
-                          onChange: onChange,
-                          onBlur: onBlur,
-                          value: value,
-                          textAlignVertical: 'top',
-                          style: {
-                            height: HEIGHT / 6,
-                          },
-                        }}
-                      />
-                    )}
-                    name={FORM_NAMES.DESCRIPTION}
-                    rules={{required: 'Description is required'}}
-                  />
-                </View>
+                <Description
+                  control={control}
+                  onChange={value => {
+                    setValue('description', value);
+                  }}
+                />
                 {/* End of Description  */}
-
                 {/* Missing Person's face images  */}
                 <ImagePickerSection
                   postImageSource={postImageResource}

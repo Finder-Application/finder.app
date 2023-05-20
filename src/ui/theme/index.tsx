@@ -62,6 +62,7 @@ export const BaseTheme = {
     grey26: '#A9A9A9',
     white: 'white',
     white2: '#E3E5E5',
+    whiteOpacity80: 'rgba(255, 255, 255, 0.8)',
     red: '#EB5757',
     red1: '#EC0000',
     blue: '#7CDFFF',

@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {ImageSource} from 'react-native-image-viewing/dist/@types';
 import ImageViewing from 'react-native-image-viewing/dist/ImageViewing';
 import Carousel from 'react-native-reanimated-carousel';
@@ -31,6 +31,7 @@ import {
   View,
   WIDTH,
 } from 'ui';
+import {LoadingIndicator} from 'ui/animations';
 import CollapsibleSection from 'ui/CollapsibleSection';
 import {formatUserName} from 'utils';
 import {shallow} from 'zustand/shallow';
@@ -232,7 +233,7 @@ export const PostDetail = ({route}: {route?: {params: {postData: Post}}}) => {
           }>
           {postDetailDataLoading ? (
             <View marginTop="m">
-              <ActivityIndicator />
+              <LoadingIndicator />
             </View>
           ) : (
             <View marginTop="m">

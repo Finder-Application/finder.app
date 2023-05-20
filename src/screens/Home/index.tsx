@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   // PermissionsAndroid,
   StyleSheet,
@@ -22,6 +21,7 @@ import {
   UnderLinePencilIcon,
   View,
 } from 'ui';
+import {LoadingIndicator} from 'ui/animations';
 
 import {Post as PostComponent} from './components';
 
@@ -53,7 +53,7 @@ export const Home = () => {
   const renderFooter = () => {
     return (
       // Footer View with Loader
-      <View style={styles.footer}>{true ? <ActivityIndicator /> : null}</View>
+      <View style={styles.footer}>{true ? <LoadingIndicator /> : null}</View>
     );
   };
 

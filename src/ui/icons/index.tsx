@@ -18,6 +18,7 @@ export * from './Heart';
 export * from './Home';
 export * from './LinkShare';
 export * from './Magnifier';
+export * from './Microphone';
 export * from './NoRelevantPostFound';
 export * from './Plane';
 export * from './Plus';

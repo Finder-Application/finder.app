@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useFetchingPosts} from 'api';
 import {Operator} from 'api/types.common';
@@ -22,6 +22,7 @@ import {
   View,
   YourPostDocsIcon,
 } from 'ui';
+import {LoadingIndicator} from 'ui/animations';
 import {formatUserName} from 'utils';
 
 const CreateImage = require('./create.png');
@@ -66,7 +67,7 @@ export const YourPosts = () => {
   const renderFooter = () => {
     return (
       // Footer View with Loader
-      <View style={styles.footer}>{true ? <ActivityIndicator /> : null}</View>
+      <View style={styles.footer}>{true ? <LoadingIndicator /> : null}</View>
     );
   };
 

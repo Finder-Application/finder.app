@@ -18,10 +18,11 @@ export const Comment = ({setReplyFor, item}: Props) => {
           borderColor={'grey1'}
           borderRadius={50}
           source={{
-            uri:
-              item?.user?.gender === false
-                ? MALE_AVATAR_PLACE_HOLDER
-                : FEMALE_AVATAR_PLACE_HOLDER,
+            uri: item?.user?.avatar
+              ? item?.user?.avatar
+              : item?.user?.gender === false
+              ? MALE_AVATAR_PLACE_HOLDER
+              : FEMALE_AVATAR_PLACE_HOLDER,
           }}
         />
 
@@ -68,7 +69,7 @@ export const Comment = ({setReplyFor, item}: Props) => {
       </View>
 
       {item?.child &&
-        item?.child?.map((child: any) => (
+        item?.child?.map(child => (
           <View
             key={child?.id}
             flexDirection="row"
@@ -81,10 +82,11 @@ export const Comment = ({setReplyFor, item}: Props) => {
               borderColor={'grey1'}
               borderRadius={50}
               source={{
-                uri:
-                  child?.user?.gender === false
-                    ? MALE_AVATAR_PLACE_HOLDER
-                    : FEMALE_AVATAR_PLACE_HOLDER,
+                uri: child?.user?.avatar
+                  ? child?.user?.avatar
+                  : child?.user?.gender === false
+                  ? MALE_AVATAR_PLACE_HOLDER
+                  : FEMALE_AVATAR_PLACE_HOLDER,
               }}
             />
 
