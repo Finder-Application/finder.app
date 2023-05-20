@@ -4,7 +4,7 @@ import {showMessage} from 'react-native-flash-message';
 import messaging from '@react-native-firebase/messaging';
 import {useCreateInstallation} from 'api/notifications';
 import {useAuth} from 'core/Auth';
-import {getFcm, setFcm} from 'core/Auth/utils';
+import {setFcm} from 'core/Auth/utils';
 
 // import {handleNavigateNotification} from '../Tools';
 import {useAppState} from './useAppState';
@@ -36,12 +36,11 @@ const useFirebase = () => {
   };
 
   const getToken = useCallback(async () => {
-    let cacheFcmToken = getFcm();
     if (accessToken) {
       try {
         const fcmToken = await messaging().getToken();
 
-        if (fcmToken !== cacheFcmToken) {
+        if (fcmToken) {
           setFcm(fcmToken);
 
           setIsEnabled(true);

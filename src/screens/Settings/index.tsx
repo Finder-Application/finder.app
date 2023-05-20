@@ -42,6 +42,8 @@ export const Settings = () => {
 
   const {toggleNotificationSetting, isEnabled} = useFirebase();
 
+  console.log('isEnabled', isEnabled);
+
   const SettingItem = (
     props: {title: string} & React.ComponentProps<typeof Touchable>,
   ) => {
