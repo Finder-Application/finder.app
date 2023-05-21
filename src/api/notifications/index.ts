@@ -1,4 +1,5 @@
 import {useInfiniteQuery, useMutation, useQuery} from 'react-query';
+import {queryClient} from 'api/APIProvider';
 import {client, privateClient} from 'api/client';
 import {FEATURE, QUERY_KEY} from 'api/constants';
 import {IParamsDefault, TResponseList} from 'api/types.common';
@@ -31,7 +32,7 @@ const getListNotiPosts = async <T, P>(
 
 export const useGetListNotiPosts = (params: IParamsDefault<PostNotis>) => {
   return useInfiniteQuery(
-    ['FETCH_POSTS', params],
+    ['FETCH_NOTI_POSTS', params],
     async ({pageParam = 1}) => {
       const result = await getListNotiPosts<PostNotis, typeof params>(
         {...params, page: pageParam},
@@ -50,7 +51,7 @@ export const useGetListNotiPosts = (params: IParamsDefault<PostNotis>) => {
 
 export const useGetListNotiComment = (params: IParamsDefault<PostNotis>) => {
   return useInfiniteQuery(
-    ['FETCH_POSTS', params],
+    ['FETCH_NOTI_COMMENTS', params],
     async ({pageParam = 1}) => {
       const result = await getListNotiPosts<PostNotis, typeof params>(
         {...params, page: pageParam},
@@ -99,5 +100,28 @@ export const useCreateInstallation = () => {
       console.log(':) : useCreateInstallation -> onError', e);
     },
   });
+  return mutation;
+};
+
+const seenNoti = async (body: {id: number; type: string}) => {
+  const baseUrl = '/api/private/notification/seen-notification';
+  return privateClient.post(baseUrl, {
+    ...body,
+  });
+};
+
+export const useSeenNoti = () => {
+  const mutation = useMutation(
+    (body: {id: number; type: string}) => seenNoti(body),
+    {
+      onSuccess: (_, {type}) => {
+        if (type === 'comment') {
+          queryClient.invalidateQueries(['FETCH_NOTI_COMMENTS']);
+        } else {
+          queryClient.invalidateQueries(['FETCH_NOTI_POSTS']);
+        }
+      },
+    },
+  );
   return mutation;
 };
