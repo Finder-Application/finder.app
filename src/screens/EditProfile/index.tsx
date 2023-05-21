@@ -238,7 +238,6 @@ export const EditProfile = () => {
               />
             )}
             name={FORM_NAMES.MIDDLE_NAME}
-            rules={{required: 'Middle Name is required'}}
           />
         </View>
 

@@ -1,5 +1,5 @@
 import {useInfiniteQuery, useMutation, useQuery} from 'react-query';
-import {client} from 'api/client';
+import {client, privateClient} from 'api/client';
 import {FEATURE, QUERY_KEY} from 'api/constants';
 import {IParamsDefault, TResponseList} from 'api/types.common';
 import {getToken} from 'core/Auth/utils';
@@ -85,13 +85,9 @@ export const useGetTotalNoti = () => {
 
 const installFcm = async (body: {token: string}) => {
   const baseUrl = '/api/private/notification/install-fcm';
-  return client.post(
-    baseUrl,
-    {
-      ...body,
-    },
-    {headers: {Authorization: `Bearer ${getToken()?.access}`}},
-  );
+  return privateClient.post(baseUrl, {
+    ...body,
+  });
 };
 
 export const useCreateInstallation = () => {
