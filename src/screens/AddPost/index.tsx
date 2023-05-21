@@ -1144,6 +1144,9 @@ export const AddPost = memo(
                   onChange={value => {
                     setValue('description', value);
                   }}
+                  onClear={() => {
+                    setValue('description', '');
+                  }}
                 />
                 {/* End of Description  */}
                 {/* Missing Person's face images  */}

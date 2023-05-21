@@ -29,10 +29,11 @@ import {shallow} from 'zustand/shallow';
 import {PostMenuView} from './PostMenuView';
 type PostProps = {
   post: PostType;
+  onDelete?: () => void;
 };
 
 export const Post = (props: PostProps) => {
-  const {post} = props;
+  const {post, onDelete} = props;
 
   const navigation = useNavigation<RootStackNavigationProps>();
 
@@ -127,7 +128,7 @@ export const Post = (props: PostProps) => {
             </LinearGradientView>
           </Touchable>
           {isLoggedIn && currentUser?.userId === post?.owner?.userId && (
-            <PostMenuView data={post} />
+            <PostMenuView data={post} onDelete={onDelete} />
           )}
         </View>
       </View>
@@ -142,8 +143,11 @@ export const Post = (props: PostProps) => {
         marginVertical="s">
         <View flex={1}>
           <InformationDetail label="Họ Tên" value={post?.fullName} />
-          <InformationDetail label="Tên ở nhà" value={post?.nickname} />
-          <InformationDetail label="Quê Quán" value={post?.hometown?.region} />
+          <InformationDetail
+            label="Tên ở nhà"
+            value={post?.nickname}
+            marginTop="s"
+          />
         </View>
         <View>
           <InformationDetail
@@ -153,9 +157,16 @@ export const Post = (props: PostProps) => {
           <InformationDetail
             label="Ngày sinh"
             value={moment(post?.dateOfBirth).format('DD/MM/YYYY')}
+            marginTop="s"
           />
         </View>
       </View>
+      <InformationDetail
+        label="Quê Quán"
+        value={post?.hometown?.region}
+        marginBottom="s"
+      />
+
       <Image
         height={250}
         width="100%"

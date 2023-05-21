@@ -124,7 +124,9 @@ export const YourPosts = () => {
                 </View>
               }
               data={posts}
-              renderItem={({item}) => <PostComponent post={item} />}
+              renderItem={({item}) => (
+                <PostComponent post={item} onDelete={refetch} />
+              )}
               ListFooterComponent={isFetchingNextPage ? renderFooter : null}
               ListEmptyComponent={
                 isLoading ? (

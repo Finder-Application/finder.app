@@ -1,8 +1,7 @@
 import {useInfiniteQuery, useMutation, useQuery} from 'react-query';
-import {client} from 'api/client';
+import {client, privateClient} from 'api/client';
 import {FEATURE} from 'api/constants';
 import {FaceDescriptor, IParamsDefault, TResponseList} from 'api/types.common';
-import {getToken} from 'core/Auth/utils';
 
 import {Address, Post, PostEntity} from './types';
 
@@ -82,30 +81,24 @@ export interface UpdatePostParams {
 
 const createPost = async (body: CreatePostBody) => {
   const baseUrl = '/api/private/posts';
-  return client.post(
-    baseUrl,
-    {
-      ...body,
-    },
-    {headers: {Authorization: `Bearer ${getToken()?.access}`}},
-  );
+  return privateClient.post(baseUrl, {
+    ...body,
+  });
 };
 
 export const useCreatePost = () => {
-  const mutation = useMutation((body: CreatePostBody) => createPost(body));
+  const mutation = useMutation(['CREATE_POST'], (body: CreatePostBody) =>
+    createPost(body),
+  );
   return mutation;
 };
 
 const updatePost = async (params: UpdatePostParams) => {
   const {id, body} = params;
   const baseUrl = `/api/private/posts/${id}`;
-  return client.put(
-    baseUrl,
-    {
-      ...body,
-    },
-    {headers: {Authorization: `Bearer ${getToken()?.access}`}},
-  );
+  return privateClient.put(baseUrl, {
+    ...body,
+  });
 };
 
 export const useUpdatePost = () => {
@@ -117,9 +110,14 @@ export const useUpdatePost = () => {
 
 export const useRelevantPosts = (params: {id: number}) =>
   useQuery(['GET_RELEVANT_POSTS', params.id], async () => {
-    const {data}: {data: Post[]} = await client.get(
+    const {data}: {data: Post[]} = await privateClient.get(
       `/api/private/posts/relevant/${params.id}`,
-      {headers: {Authorization: `Bearer ${getToken()?.access}`}},
     );
+    return data;
+  });
+
+export const useDeletePost = () =>
+  useMutation(['DELETE_POST'], async (params: {id: number}) => {
+    const data = await privateClient.delete(`/api/private/posts/${params.id}`);
     return data;
   });

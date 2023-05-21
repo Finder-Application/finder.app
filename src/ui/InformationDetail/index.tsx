@@ -21,7 +21,7 @@ export const InformationDetail = ({
         {showBullet ? '\u2022' : ''} {`${label}: `}
       </Text>
       <View flexShrink={1}>
-        <Text numberOfLines={1} ellipsizeMode="tail" {...valueProps}>
+        <Text ellipsizeMode="tail" {...valueProps}>
           {value}
         </Text>
       </View>

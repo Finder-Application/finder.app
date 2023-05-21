@@ -14,9 +14,10 @@ import {FORM_NAMES, PostFormData} from '../index';
 type DescriptionProps = {
   control?: Control<PostFormData>;
   onChange?: (value: string) => void;
+  onClear?: () => void;
 };
 export const Description = (props: DescriptionProps) => {
-  const {control, onChange} = props;
+  const {control, onChange, onClear} = props;
 
   const [result, setResult] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ export const Description = (props: DescriptionProps) => {
   };
   const clear = () => {
     setResult('');
+    onClear && onClear();
   };
 
   useEffect(() => {
@@ -74,7 +76,7 @@ export const Description = (props: DescriptionProps) => {
       </Text>
       <Controller
         control={control}
-        render={({field: {onBlur, value = result}}) => (
+        render={({field: {onBlur, value}}) => (
           <SearchInput
             backgroundColor="white"
             borderWidth={1}
@@ -89,7 +91,7 @@ export const Description = (props: DescriptionProps) => {
                 setResult(text);
               },
               onBlur: onBlur,
-              value: result ?? value,
+              value: value,
               textAlignVertical: 'top',
               style: {
                 height: HEIGHT / 6,

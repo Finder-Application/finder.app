@@ -1,13 +1,12 @@
 import {useInfiniteQuery, useMutation, useQuery} from 'react-query';
 import {queryClient} from 'api/APIProvider';
-import {client} from 'api/client';
+import {client, privateClient} from 'api/client';
 import {FEATURE, QUERY_KEY} from 'api/constants';
 import {
   IParamsDefault,
   ResponseDeleteSuccess,
   TResponseList,
 } from 'api/types.common';
-import {getToken} from 'core/Auth/utils';
 
 import {
   Comment,
@@ -65,13 +64,9 @@ const createComment = async (
   body: CreateComment | CreateSubComment,
 ): Promise<ResponseCreateComment> => {
   const baseUrl = '/api/private/comments';
-  return client.post(
-    baseUrl,
-    {
-      ...body,
-    },
-    {headers: {Authorization: `Bearer ${getToken()?.access}`}},
-  );
+  return privateClient.post(baseUrl, {
+    ...body,
+  });
 };
 
 const deleteItem = (itemId: number): Promise<ResponseDeleteSuccess> => {
