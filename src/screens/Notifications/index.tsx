@@ -1,10 +1,15 @@
 import React, {memo, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useGetListNotiComment, useGetListNotiPosts} from 'api/notifications';
 import {RootStackNavigationProps} from 'navigation/types';
 import {buildNavigationOptions} from 'navigation/utils';
-import {Image, Screen, Text, View} from 'ui';
+import {LinearGradientView, Text, Touchable, View} from 'ui';
+
+import {ShowListNoti} from './ShowListNoti';
 
 export const Notifications = memo(() => {
+  const [tab, setTab] = React.useState<'comment' | 'post'>('comment');
+
   const navigation = useNavigation<RootStackNavigationProps>();
 
   useEffect(() => {
@@ -16,42 +21,49 @@ export const Notifications = memo(() => {
   }, []);
 
   return (
-    <Screen
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      paddingHorizontal={undefined}>
-      <View flexDirection="row" marginVertical="s" marginHorizontal="m">
-        <View
-          flexDirection="row"
-          alignItems="flex-start"
-          marginBottom="s"
-          backgroundColor={'white'}
-          padding={'s'}
-          width={'100%'}
-          borderRadius={10}>
-          <Image
-            height={35}
-            width={35}
-            borderRadius={50}
-            source={{
-              uri: 'https://static-bebeautiful-in.unileverservices.com/Flawless-skin-basics.jpg',
-            }}
-          />
-
-          <View paddingLeft={'s'}>
-            <Text color="grey1" fontSize={12}>
-              Add a comment... 🤔
-            </Text>
-
-            <Text color="grey7" fontSize={11}>
-              Add a comment... 🤔 Lorem ipsum dolor sit, amet consectetur
-              adipisicing elit. Doloremque quasi doloribus aspernatur ratione
-              deserunt neque, ad dolorem iusto alias, tempore fugit quas labore
-              adipisci eaque, debitis totam veniam delectus. Fugiat?
-            </Text>
-          </View>
+    <View flex={1}>
+      <View flexDirection="row" borderRadius={16} justifyContent={'center'}>
+        <View flexDirection="row" borderRadius={16} backgroundColor="white">
+          <Touchable
+            alignItems="center"
+            backgroundColor="white"
+            borderRadius={16}
+            overflow="hidden"
+            onPress={() => setTab('comment')}>
+            {tab === 'comment' ? (
+              <LinearGradientView paddingVertical="m" paddingHorizontal="m">
+                <Text color="grey2">Comment</Text>
+              </LinearGradientView>
+            ) : (
+              <Text paddingVertical="m" paddingHorizontal="m" color="grey2">
+                Comment
+              </Text>
+            )}
+          </Touchable>
+          <Touchable
+            alignItems="center"
+            backgroundColor="white"
+            borderRadius={16}
+            overflow="hidden"
+            onPress={() => setTab('post')}>
+            {tab === 'post' ? (
+              <LinearGradientView paddingVertical="m" paddingHorizontal="m">
+                <Text color="grey2">Relevant Post</Text>
+              </LinearGradientView>
+            ) : (
+              <Text paddingVertical="m" paddingHorizontal="m" color="grey2">
+                Relevant Post
+              </Text>
+            )}
+          </Touchable>
         </View>
       </View>
-    </Screen>
+
+      {tab === 'comment' ? (
+        <ShowListNoti useFetchingNoti={useGetListNotiComment} type="comment" />
+      ) : (
+        <ShowListNoti useFetchingNoti={useGetListNotiPosts} type="post" />
+      )}
+    </View>
   );
 });
