@@ -62,21 +62,21 @@ export const Post = (props: PostProps) => {
     if (percent < 50) {
       return (
         <Text marginHorizontal="s" fontWeight="700" color="red">
-          {percent}%
+          {percent.toFixed(1)}%
         </Text>
       );
     }
     if (percent < 90) {
       return (
         <Text marginHorizontal="s" fontWeight="700" color="blue">
-          {percent}%
+          {percent.toFixed(1)}%
         </Text>
       );
     }
 
     return (
       <Text marginHorizontal="s" fontWeight="700" color="green6">
-        {percent}%
+        {percent.toFixed(1)}%
       </Text>
     );
   };
