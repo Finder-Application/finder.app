@@ -222,7 +222,8 @@ export const SearchScreen = () => {
                   marginBottom="l">
                   <SearchResultsIcon />
                   <Text fontSize={17} color="grey23">
-                    There are {posts.length} posts relating to your search
+                    There are {data?.pages[0].meta.itemCount} posts relating to
+                    your search
                   </Text>
                 </View>
               )}

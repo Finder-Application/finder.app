@@ -62,21 +62,21 @@ export const Post = (props: PostProps) => {
     if (percent < 50) {
       return (
         <Text marginHorizontal="s" fontWeight="700" color="red">
-          {percent.toFixed(2)}%
+          {percent}%
         </Text>
       );
     }
     if (percent < 90) {
       return (
         <Text marginHorizontal="s" fontWeight="700" color="blue">
-          {percent.toFixed(2)}%
+          {percent}%
         </Text>
       );
     }
 
     return (
       <Text marginHorizontal="s" fontWeight="700" color="green6">
-        {percent.toFixed(2)}%
+        {percent}%
       </Text>
     );
   };
@@ -105,7 +105,7 @@ export const Post = (props: PostProps) => {
                 : FEMALE_AVATAR_PLACE_HOLDER,
             }}
           />
-          <Text fontWeight="700" marginLeft="s">
+          <Text fontWeight="700" marginLeft="s" numberOfLines={2}>
             {ownerName}
           </Text>
         </View>
