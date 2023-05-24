@@ -1,5 +1,5 @@
 import {API_URL} from '@env';
-import axios from 'axios';
+import axios, {AxiosRequestHeaders, InternalAxiosRequestConfig} from 'axios';
 import {getToken} from 'core/Auth/utils';
 
 export const client = axios.create({
@@ -8,5 +8,26 @@ export const client = axios.create({
 
 export const privateClient = axios.create({
   baseURL: API_URL,
-  headers: {Authorization: `Bearer ${getToken()?.access}`},
 });
+
+privateClient.interceptors.request.use(
+  (config: InternalAxiosRequestConfig<any>) => {
+    const {data} = config;
+    const token = getToken()?.access;
+    const contentType =
+      data instanceof FormData ? 'multipart/form-data' : 'application/json';
+
+    const defaultHeaders = {
+      'content-type': contentType,
+      authorization: `Bearer ${token}`,
+    };
+
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        ...defaultHeaders,
+      } as unknown as AxiosRequestHeaders,
+    };
+  },
+);
