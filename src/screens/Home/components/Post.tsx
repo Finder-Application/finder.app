@@ -48,9 +48,9 @@ export const Post = (props: PostProps) => {
   const ownerName = formatUserName({
     user: {
       firstName: post?.owner?.firstName,
-      middleName: post?.owner?.middleName,
       lastName: post?.owner?.lastName,
     },
+    option: 'short',
   });
 
   const photo = post?.photos?.[0];

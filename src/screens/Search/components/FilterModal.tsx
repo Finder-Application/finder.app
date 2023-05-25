@@ -66,6 +66,8 @@ export const FilterModal = (props: FilterModalProps) => {
   );
   const [isCityDropdownOpen, setIsCityDropDownOpen] = useState(false);
   const [cityRegionItems, setCityRegionItems] = useState(initRegionItems);
+
+  console.log('selectedGender: ', selectedGender);
   return (
     <Modal visible={visible} animationType="slide">
       <View
@@ -194,7 +196,11 @@ export const FilterModal = (props: FilterModalProps) => {
             onPress={() => {
               onSubmit &&
                 onSubmit({
-                  gender: selectedGender && selectedGender === 'male' ? 0 : 1,
+                  gender: selectedGender
+                    ? selectedGender === 'male'
+                      ? 0
+                      : 1
+                    : undefined,
                   birthYear: missingTime && moment(missingTime),
                   city: city && GeoUtils.getProvince(city),
                 });

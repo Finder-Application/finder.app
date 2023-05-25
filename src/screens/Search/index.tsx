@@ -59,6 +59,7 @@ export const SearchScreen = () => {
     searchStates?.gender !== undefined ||
     !!searchStates?.searchKeywords;
 
+  console.log('searchStates: ', searchStates);
   const postsToFilter: Filter<PostEntity>[] = useMemo(() => {
     const gender =
       searchStates?.gender !== undefined
