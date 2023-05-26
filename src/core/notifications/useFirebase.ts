@@ -3,7 +3,7 @@ import {Linking, Platform} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import messaging from '@react-native-firebase/messaging';
 import {useNavigation} from '@react-navigation/native';
-import {useCreateInstallation} from 'api/notifications';
+import {useCreateInstallation, useSeenNoti} from 'api/notifications';
 import {useAuth} from 'core/Auth';
 import {setFcm} from 'core/Auth/utils';
 import {RootStackNavigationProps} from 'navigation/types';
@@ -15,6 +15,8 @@ let RETRY_COUNT = 0;
 
 const useFirebase = () => {
   const authToken = useAuth(state => state.token);
+
+  const seenNoti = useSeenNoti();
 
   const accessToken =
     authToken && authToken?.access ? `Bearer ${authToken.access}` : '';
@@ -115,12 +117,17 @@ const useFirebase = () => {
   useEffect(() => {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
     messaging().onNotificationOpenedApp(remoteMessage => {
-      remoteMessage.data?.postId &&
+      if (remoteMessage.data?.postId) {
+        seenNoti.mutate({
+          id: +remoteMessage.data.postId,
+          type: remoteMessage.data.type,
+        });
         navigation.navigate(AppScreens.PostDetail, {
           postData: {
             id: +remoteMessage.data.postId,
           },
         });
+      }
     });
 
     // Check whether an initial notification is available
@@ -128,12 +135,17 @@ const useFirebase = () => {
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
-          remoteMessage.data?.postId &&
+          if (remoteMessage.data?.postId) {
+            seenNoti.mutate({
+              id: +remoteMessage.data.postId,
+              type: remoteMessage.data.type,
+            });
             navigation.navigate(AppScreens.PostDetail, {
               postData: {
                 id: +remoteMessage.data.postId,
               },
             });
+          }
         }
       });
   }, []);
