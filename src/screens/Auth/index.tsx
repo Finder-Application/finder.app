@@ -10,7 +10,7 @@ import {AxiosError} from 'axios';
 import {useAppStore} from 'core/App';
 import {signInGoogle} from 'core/Auth';
 import {AuthStackNavigationProps} from 'navigation/AuthNavigator';
-import {COMMON_ERROR_MESSAGE} from 'screens/constants';
+import {AppScreens, COMMON_ERROR_MESSAGE} from 'screens/constants';
 import {
   AppleIcon,
   EyeCloseIcon,
@@ -221,7 +221,10 @@ export const Auth = ({
             secureTextEntry: hidePass,
           }}
         />
-        <Touchable marginTop="s" marginBottom="xl">
+        <Touchable
+          marginTop="s"
+          marginBottom="xl"
+          onPress={() => navigation.navigate(AppScreens.ForgotPassword)}>
           <Text fontWeight="600" color="grey20" textAlign="right">
             Forgot Password?
           </Text>

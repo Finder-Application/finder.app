@@ -3,7 +3,13 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from '@react-navigation/stack';
-import {AppScreens, Auth} from 'screens';
+import {
+  AppScreens,
+  Auth,
+  CreateNewPassword,
+  ForgotPassword,
+  PasswordChanged,
+} from 'screens';
 
 export type AuthStackParamList = {
   AuthNavigator: {
@@ -13,6 +19,11 @@ export type AuthStackParamList = {
     };
   };
   Auth: undefined;
+  ForgotPassword: undefined;
+  CreateNewPassword: {
+    email: string;
+  };
+  PasswordChanged: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -29,6 +40,18 @@ export const AuthNavigator = () => {
         animationTypeForReplace: 'pop',
       }}>
       <Stack.Screen name={AppScreens.Auth} component={Auth} />
+      <Stack.Screen
+        name={AppScreens.ForgotPassword}
+        component={ForgotPassword}
+      />
+      <Stack.Screen
+        name={AppScreens.CreateNewPassword}
+        component={CreateNewPassword}
+      />
+      <Stack.Screen
+        name={AppScreens.PasswordChanged}
+        component={PasswordChanged}
+      />
     </Stack.Navigator>
   );
 };

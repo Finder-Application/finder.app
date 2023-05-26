@@ -1,5 +1,6 @@
 export * from './Apple';
 export * from './Bell';
+export * from './BigTick';
 export * from './Calendar';
 export * from './ChevronDown';
 export * from './ChevronRight';

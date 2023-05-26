@@ -11,6 +11,9 @@ export enum AppScreens {
   EditProfile = 'EditProfile',
   EditContact = 'EditContact',
   ChangePassword = 'ChangePassword',
+  ForgotPassword = 'ForgotPassword',
+  CreateNewPassword = 'CreateNewPassword',
+  PasswordChanged = 'PasswordChanged',
 }
 
 export const COMMON_ERROR_MESSAGE = 'Opps, something went wrong!';

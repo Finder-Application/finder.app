@@ -41,3 +41,9 @@ export interface AuthErrorResponse {
   message: string;
   statusCode: number;
 }
+
+export interface ChangePwDto {
+  email: string;
+  password: string;
+  otp: number;
+}
