@@ -1,9 +1,16 @@
 import {showMessage} from 'react-native-flash-message';
-import {useMutation} from 'react-query';
+import {useMutation, UseMutationOptions} from 'react-query';
 import {client, privateClient} from 'api/client';
+import {AxiosError} from 'axios';
 import {useAuth} from 'core/Auth';
 
-import {AuthResponse, LoginDto, LoginGGDto, RegisterDto} from './types';
+import {
+  AuthResponse,
+  ChangePwDto,
+  LoginDto,
+  LoginGGDto,
+  RegisterDto,
+} from './types';
 
 const loginGoogle = async (body: LoginGGDto): Promise<AuthResponse> => {
   const {data} = await client.post('/api/public/auth/login-gg', {
@@ -92,6 +99,34 @@ export const useChangePassword = () => {
       onError(error) {
         console.log('useChangePassword error: ', error);
       },
+    },
+  );
+};
+
+export const useSendOtp = (
+  option: UseMutationOptions<unknown, AxiosError, unknown>,
+) =>
+  useMutation(
+    async (email: string) =>
+      (await client.get(`/api/public/auth/forgot-pw?email=${email}`)).data,
+    option,
+  );
+
+export const useChangePwPublic = (
+  option: UseMutationOptions<AuthResponse, AxiosError, ChangePwDto>,
+) => {
+  return useMutation(
+    async (payload: ChangePwDto) =>
+      (
+        await client.post('/api/public/auth/change-pw', {
+          ...payload,
+        })
+      ).data as unknown as Promise<AuthResponse>,
+    {
+      onError(error) {
+        console.log('useChangePwPublic error: ', error);
+      },
+      ...option,
     },
   );
 };
