@@ -19,10 +19,12 @@ import {
   LinearGradientView,
   LinkShareIcon,
   Text,
+  TextIcon,
   Touchable,
   UserComment,
   View,
 } from 'ui';
+import {FaceIcon} from 'ui/icons/Face';
 import {formatUserName} from 'utils';
 import {shallow} from 'zustand/shallow';
 
@@ -80,6 +82,7 @@ export const Post = (props: PostProps) => {
       </Text>
     );
   };
+
   return (
     <View
       backgroundColor="white"
@@ -109,7 +112,6 @@ export const Post = (props: PostProps) => {
             {ownerName}
           </Text>
         </View>
-        {post?.similar && <SimilarPercentage similar={post?.similar} />}
         <View flexDirection="row" alignItems="center">
           <Touchable
             marginRight="s"
@@ -132,9 +134,32 @@ export const Post = (props: PostProps) => {
           )}
         </View>
       </View>
+
+      <View
+        alignItems="center"
+        flexDirection="row"
+        justifyContent="flex-start"
+        marginBottom="m">
+        {post?.similar && (
+          <View flexDirection="row" alignItems="center" marginRight="s">
+            <FaceIcon />
+            <Text>&nbsp;:</Text>
+            <SimilarPercentage similar={post?.similar} />
+          </View>
+        )}
+        {post?.similarText !== undefined ? (
+          <View flexDirection="row" alignItems="center">
+            <TextIcon width={20} height={20} />
+            <Text>&nbsp;:</Text>
+            <SimilarPercentage similar={post?.similarText} />
+          </View>
+        ) : null}
+      </View>
+
       <Text fontWeight="700" fontSize={15}>
         {post?.title}
       </Text>
+
       <Text fontSize={13}>{post?.description}</Text>
       <View
         flexDirection="row"

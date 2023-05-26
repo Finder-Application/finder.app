@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {useRelevantPosts} from 'api/posts';
 import {Post} from 'api/posts/types';
+import orderBy from 'lodash/orderBy';
 import {Post as PostComponent} from 'screens/Home/components/Post';
 import {Image, NoRelevantPostFoundIcon, Screen, Text, View} from 'ui';
 import {LoadingIndicator} from 'ui/animations';
@@ -24,13 +25,7 @@ export const RelevantPosts = ({
     );
   };
 
-  const sortedPosts =
-    data?.sort((post1, post2) => {
-      if (post1.similar && post2.similar) {
-        return post2.similar - post1.similar;
-      }
-      return 0;
-    }) ?? [];
+  const sortedPosts = orderBy(data, ['similar', 'similarText'], 'desc');
 
   return (
     <Screen

@@ -38,6 +38,7 @@ export interface Post {
   owner: User;
   found: boolean;
   similar?: number;
+  similarText?: number;
   user: User;
 }
 

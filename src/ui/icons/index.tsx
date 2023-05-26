@@ -29,6 +29,7 @@ export * from './RoundedPlus';
 export * from './Search';
 export * from './SearchResults';
 export * from './Settings';
+export * from './Text';
 export * from './ThreeDots';
 export * from './Tick';
 export * from './UnderLinePencil';
