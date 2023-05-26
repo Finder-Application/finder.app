@@ -135,19 +135,19 @@ export const Post = (props: PostProps) => {
         </View>
       </View>
 
-      {(post?.similar || post?.similarText !== undefined) && (
+      {post?.similar !== undefined || post?.similarText !== undefined ? (
         <View
           alignItems="center"
           flexDirection="row"
           justifyContent="flex-start"
           marginBottom="m">
-          {post?.similar && (
+          {post?.similar !== undefined ? (
             <View flexDirection="row" alignItems="center" marginRight="s">
               <FaceIcon />
               <Text>&nbsp;:</Text>
               <SimilarPercentage similar={post?.similar} />
             </View>
-          )}
+          ) : null}
           {post?.similarText !== undefined ? (
             <View flexDirection="row" alignItems="center">
               <TextIcon width={20} height={20} />
@@ -156,7 +156,7 @@ export const Post = (props: PostProps) => {
             </View>
           ) : null}
         </View>
-      )}
+      ) : null}
 
       <Text fontWeight="700" fontSize={15}>
         {post?.title}
